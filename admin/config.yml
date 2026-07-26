@@ -2,8 +2,7 @@
 # 访问 https://你的域名.netlify.app/admin 进入管理后台
 
 backend:
-  name: github
-  repo: wu666640/my-blog
+  name: git-gateway
   branch: main
 
 # 媒体文件存储位置
