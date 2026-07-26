@@ -1,0 +1,51 @@
+# Decap CMS 配置文件
+# 访问 https://你的域名.netlify.app/admin 进入管理后台
+
+backend:
+  name: git-gateway
+  branch: main
+
+# 媒体文件存储位置
+media_folder: "images"
+public_folder: "/images"
+
+# 网站设置
+locale: "zh_Hans"
+
+# 文章集合
+collections:
+  - name: "posts"
+    label: "📝 文章"
+    label_singular: "文章"
+    folder: "posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} — {{date}}"
+    editor:
+      preview: false
+    fields:
+      - label: "标题"
+        name: "title"
+        widget: "string"
+        hint: "文章的标题"
+        pattern: [".+", "标题不能为空"]
+      - label: "发布日期"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
+      - label: "摘要"
+        name: "excerpt"
+        widget: "text"
+        hint: "显示在文章列表中的简短描述"
+        pattern: [".+", "摘要不能为空"]
+      - label: "标签"
+        name: "tags"
+        widget: "list"
+        hint: "每篇文章可以有多个标签"
+        default: ["生活"]
+      - label: "正文"
+        name: "body"
+        widget: "markdown"
+        hint: "支持 Markdown 语法"

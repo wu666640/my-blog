@@ -1,0 +1,96 @@
+/**
+ * 路由模块
+ * 解析 URL Hash，支持 #/、#/post/:id、#/tag/:tag、#/about、#/search
+ */
+const Router = {
+  /** 当前路由信息 */
+  current: { page: 'home', params: {} },
+
+  /** 已注册的路由处理函数 */
+  _handlers: {},
+
+  /** 注册路由 */
+  on(page, handler) {
+    this._handlers[page] = handler;
+    return this;
+  },
+
+  /** 解析当前 hash */
+  parse() {
+    const hash = location.hash.slice(1) || '/';
+
+    // #/post/1
+    let match = hash.match(/^\/post\/(\d+)$/);
+    if (match) {
+      this.current = { page: 'post', params: { id: parseInt(match[1]) } };
+      return this.current;
+    }
+
+    // #/tag/xxx
+    match = hash.match(/^\/tag\/(.+)$/);
+    if (match) {
+      this.current = { page: 'tag', params: { tag: decodeURIComponent(match[1]) } };
+      return this.current;
+    }
+
+    // #/about
+    if (hash === '/about') {
+      this.current = { page: 'about', params: {} };
+      return this.current;
+    }
+
+    // #/search?q=xxx
+    match = hash.match(/^\/search\?q=(.*)$/);
+    if (match) {
+      this.current = { page: 'search', params: { q: decodeURIComponent(match[1]) } };
+      return this.current;
+    }
+
+    // #/ (home)
+    if (hash === '/' || hash === '') {
+      this.current = { page: 'home', params: {} };
+      return this.current;
+    }
+
+    // 404
+    this.current = { page: '404', params: {} };
+    return this.current;
+  },
+
+  /** 导航到指定路由 */
+  navigate(hash) {
+    location.hash = hash;
+  },
+
+  /** 执行当前路由的处理函数 */
+  run() {
+    this.parse();
+    const handler = this._handlers[this.current.page];
+    if (handler) {
+      handler(this.current.params);
+    } else {
+      this._handlers['404']({});
+    }
+    this._updateActiveNav();
+  },
+
+  /** 更新导航栏激活状态 */
+  _updateActiveNav() {
+    document.querySelectorAll('.nav-link').forEach(link => {
+      const href = link.getAttribute('href');
+      if (this.current.page === 'home' && href === '#/') {
+        link.classList.add('active');
+      } else if (this.current.page === 'about' && href === '#/about') {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  },
+
+  /** 初始化，监听 hashchange */
+  init() {
+    window.addEventListener('hashchange', () => this.run());
+    this.run();
+  }
+};

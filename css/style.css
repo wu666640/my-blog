@@ -1,0 +1,746 @@
+/* ============================================
+   静轩小记 — 温暖文艺风博客样式
+   ============================================ */
+
+/* ----- CSS 变量：亮色主题 ----- */
+:root {
+  --bg: #fdf6f0;
+  --bg-secondary: #f8ede0;
+  --bg-card: #fffaf5;
+  --text: #4a3728;
+  --text-secondary: #7a6a5c;
+  --text-muted: #a89888;
+  --accent: #c17a4e;
+  --accent-hover: #a5663d;
+  --accent-light: #f0d5c0;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(74, 55, 40, 0.08);
+  --shadow-hover: 0 4px 20px rgba(74, 55, 40, 0.14);
+  --tag-bg: #f0e0d0;
+  --tag-text: #8b6b50;
+  --tag-active-bg: #c17a4e;
+  --tag-active-text: #fff;
+  --divider: #e8d5c4;
+  --header-bg: rgba(253, 246, 240, 0.92);
+  --code-bg: #f3e8da;
+}
+
+/* ----- CSS 变量：暗色主题 ----- */
+[data-theme="dark"] {
+  --bg: #1e1814;
+  --bg-secondary: #28201a;
+  --bg-card: #2a221c;
+  --text: #e0d5c8;
+  --text-secondary: #b8a898;
+  --text-muted: #7a6a5c;
+  --accent: #d4956a;
+  --accent-hover: #e0a87e;
+  --accent-light: #3d2a1c;
+  --border: #3d3028;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.45);
+  --tag-bg: #3d3028;
+  --tag-text: #c0a890;
+  --tag-active-bg: #d4956a;
+  --tag-active-text: #1e1814;
+  --divider: #3d3028;
+  --header-bg: rgba(30, 24, 20, 0.92);
+  --code-bg: #2a221c;
+}
+
+/* ----- 基础重置 ----- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Georgia, "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ----- 导航栏 ----- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--header-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+}
+
+.header-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.site-logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+
+.site-logo:hover {
+  color: var(--accent);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--accent);
+}
+
+.nav-link.active {
+  border-bottom-color: var(--accent);
+}
+
+/* 主题切换按钮 */
+.theme-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: background 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-btn:hover {
+  background: var(--bg-secondary);
+  transform: rotate(15deg);
+}
+
+.icon-sun,
+.icon-moon {
+  position: absolute;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+/* 亮色模式：显示月亮，隐藏太阳 */
+[data-theme="light"] .icon-sun { opacity: 0; transform: scale(0.5); }
+[data-theme="light"] .icon-moon { opacity: 1; transform: scale(1); }
+
+/* 暗色模式：显示太阳，隐藏月亮 */
+[data-theme="dark"] .icon-sun { opacity: 1; transform: scale(1); }
+[data-theme="dark"] .icon-moon { opacity: 0; transform: scale(0.5); }
+
+/* ----- 主内容区 ----- */
+.app-main {
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* ----- 首页布局（两栏）----- */
+.home-layout {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* ----- 文章列表 ----- */
+.posts-section {
+  min-width: 0;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--accent-light);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 文章卡片 */
+.post-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  cursor: pointer;
+  transition: box-shadow 0.25s, transform 0.25s;
+  box-shadow: var(--shadow);
+}
+
+.post-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.post-card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.post-card:hover .post-card-title {
+  color: var(--accent);
+}
+
+.post-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.post-card-date::before {
+  content: "📅 ";
+  font-size: 0.8rem;
+}
+
+.post-card-excerpt {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-card-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+/* ----- 标签 ----- */
+.tag {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 20px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  border: none;
+}
+
+.tag:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.tag.active {
+  background: var(--tag-active-bg);
+  color: var(--tag-active-text);
+}
+
+/* ----- 侧边栏 ----- */
+.sidebar {
+  position: sticky;
+  top: 80px;
+}
+
+.sidebar-widget {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.sidebar-widget h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.search-box {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-box:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.search-box::placeholder {
+  color: var(--text-muted);
+}
+
+/* ----- 文章详情页 ----- */
+.post-detail {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.post-detail .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+
+.post-detail .back-link:hover {
+  color: var(--accent);
+}
+
+.post-detail-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.post-detail-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.post-detail-meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.post-detail-tags {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.post-detail-body {
+  font-size: 1.05rem;
+  line-height: 2;
+  color: var(--text);
+}
+
+.post-detail-body p {
+  margin-bottom: 1.25rem;
+  text-indent: 2em;
+}
+
+.post-detail-body h2 {
+  font-size: 1.4rem;
+  margin: 2rem 0 1rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--accent);
+}
+
+.post-detail-body h3 {
+  font-size: 1.15rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.post-detail-body blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.post-detail-body ul,
+.post-detail-body ol {
+  margin: 1rem 0 1rem 1.5rem;
+}
+
+.post-detail-body li {
+  margin-bottom: 0.5rem;
+}
+
+.post-detail-body code {
+  background: var(--code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+}
+
+.post-detail-body pre {
+  background: var(--code-bg);
+  padding: 1.25rem;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  line-height: 1.6;
+}
+
+.post-detail-body pre code {
+  background: none;
+  padding: 0;
+}
+
+/* 文章底部导航 */
+.post-nav {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--divider);
+  display: flex;
+  justify-content: space-between;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+}
+
+.post-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.post-nav a:hover {
+  color: var(--accent-hover);
+}
+
+/* ----- 关于页面 ----- */
+.about-page {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.about-page h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-tagline {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.about-bio {
+  text-align: left;
+  font-size: 1rem;
+  line-height: 2;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.about-bio p {
+  margin-bottom: 1rem;
+  text-indent: 2em;
+}
+
+/* 技能条 */
+.skills-section {
+  text-align: left;
+  margin-bottom: 2.5rem;
+}
+
+.skills-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.skill-item {
+  margin-bottom: 0.8rem;
+}
+
+.skill-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  color: var(--text-secondary);
+}
+
+.skill-bar {
+  height: 6px;
+  background: var(--bg-secondary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+/* 社交链接 */
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.social-link:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* ----- 搜索高亮 ----- */
+.search-highlight {
+  background: #f5d65e;
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+
+[data-theme="dark"] .search-highlight {
+  background: #8b6914;
+  color: #fff;
+}
+
+/* ----- 空状态 ----- */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--text-muted);
+}
+
+.empty-state .empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  font-size: 1rem;
+}
+
+/* ----- 404 ----- */
+.not-found {
+  text-align: center;
+  padding: 4rem 1.5rem;
+}
+
+.not-found h2 {
+  font-size: 4rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.not-found p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.not-found .back-home {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.not-found .back-home:hover {
+  background: var(--accent-hover);
+}
+
+/* ----- 页脚 ----- */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.footer-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   响应式设计
+   ============================================ */
+
+/* 平板及以下：改为单栏 */
+@media (max-width: 768px) {
+  .home-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .sidebar {
+    position: static;
+    order: -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .sidebar-widget {
+    margin-bottom: 0;
+  }
+
+  .post-detail-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .post-detail-body {
+    font-size: 1rem;
+  }
+
+  .about-page h1 {
+    font-size: 1.5rem;
+  }
+
+  .site-logo {
+    font-size: 1.1rem;
+  }
+
+  .social-links {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* 手机端 */
+@media (max-width: 480px) {
+  .header-inner {
+    height: 48px;
+  }
+
+  .site-nav {
+    gap: 0.75rem;
+  }
+
+  .nav-link {
+    font-size: 0.8rem;
+  }
+
+  .app-main {
+    padding: 1.25rem 1rem 3rem;
+  }
+
+  .sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .post-card {
+    padding: 1.15rem;
+  }
+
+  .post-card-title {
+    font-size: 1.05rem;
+  }
+
+  .post-detail-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .post-nav {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}

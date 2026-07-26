@@ -1,0 +1,12 @@
+{
+  "name": "my-blog",
+  "version": "1.0.0",
+  "description": "静轩小记 - 个人博客",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^14.1.0"
+  }
+}
