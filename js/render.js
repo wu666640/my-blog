@@ -57,12 +57,17 @@ const Render = {
 
   /** 文章卡片 HTML */
   _postCard(post) {
+    const coverHTML = post.cover
+      ? `<div class="post-card-cover"><img src="${post.cover}" alt="${post.title}" loading="lazy"></div>`
+      : '';
+
     const tagLinks = post.tags.map(t =>
       `<a href="#/tag/${encodeURIComponent(t)}" class="tag" onclick="event.stopPropagation()">${t}</a>`
     ).join('');
 
     return `
       <article class="post-card" onclick="Router.navigate('#/post/${post.id}')">
+        ${coverHTML}
         <h3 class="post-card-title">${post.title}</h3>
         <div class="post-card-meta">
           <span class="post-card-date">${post.date}</span>
@@ -96,43 +101,46 @@ const Render = {
       </article>`;
   },
 
-  /* ========== 关于我 ========== */
+  /* ========== 关于我（动态数据）========== */
   about() {
+    const d = (typeof ABOUT_DATA !== 'undefined') ? ABOUT_DATA : {
+      name: '静轩',
+      avatar: '',
+      tagline: '一个喜欢写字、写代码、冲咖啡的人',
+      bio: '',
+      skills: [],
+      social: []
+    };
+
+    const avatarHTML = d.avatar
+      ? `<img src="${d.avatar}" alt="${d.name}" class="about-avatar-img" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">`
+      : '<div class="about-avatar">✍️</div>';
+
+    const skillsHTML = d.skills && d.skills.length > 0
+      ? `<div class="skills-section">
+           <h2>技术栈</h2>
+           ${d.skills.map(s => `
+             <div class="skill-item">
+               <div class="skill-label"><span>${s.name}</span><span>${s.level}%</span></div>
+               <div class="skill-bar"><div class="skill-bar-fill" style="width:${s.level}%"></div></div>
+             </div>`).join('')}
+         </div>`
+      : '';
+
+    const socialHTML = d.social && d.social.length > 0
+      ? `<div class="social-links">
+           ${d.social.map(s => `<a href="${s.url}" target="_blank" class="social-link">${s.icon} ${s.label}</a>`).join('')}
+         </div>`
+      : '';
+
     return `
       <div class="about-page">
-        <div class="about-avatar">✍️</div>
-        <h1>关于我</h1>
-        <p class="about-tagline">一个喜欢写字、写代码、冲咖啡的人</p>
-        <div class="about-bio">
-          <p>你好，欢迎来到我的博客。</p>
-          <p>我叫静轩，是一名全栈开发者，也是一个文字爱好者。工作之余，我喜欢写博客、阅读、冲手冲咖啡，偶尔散步拍照。</p>
-          <p>这个博客是我的一方小天地——记录技术心得、生活感悟，还有一些乱七八糟的随笔。不求多少人看，只求自己写得开心。</p>
-          <p>如果你偶然路过，觉得某篇文章有点意思，那便是缘分了。</p>
-        </div>
-        <div class="skills-section">
-          <h2>技术栈</h2>
-          <div class="skill-item">
-            <div class="skill-label"><span>JavaScript / TypeScript</span><span>90%</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" style="width:90%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-label"><span>React / Vue</span><span>85%</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" style="width:85%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-label"><span>Node.js / Express</span><span>80%</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" style="width:80%"></div></div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-label"><span>CSS / 设计</span><span>75%</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" style="width:75%"></div></div>
-          </div>
-        </div>
-        <div class="social-links">
-          <a href="https://github.com" target="_blank" class="social-link">🐙 GitHub</a>
-          <a href="mailto:hello@example.com" class="social-link">📧 Email</a>
-          <a href="#" class="social-link">🐦 Twitter</a>
-        </div>
+        ${avatarHTML}
+        <h1>${d.name}</h1>
+        <p class="about-tagline">${d.tagline}</p>
+        <div class="about-bio">${d.bio}</div>
+        ${skillsHTML}
+        ${socialHTML}
       </div>`;
   },
 

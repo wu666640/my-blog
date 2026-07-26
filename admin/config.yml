@@ -12,8 +12,9 @@ public_folder: "/images"
 # 网站设置
 locale: "zh_Hans"
 
-# 文章集合
+# 内容集合
 collections:
+  # ----- 文章 -----
   - name: "posts"
     label: "📝 文章"
     label_singular: "文章"
@@ -29,6 +30,11 @@ collections:
         widget: "string"
         hint: "文章的标题"
         pattern: [".+", "标题不能为空"]
+      - label: "封面图"
+        name: "cover"
+        widget: "image"
+        required: false
+        hint: "可选，文章列表展示的封面图"
       - label: "发布日期"
         name: "date"
         widget: "datetime"
@@ -48,4 +54,41 @@ collections:
       - label: "正文"
         name: "body"
         widget: "markdown"
-        hint: "支持 Markdown 语法"
+        hint: "支持 Markdown 语法，可拖入图片"
+
+  # ----- 个人资料（单页）-----
+  - name: "about"
+    label: "👤 个人资料"
+    files:
+      - name: "about"
+        label: "关于我页面"
+        file: "data/about.json"
+        fields:
+          - label: "昵称"
+            name: "name"
+            widget: "string"
+          - label: "头像"
+            name: "avatar"
+            widget: "image"
+            required: false
+            hint: "建议正方形图片，比如 200x200"
+          - label: "一句话介绍"
+            name: "tagline"
+            widget: "string"
+          - label: "个人简介"
+            name: "bio"
+            widget: "markdown"
+            hint: "支持 Markdown"
+          - label: "技能"
+            name: "skills"
+            widget: "list"
+            fields:
+              - { label: "技能名", name: "name", widget: "string" }
+              - { label: "熟练度 (0-100)", name: "level", widget: "number", value_type: "int", min: 0, max: 100 }
+          - label: "社交链接"
+            name: "social"
+            widget: "list"
+            fields:
+              - { label: "名称", name: "label", widget: "string" }
+              - { label: "链接", name: "url", widget: "string" }
+              - { label: "图标 Emoji", name: "icon", widget: "string", hint: "如 🐙 📧 🐦" }

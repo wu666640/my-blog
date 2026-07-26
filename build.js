@@ -47,6 +47,7 @@ const posts = files.map((filename) => {
     date: data.date ? formatDate(data.date) : '未知日期',
     excerpt: data.excerpt || '',
     tags: data.tags || [],
+    cover: data.cover || '',
     content: htmlContent.trim(),
   };
 });
@@ -125,3 +126,24 @@ function searchPosts(query) {
 
 fs.writeFileSync(OUTPUT_FILE, output, 'utf-8');
 console.log(`✅ 已生成 js/posts.js（${posts.length} 篇文章）`);
+
+// ===== 生成 js/about.js（个人资料）=====
+const ABOUT_FILE = path.join(__dirname, 'data', 'about.json');
+if (fs.existsSync(ABOUT_FILE)) {
+  const aboutData = JSON.parse(fs.readFileSync(ABOUT_FILE, 'utf-8'));
+  // 将 bio markdown 转为 HTML
+  if (aboutData.bio) {
+    aboutData.bio = marked.parse(aboutData.bio).trim();
+  }
+  const aboutOutput = `/**
+ * 个人资料 — 由 build.js 自动生成
+ * 请勿手动修改此文件，在 /admin > 个人资料 编辑
+ * 生成时间：${new Date().toISOString()}
+ */
+const ABOUT_DATA = ${JSON.stringify(aboutData, null, 2)};
+`;
+  fs.writeFileSync(path.join(__dirname, 'js', 'about.js'), aboutOutput, 'utf-8');
+  console.log('✅ 已生成 js/about.js');
+} else {
+  console.log('⚠️  data/about.json 不存在，跳过个人资料生成');
+}
