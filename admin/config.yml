@@ -169,6 +169,11 @@ collections:
                 name: "category"
                 widget: "string"
                 hint: "如：华语流行、民谣、摇滚、电子"
+              - label: "标签（可多选）"
+                name: "tags"
+                widget: "list"
+                required: false
+                hint: "一首歌可以有多个标签，如：华语流行、深夜、治愈、青春"
               - label: "本地上传 MP3（可选，上传后可直接完整播放）"
                 name: "file"
                 widget: "file"
