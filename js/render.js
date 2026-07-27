@@ -316,14 +316,9 @@ const Render = {
            <span class="video-play-icon">▶️</span>
          </div>`;
 
-    // 可嵌入的播放器
+    // 可嵌入的播放器（iframe 在点击时动态创建）
     const embedHTML = embedURL
-      ? `<div class="video-embed" data-video-embed style="display:none">
-           <iframe src="" data-src="${embedURL}"
-                   frameborder="0" allowfullscreen="true"
-                   allow="autoplay; encrypted-media"
-                   loading="lazy"></iframe>
-         </div>`
+      ? `<div class="video-embed" data-video-embed style="display:none" data-embed-url="${embedURL.replace(/&/g, '&amp;')}"></div>`
       : '';
 
     return `
@@ -346,14 +341,13 @@ const Render = {
       </article>`;
   },
 
-  /** 初始化视频卡片点击播放（事件委托，无时序问题） */
+  /** 初始化视频卡片点击播放（事件委托 + 动态创建 iframe） */
   setupVideoPlayers() {
     const app = document.getElementById('app');
     if (!app || app.dataset.videoDelegation === 'true') return;
     app.dataset.videoDelegation = 'true';
 
     app.addEventListener('click', (e) => {
-      // 找到被点击的视频封面
       const trigger = e.target.closest('[data-video-trigger]');
       if (!trigger) return;
 
@@ -364,13 +358,23 @@ const Render = {
       const cover = card.querySelector('[data-video-cover]');
       if (!embed || !cover) return;
 
+      const url = embed.dataset.embedUrl;
+      if (!url) return;
+
       e.preventDefault();
       e.stopPropagation();
 
-      const iframe = embed.querySelector('iframe');
-      if (!iframe.src) {
-        iframe.src = iframe.dataset.src;
+      // 动态创建 iframe（避免 HTML 属性转义问题）
+      if (!embed.querySelector('iframe')) {
+        const iframe = document.createElement('iframe');
+        iframe.src = url;
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.setAttribute('allow', 'autoplay; encrypted-media');
+        iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;';
+        embed.appendChild(iframe);
       }
+
       embed.style.display = 'block';
       cover.style.display = 'none';
     });
