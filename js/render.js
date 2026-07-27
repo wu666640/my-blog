@@ -88,6 +88,8 @@ const Render = {
 
   /** 清空并渲染内容 */
   mount(html) {
+    // 页面切换时清理旧的评论区
+    if (typeof Giscus !== 'undefined') Giscus.unload();
     const el = this.getApp();
     el.innerHTML = html;
   },
@@ -324,17 +326,44 @@ const Render = {
     const liked = typeof Likes !== 'undefined' && Likes.isLiked('gallery', item.id);
 
     return `
-      <article class="gallery-card">
+      <article class="gallery-card" onclick="Router.navigate('#/gallery/${item.id}')" style="cursor:pointer">
         ${imageHTML}
         <div class="gallery-card-body">
           <h3 class="gallery-card-title">${item.title}</h3>
           <div class="gallery-card-meta">${item.date} · ${item.category}</div>
           <div class="gallery-card-desc">${item.description}</div>
-          <div class="gallery-card-actions">
+          <div class="gallery-card-actions" onclick="event.stopPropagation()">
             ${typeof Likes !== 'undefined' ? Likes.buttonHTML('gallery', item.id, liked) : ''}
+            <a href="#/gallery/${item.id}" class="card-comment-link" title="查看详情和评论">💬 评论</a>
           </div>
         </div>
       </article>`;
+  },
+
+  /** 画廊详情页 */
+  galleryDetail(item) {
+    const liked = typeof Likes !== 'undefined' && Likes.isLiked('gallery', item.id);
+    const imageHTML = item.image
+      ? `<div class="gallery-detail-image">
+           <img src="${item.image}" alt="${item.title}">
+         </div>`
+      : '';
+
+    return `
+      <div class="gallery-detail-page">
+        <a href="#/gallery" class="back-link">← 返回画廊</a>
+        <article class="gallery-detail">
+          ${imageHTML}
+          <h1 class="gallery-detail-title">${item.title}</h1>
+          <div class="gallery-detail-meta">
+            <span>📅 ${item.date}</span>
+            <span>📂 ${item.category}</span>
+            <span>${typeof Likes !== 'undefined' ? Likes.buttonHTML('gallery', item.id, liked) : ''}</span>
+          </div>
+          <div class="gallery-detail-desc">${item.description}</div>
+        </article>
+        <div class="giscus"></div>
+      </div>`;
   },
 
   /* ========== 视频 ========== */
@@ -432,9 +461,58 @@ const Render = {
           <div class="video-card-actions">
             ${externalLink || ''}
             ${typeof Likes !== 'undefined' ? Likes.buttonHTML('video', item.id, liked) : ''}
+            <a href="#/video/${item.id}" class="card-comment-link" title="查看详情和评论">💬 评论</a>
           </div>
         </div>
       </article>`;
+  },
+
+  /** 视频详情页 */
+  videoDetail(item) {
+    const liked = typeof Likes !== 'undefined' && Likes.isLiked('video', item.id);
+    const hasLocal = item.file && item.file.trim() !== '';
+    const embedURL = this._videoEmbedURL(item);
+    const externalLink = item.url
+      ? `<a href="${item.url}" target="_blank" class="video-external-link">🔗 在 ${item.platform === 'bilibili' ? 'B站' : item.platform === 'youtube' ? 'YouTube' : '原站'} 观看</a>`
+      : '';
+
+    let playerHTML;
+    if (hasLocal) {
+      playerHTML = `<div class="video-detail-player">
+        <video class="video-detail-el" src="${item.file}" controls preload="metadata"
+               ${item.cover ? `poster="${item.cover}"` : ''}>
+          您的浏览器不支持视频播放
+        </video>
+      </div>`;
+    } else if (embedURL) {
+      playerHTML = `<div class="video-detail-player">
+        <div class="video-detail-embed">
+          <iframe src="${embedURL}" frameborder="0" allowfullscreen="true"
+                  allow="autoplay; encrypted-media"
+                  style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
+        </div>
+      </div>`;
+    } else {
+      playerHTML = '';
+    }
+
+    return `
+      <div class="video-detail-page">
+        <a href="#/video" class="back-link">← 返回视频</a>
+        <article class="video-detail">
+          ${playerHTML}
+          <h1 class="video-detail-title">${item.title}</h1>
+          <div class="video-detail-meta">
+            <span>📅 ${item.date}</span>
+            <span>📂 ${item.category}</span>
+            <span>${item.platform ? `🎬 ${item.platform}` : ''}</span>
+            <span>${typeof Likes !== 'undefined' ? Likes.buttonHTML('video', item.id, liked) : ''}</span>
+          </div>
+          <div class="video-detail-actions">${externalLink}</div>
+          <div class="video-detail-desc">${item.description}</div>
+        </article>
+        <div class="giscus"></div>
+      </div>`;
   },
 
   /** 初始化视频卡片点击播放（事件委托 + 动态创建 iframe） */
@@ -639,6 +717,7 @@ const Render = {
             <div class="music-card-actions">
               ${neteaseBtn}
               ${typeof Likes !== 'undefined' ? Likes.buttonHTML('music', track.id, liked) : ''}
+              <a href="#/music/${track.id}" class="card-comment-link" title="查看详情和评论">💬 评论</a>
             </div>
           </div>
         </div>
@@ -661,6 +740,77 @@ const Render = {
         ${linesHTML}
       </div>
     </div>`;
+  },
+
+  /** 音乐详情页 */
+  musicDetail(track) {
+    const liked = typeof Likes !== 'undefined' && Likes.isLiked('music', track.id);
+    const hasLocalFile = track.file && track.file.trim() !== '';
+    const playUrl = track.neteaseUrl || (track.neteaseId ? `https://music.163.com/song?id=${track.neteaseId}` : '#');
+    const counts = this._getPlayCounts();
+    const plays = counts[track.title] || 0;
+
+    let playerHTML;
+    if (hasLocalFile) {
+      playerHTML = `<div class="music-detail-player">
+        <audio class="music-detail-audio" src="${track.file}" controls preload="metadata"></audio>
+      </div>`;
+    } else if (track.neteaseId) {
+      playerHTML = `<div class="music-detail-player">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0"
+                width="100%" height="86"
+                src="https://music.163.com/outchain/player?type=2&id=${track.neteaseId}&auto=0&height=66">
+        </iframe>
+      </div>`;
+    } else {
+      playerHTML = '';
+    }
+
+    const lyricsHTML = (track.lyrics && track.lyrics.trim())
+      ? this._lyricsBox(track.lyrics)
+      : '';
+
+    const coverHTML = track.cover
+      ? `<div class="music-detail-cover">
+           <img src="${track.cover}" alt="${track.title} 封面">
+         </div>`
+      : '';
+
+    const tagsHTML = (track.tags || []).map(t =>
+      `<a href="#/music/tag/${encodeURIComponent(t)}" class="music-card-tag">${t}</a>`
+    ).join('');
+
+    const neteaseBtn = (track.neteaseUrl || track.neteaseId)
+      ? `<a href="${playUrl}" target="_blank" class="music-netease-btn">🎧 在网易云音乐中打开</a>`
+      : '';
+
+    return `
+      <div class="music-detail-page">
+        <a href="#/music" class="back-link">← 返回音乐</a>
+        <article class="music-detail">
+          ${playerHTML}
+          <div class="music-detail-body">
+            ${coverHTML}
+            <div class="music-detail-info">
+              <h1 class="music-detail-title">${track.title}</h1>
+              <div class="music-detail-artist">
+                <a href="#/music/artist/${encodeURIComponent(track.artist)}">🎤 ${track.artist}</a>
+              </div>
+              <div class="music-detail-meta">
+                <span>📅 ${(track.date || '').replace('T', ' ')}</span>
+                <span>📂 ${track.category}</span>
+                ${plays > 0 ? `<span>🔊 已播放 ${plays} 次</span>` : ''}
+                <span>${typeof Likes !== 'undefined' ? Likes.buttonHTML('music', track.id, liked) : ''}</span>
+              </div>
+              <div class="music-detail-tags">${tagsHTML}</div>
+              <div class="music-detail-desc">${track.description}</div>
+              <div class="music-detail-actions">${neteaseBtn}</div>
+            </div>
+          </div>
+          ${lyricsHTML}
+        </article>
+        <div class="giscus"></div>
+      </div>`;
   },
 
   /** 初始化自定义音频播放器（在音乐页面渲染后调用） */
@@ -962,6 +1112,7 @@ const Render = {
           ${prevHTML}
           ${nextHTML}
         </div>
+        <div class="giscus"></div>
       </div>
 
       <!-- 浮动目录按钮 -->

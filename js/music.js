@@ -1,7 +1,7 @@
 /**
  * 音乐推荐数据 — 由 build.js 自动生成
  * 请勿手动修改此文件，在 /admin 后台管理音乐
- * 生成时间：2026-07-27T15:43:42.858Z
+ * 生成时间：2026-07-27T16:00:03.374Z
  */
 const MUSIC_TRACKS = [
   {
@@ -133,4 +133,8 @@ function getAllArtists() {
  */
 function getMusicByArtist(artist) {
   return MUSIC_TRACKS.filter(item => item.artist === artist);
+}
+
+function getMusicTrackById(id) {
+  return MUSIC_TRACKS.find(item => item.id === id) || null;
 }

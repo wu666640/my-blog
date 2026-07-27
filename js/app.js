@@ -35,6 +35,7 @@
       const prevPost = idx < allPosts.length - 1 ? allPosts[idx + 1] : null;
       const nextPost = idx > 0 ? allPosts[idx - 1] : null;
       Render.mount(Render.post(post, prevPost, nextPost));
+      setTimeout(() => { if (typeof Giscus !== 'undefined') Giscus.load('post-' + post.id); }, 100);
     })
     .on('search', (params) => {
       const posts = searchPosts(params.q);
@@ -61,6 +62,12 @@
         ? getGalleryByCategory(params.category)
         : getAllGalleryItems();
       Render.mount(Render.gallery(items, params.category || null));
+    })
+    .on('gallery-item', (params) => {
+      const item = getGalleryItemById(parseInt(params.id));
+      if (!item) { Render.mount(Render.notFound()); return; }
+      Render.mount(Render.galleryDetail(item));
+      setTimeout(() => { if (typeof Giscus !== 'undefined') Giscus.load('gallery-' + item.id); }, 100);
     })
     .on('music', (params) => {
       let tracks;
@@ -89,6 +96,12 @@
       Render.mount(Render.music(tracks, params.tag || null, params.artist || null, true));
       setTimeout(() => Render.setupMusicPlayers(), 0);
     })
+    .on('music-item', (params) => {
+      const track = getMusicTrackById(parseInt(params.id));
+      if (!track) { Render.mount(Render.notFound()); return; }
+      Render.mount(Render.musicDetail(track));
+      setTimeout(() => { if (typeof Giscus !== 'undefined') Giscus.load('music-' + track.id); }, 100);
+    })
     .on('video', (params) => {
       const items = params.category
         ? getVideosByCategory(params.category)
@@ -96,6 +109,12 @@
       Render.mount(Render.video(items, params.category || null));
       // 初始化视频播放器
       setTimeout(() => Render.setupVideoPlayers(), 0);
+    })
+    .on('video-item', (params) => {
+      const item = getVideoById(parseInt(params.id));
+      if (!item) { Render.mount(Render.notFound()); return; }
+      Render.mount(Render.videoDetail(item));
+      setTimeout(() => { if (typeof Giscus !== 'undefined') Giscus.load('video-' + item.id); }, 100);
     })
     .on('novel-list', () => {
       const novels = getAllNovels();
@@ -114,6 +133,7 @@
         result.novel, result.chapter, result.prev, result.next, result.allChapters
       ));
       setTimeout(() => Render.setupNovelPage(), 0);
+      setTimeout(() => { if (typeof Giscus !== 'undefined') Giscus.load('novel-' + params.id + '-' + params.chapterId); }, 100);
     })
     .on('404', () => {
       Render.mount(Render.notFound());

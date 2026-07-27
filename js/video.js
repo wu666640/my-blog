@@ -1,7 +1,7 @@
 /**
  * 视频推荐数据 — 由 build.js 自动生成
  * 请勿手动修改此文件，在 /admin 后台管理视频
- * 生成时间：2026-07-27T15:43:42.870Z
+ * 生成时间：2026-07-27T16:00:03.386Z
  */
 const VIDEOS = [
   {
@@ -64,4 +64,8 @@ function getVideoCategories() {
  */
 function getVideosByCategory(category) {
   return VIDEOS.filter(item => item.category === category);
+}
+
+function getVideoById(id) {
+  return VIDEOS.find(item => item.id === id) || null;
 }

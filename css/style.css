@@ -3488,3 +3488,313 @@ body {
 .gmp-bar:not(.gmp-hidden) ~ .back-to-top {
   bottom: 80px;
 }
+
+/* ===== 卡片评论链接 ===== */
+.card-comment-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.card-comment-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--bg-hover);
+}
+
+/* ===== Giscus 评论区 ===== */
+.giscus {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  min-height: 200px;
+}
+
+.giscus-loading {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  padding: 2rem 0;
+}
+
+.giscus-error {
+  text-align: center;
+  color: #e74c3c;
+  font-size: 0.95rem;
+  padding: 1.5rem;
+  background: #fef2f2;
+  border-radius: 8px;
+}
+
+.giscus-admin-link {
+  display: block;
+  text-align: right;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-top: 0.5rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.giscus-admin-link:hover {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* 深色模式 giscus 错误 */
+[data-theme="dark"] .giscus-error {
+  background: #3b1111;
+  color: #fca5a5;
+}
+
+/* ===== 画廊详情页 ===== */
+.gallery-detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.gallery-detail-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+.gallery-detail-page .back-link:hover {
+  color: var(--accent);
+}
+
+.gallery-detail-image {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+.gallery-detail-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 70vh;
+  object-fit: contain;
+  background: #111;
+}
+
+.gallery-detail-title {
+  font-size: 1.8rem;
+  margin: 0 0 0.75rem;
+  color: var(--text);
+}
+
+.gallery-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.gallery-detail-desc {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* ===== 视频详情页 ===== */
+.video-detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.video-detail-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+.video-detail-page .back-link:hover {
+  color: var(--accent);
+}
+
+.video-detail-player {
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+}
+
+.video-detail-player video.video-detail-el {
+  width: 100%;
+  display: block;
+  max-height: 60vh;
+}
+
+.video-detail-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+.video-detail-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-detail-title {
+  font-size: 1.8rem;
+  margin: 0 0 0.75rem;
+  color: var(--text);
+}
+
+.video-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.video-detail-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.video-detail-desc {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text);
+  margin-top: 1rem;
+}
+
+/* ===== 音乐详情页 ===== */
+.music-detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.music-detail-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+.music-detail-page .back-link:hover {
+  color: var(--accent);
+}
+
+.music-detail-player {
+  margin-bottom: 1.5rem;
+}
+.music-detail-player audio {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.music-detail-body {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  align-items: flex-start;
+}
+
+.music-detail-cover {
+  flex-shrink: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.music-detail-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.music-detail-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.music-detail-title {
+  font-size: 1.8rem;
+  margin: 0 0 0.5rem;
+  color: var(--text);
+}
+
+.music-detail-artist {
+  margin-bottom: 0.5rem;
+}
+.music-detail-artist a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 1.05rem;
+}
+.music-detail-artist a:hover {
+  text-decoration: underline;
+}
+
+.music-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.music-detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.music-detail-desc {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.music-detail-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .music-detail-body {
+    flex-direction: column;
+    align-items: center;
+  }
+  .music-detail-cover {
+    width: 150px;
+    height: 150px;
+  }
+}

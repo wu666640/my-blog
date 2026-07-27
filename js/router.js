@@ -39,7 +39,14 @@ const Router = {
       return this.current;
     }
 
-    // #/gallery/xxx
+    // #/gallery/:id（数字 → 详情页）
+    match = hash.match(/^\/gallery\/(\d+)$/);
+    if (match) {
+      this.current = { page: 'gallery-item', params: { id: parseInt(match[1]) } };
+      return this.current;
+    }
+
+    // #/gallery/xxx（分类筛选）
     match = hash.match(/^\/gallery\/(.+)$/);
     if (match) {
       this.current = { page: 'gallery', params: { category: decodeURIComponent(match[1]) } };
@@ -66,6 +73,13 @@ const Router = {
       return this.current;
     }
 
+    // #/music/:id（数字 → 详情页，必须在 #/music/xxx 之前）
+    match = hash.match(/^\/music\/(\d+)$/);
+    if (match) {
+      this.current = { page: 'music-item', params: { id: parseInt(match[1]) } };
+      return this.current;
+    }
+
     // #/music/xxx（兼容旧的 category 路由）
     match = hash.match(/^\/music\/(.+)$/);
     if (match) {
@@ -79,7 +93,14 @@ const Router = {
       return this.current;
     }
 
-    // #/video/xxx
+    // #/video/:id（数字 → 详情页）
+    match = hash.match(/^\/video\/(\d+)$/);
+    if (match) {
+      this.current = { page: 'video-item', params: { id: parseInt(match[1]) } };
+      return this.current;
+    }
+
+    // #/video/xxx（分类筛选）
     match = hash.match(/^\/video\/(.+)$/);
     if (match) {
       this.current = { page: 'video', params: { category: decodeURIComponent(match[1]) } };
@@ -157,9 +178,15 @@ const Router = {
         link.classList.add('active');
       } else if (this.current.page === 'gallery' && href === '#/gallery') {
         link.classList.add('active');
+      } else if (this.current.page === 'gallery-item' && href === '#/gallery') {
+        link.classList.add('active');
       } else if (this.current.page === 'music' && href === '#/music') {
         link.classList.add('active');
+      } else if (this.current.page === 'music-item' && href === '#/music') {
+        link.classList.add('active');
       } else if (this.current.page === 'video' && href === '#/video') {
+        link.classList.add('active');
+      } else if (this.current.page === 'video-item' && href === '#/video') {
         link.classList.add('active');
       } else if (this.current.page.startsWith('novel') && href === '#/novel') {
         link.classList.add('active');

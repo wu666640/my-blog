@@ -1,7 +1,7 @@
 /**
  * 图片画廊数据 — 由 build.js 自动生成
  * 请勿手动修改此文件，在 /admin 后台管理画廊
- * 生成时间：2026-07-27T15:43:42.853Z
+ * 生成时间：2026-07-27T16:00:03.371Z
  */
 const GALLERY_ITEMS = [
   {
@@ -63,4 +63,8 @@ function getGalleryCategories() {
  */
 function getGalleryByCategory(category) {
   return GALLERY_ITEMS.filter(item => item.category === category);
+}
+
+function getGalleryItemById(id) {
+  return GALLERY_ITEMS.find(item => item.id === id) || null;
 }

@@ -218,6 +218,10 @@ function getGalleryCategories() {
 function getGalleryByCategory(category) {
   return GALLERY_ITEMS.filter(item => item.category === category);
 }
+
+function getGalleryItemById(id) {
+  return GALLERY_ITEMS.find(item => item.id === id) || null;
+}
 `;
   fs.writeFileSync(path.join(__dirname, 'js', 'gallery.js'), galleryOutput, 'utf-8');
   console.log(`✅ 已生成 js/gallery.js（${items.length} 张图片）`);
@@ -359,6 +363,10 @@ function getAllArtists() {
 function getMusicByArtist(artist) {
   return MUSIC_TRACKS.filter(item => item.artist === artist);
 }
+
+function getMusicTrackById(id) {
+  return MUSIC_TRACKS.find(item => item.id === id) || null;
+}
 `;
   fs.writeFileSync(path.join(__dirname, 'js', 'music.js'), musicOutput, 'utf-8');
   console.log(`✅ 已生成 js/music.js（${tracks.length} 首歌曲）`);
@@ -445,6 +453,10 @@ function getVideoCategories() {
  */
 function getVideosByCategory(category) {
   return VIDEOS.filter(item => item.category === category);
+}
+
+function getVideoById(id) {
+  return VIDEOS.find(item => item.id === id) || null;
 }
 `;
   fs.writeFileSync(path.join(__dirname, 'js', 'video.js'), videoOutput, 'utf-8');
