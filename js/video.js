@@ -1,7 +1,7 @@
 /**
  * 视频推荐数据 — 由 build.js 自动生成
  * 请勿手动修改此文件，在 /admin 后台管理视频
- * 生成时间：2026-07-27T14:47:34.677Z
+ * 生成时间：2026-07-27T14:55:14.269Z
  */
 const VIDEOS = [
   {
@@ -17,6 +17,17 @@ const VIDEOS = [
   },
   {
     "id": 2,
+    "title": "【王道计算机考研 数据结构】",
+    "url": "https://www.bilibili.com/video/BV1b7411N798?p=13&vd_source=b38574ddf86e11695b9ec862f7edee0f",
+    "platform": "bilibili",
+    "file": "",
+    "cover": "images/qq20260727-222055.png",
+    "description": "<p>数据结构**++**</p>",
+    "category": "数据结构",
+    "date": "2026-07-27"
+  },
+  {
+    "id": 3,
     "title": "示例视频",
     "url": "https://www.bilibili.com/video/BV1GJ411x7h7",
     "platform": "bilibili",

@@ -1,7 +1,7 @@
 /**
  * 音乐推荐数据 — 由 build.js 自动生成
  * 请勿手动修改此文件，在 /admin 后台管理音乐
- * 生成时间：2026-07-27T14:47:34.672Z
+ * 生成时间：2026-07-27T14:55:14.256Z
  */
 const MUSIC_TRACKS = [
   {
@@ -25,7 +25,7 @@ const MUSIC_TRACKS = [
     "playCount": 0
   },
   {
-    "id": 5,
+    "id": 2,
     "title": "老歌",
     "artist": "许嵩",
     "cover": "images/4005687313.jpg",
@@ -45,7 +45,7 @@ const MUSIC_TRACKS = [
     "playCount": 0
   },
   {
-    "id": 6,
+    "id": 3,
     "title": "认错",
     "artist": "许嵩",
     "cover": "images/2626999921.jpg",
@@ -60,63 +60,6 @@ const MUSIC_TRACKS = [
       "华语流行",
       "许嵩",
       "自定义"
-    ],
-    "playCount": 0
-  },
-  {
-    "id": 4,
-    "title": "晴天",
-    "artist": "周杰伦",
-    "cover": "",
-    "description": "<p>一首充满青春回忆的歌。前奏一响，就把人拉回那个夏天。</p>\n<p>「从前从前，有个人爱你很久」— 这句歌词不知道写进了多少人的日记里。</p>",
-    "category": "华语流行",
-    "file": "",
-    "neteaseId": "186016",
-    "neteaseUrl": "https://music.163.com/song?id=186016",
-    "lyrics": "",
-    "date": "2026-07-25",
-    "tags": [
-      "华语流行",
-      "青春",
-      "回忆"
-    ],
-    "playCount": 0
-  },
-  {
-    "id": 2,
-    "title": "好久不见",
-    "artist": "陈奕迅",
-    "cover": "",
-    "description": "<p>Eason 的嗓音有一种独特的魔力，能把最简单的歌词唱进心里。</p>\n<p>每次听到「我来到你的城市，走过你来时的路」，都会想起那些很久没见的人。</p>",
-    "category": "粤语/华语",
-    "file": "",
-    "neteaseId": "65538",
-    "neteaseUrl": "https://music.163.com/song?id=65538",
-    "lyrics": "",
-    "date": "2026-07-18",
-    "tags": [
-      "粤语",
-      "怀旧",
-      "深夜"
-    ],
-    "playCount": 0
-  },
-  {
-    "id": 3,
-    "title": "成都",
-    "artist": "赵雷",
-    "cover": "",
-    "description": "<p>因为一首歌，爱上一座城。</p>\n<p>民谣的力量就在于，它用最简单的旋律讲最动人的故事。每次听这首歌都想再去一次成都的街头走一走。</p>",
-    "category": "民谣",
-    "file": "",
-    "neteaseId": "436514312",
-    "neteaseUrl": "https://music.163.com/song?id=436514312",
-    "lyrics": "",
-    "date": "2026-07-12",
-    "tags": [
-      "民谣",
-      "城市",
-      "慢生活"
     ],
     "playCount": 0
   }

@@ -2540,6 +2540,39 @@ body {
   border: none;
 }
 
+/* 随机/循环按钮状态 */
+.gmp-shuffle-btn,
+.gmp-loop-btn {
+  width: 28px;
+  height: 28px;
+  font-size: 0.85rem;
+  transition: color 0.15s, transform 0.15s;
+  position: relative;
+}
+
+.gmp-shuffle-btn.active,
+.gmp-loop-btn.active {
+  color: var(--accent);
+  text-shadow: 0 0 6px var(--accent-light);
+}
+
+.gmp-loop-btn.loop-one::after {
+  content: '1';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ----- 播放列表面板 ----- */
 .gmp-panel {
   position: fixed;
@@ -3308,6 +3341,10 @@ body {
   .gmp-bar-time {
     font-size: 0.65rem;
     min-width: 48px;
+  }
+  .gmp-shuffle-btn,
+  .gmp-loop-btn {
+    display: none;
   }
   .gmp-volume-slider {
     width: 0;

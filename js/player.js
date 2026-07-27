@@ -7,6 +7,8 @@ const GlobalPlayer = {
   tracks: [],
   currentIndex: -1,
   isPlaying: false,
+  shuffle: false,
+  loopMode: 'none', // 'none' | 'one' | 'all'
 
   /* ========== 初始化 ========== */
   init() {
@@ -22,6 +24,12 @@ const GlobalPlayer = {
     const savedVol = localStorage.getItem('gmp_volume');
     this.audio.volume = savedVol !== null ? parseFloat(savedVol) : 0.8;
     this.audio.muted = localStorage.getItem('gmp_muted') === 'true';
+
+    // 恢复播放模式
+    this.shuffle = localStorage.getItem('gmp_shuffle') === 'true';
+    this.loopMode = localStorage.getItem('gmp_loop') || 'none';
+    this._updateShuffleUI();
+    this._updateLoopUI();
 
     this._bindEvents();
     this._restoreState();
@@ -58,6 +66,28 @@ const GlobalPlayer = {
         localStorage.setItem('gmp_muted', String(this.audio.muted));
         this._updateVolumeIcon(volumeBtn);
         volumeSlider.value = Math.round(this.audio.volume * 100);
+      });
+    }
+
+    // 随机播放
+    const shuffleBtn = document.getElementById('gmp-shuffle-btn');
+    if (shuffleBtn) {
+      shuffleBtn.addEventListener('click', () => {
+        this.shuffle = !this.shuffle;
+        localStorage.setItem('gmp_shuffle', String(this.shuffle));
+        this._updateShuffleUI();
+      });
+    }
+
+    // 循环模式切换: none → one → all → none
+    const loopBtn = document.getElementById('gmp-loop-btn');
+    if (loopBtn) {
+      loopBtn.addEventListener('click', () => {
+        const modes = ['none', 'one', 'all'];
+        const idx = modes.indexOf(this.loopMode);
+        this.loopMode = modes[(idx + 1) % modes.length];
+        localStorage.setItem('gmp_loop', this.loopMode);
+        this._updateLoopUI();
       });
     }
 
@@ -106,7 +136,25 @@ const GlobalPlayer = {
       this._syncSidebarLyrics();
     });
     this.audio.addEventListener('loadedmetadata', () => this._onProgress());
-    this.audio.addEventListener('ended', () => this.next());
+    this.audio.addEventListener('ended', () => {
+      if (this.loopMode === 'one') {
+        this.audio.currentTime = 0;
+        const p = this.audio.play();
+        if (p) p.catch(() => {});
+        return;
+      }
+      if (this.loopMode === 'all' && this.tracks.length > 0) {
+        this.next();
+        return;
+      }
+      // none: 自然结束，停在最后一首
+      if (this.tracks.length > 0 && this.currentIndex < this._lastPlayableIndex()) {
+        this.next();
+        return;
+      }
+      // 没有下一首了 → 停止
+      this.stop();
+    });
     this.audio.addEventListener('play', () => { this.isPlaying = true; this._refreshUI(); this._showSidebar(); });
     this.audio.addEventListener('pause', () => { this.isPlaying = false; this._refreshUI(); });
     this.audio.addEventListener('error', () => this._onError());
@@ -171,28 +219,70 @@ const GlobalPlayer = {
   /** 下一首 */
   next() {
     if (this.tracks.length === 0) return;
-    let idx = (this.currentIndex + 1) % this.tracks.length;
-    const start = idx;
-    do {
-      const track = this.tracks[idx];
-      if (track.file && track.file.trim()) { this.play(idx); return; }
-      idx = (idx + 1) % this.tracks.length;
-    } while (idx !== start);
-    // 没有可播放的曲目
-    this.stop();
+    const playable = this._playableIndices();
+    if (playable.length === 0) { this.stop(); return; }
+
+    let nextIdx;
+    if (this.shuffle) {
+      // 随机选一首（排除当前）
+      const others = playable.filter(i => i !== this.currentIndex);
+      nextIdx = others.length > 0
+        ? others[Math.floor(Math.random() * others.length)]
+        : playable[0];
+    } else {
+      // 顺序下一首
+      let idx = (this.currentIndex + 1) % this.tracks.length;
+      const start = idx;
+      let found = false;
+      do {
+        const track = this.tracks[idx];
+        if (track.file && track.file.trim()) { nextIdx = idx; found = true; break; }
+        idx = (idx + 1) % this.tracks.length;
+      } while (idx !== start);
+      if (!found) { this.stop(); return; }
+    }
+
+    this.play(nextIdx);
   },
 
   /** 上一首 */
   prev() {
     if (this.tracks.length === 0) return;
-    let idx = (this.currentIndex - 1 + this.tracks.length) % this.tracks.length;
-    const start = idx;
-    do {
-      const track = this.tracks[idx];
-      if (track.file && track.file.trim()) { this.play(idx); return; }
-      idx = (idx - 1 + this.tracks.length) % this.tracks.length;
-    } while (idx !== start);
-    this.stop();
+    const playable = this._playableIndices();
+    if (playable.length === 0) { this.stop(); return; }
+
+    let prevIdx;
+    if (this.shuffle) {
+      const others = playable.filter(i => i !== this.currentIndex);
+      prevIdx = others.length > 0
+        ? others[Math.floor(Math.random() * others.length)]
+        : playable[0];
+    } else {
+      let idx = (this.currentIndex - 1 + this.tracks.length) % this.tracks.length;
+      const start = idx;
+      let found = false;
+      do {
+        const track = this.tracks[idx];
+        if (track.file && track.file.trim()) { prevIdx = idx; found = true; break; }
+        idx = (idx - 1 + this.tracks.length) % this.tracks.length;
+      } while (idx !== start);
+      if (!found) { this.stop(); return; }
+    }
+
+    this.play(prevIdx);
+  },
+
+  /** 返回所有可播放曲目的索引 */
+  _playableIndices() {
+    return this.tracks
+      .map((t, i) => t.file && t.file.trim() ? i : -1)
+      .filter(i => i >= 0);
+  },
+
+  /** 返回最后一个可播放曲目的索引 */
+  _lastPlayableIndex() {
+    const idxs = this._playableIndices();
+    return idxs.length > 0 ? idxs[idxs.length - 1] : -1;
   },
 
   /** 停止播放 */
@@ -494,6 +584,38 @@ const GlobalPlayer = {
     } else {
       btn.textContent = '🔊';
     }
+  },
+
+  /** 更新随机按钮 UI */
+  _updateShuffleUI() {
+    const btn = document.getElementById('gmp-shuffle-btn');
+    if (!btn) return;
+    btn.classList.toggle('active', this.shuffle);
+    btn.textContent = this.shuffle ? '🔀' : '🔀';
+    btn.title = this.shuffle ? '随机播放（已开启）' : '随机播放';
+    btn.style.opacity = this.shuffle ? '1' : '0.5';
+  },
+
+  /** 更新循环按钮 UI */
+  _updateLoopUI() {
+    const btn = document.getElementById('gmp-loop-btn');
+    if (!btn) return;
+    btn.classList.remove('loop-one');
+    if (this.loopMode === 'one') {
+      btn.classList.add('active', 'loop-one');
+      btn.textContent = '🔂';
+      btn.title = '单曲循环';
+    } else if (this.loopMode === 'all') {
+      btn.classList.add('active');
+      btn.textContent = '🔁';
+      btn.title = '列表循环';
+    } else {
+      btn.classList.remove('active');
+      btn.textContent = '🔁';
+      btn.title = '顺序播放';
+      btn.style.opacity = '0.5';
+    }
+    if (this.loopMode !== 'none') btn.style.opacity = '1';
   },
 
   _onError() {
