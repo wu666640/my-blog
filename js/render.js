@@ -347,25 +347,33 @@ const Render = {
       </article>`;
   },
 
-  /** 初始化视频卡片点击播放 */
+  /** 初始化视频卡片点击播放（事件委托，无时序问题） */
   setupVideoPlayers() {
-    document.querySelectorAll('[data-video-card]').forEach(card => {
-      if (card.dataset.videoInit === 'true') return;
-      card.dataset.videoInit = 'true';
+    const app = document.getElementById('app');
+    if (!app || app.dataset.videoDelegation === 'true') return;
+    app.dataset.videoDelegation = 'true';
 
-      const trigger = card.querySelector('[data-video-trigger]');
+    app.addEventListener('click', (e) => {
+      // 找到被点击的视频封面
+      const trigger = e.target.closest('[data-video-trigger]');
+      if (!trigger) return;
+
+      const card = trigger.closest('[data-video-card]');
+      if (!card) return;
+
       const embed = card.querySelector('[data-video-embed]');
       const cover = card.querySelector('[data-video-cover]');
-      if (!trigger || !embed) return;
+      if (!embed || !cover) return;
 
-      trigger.addEventListener('click', () => {
-        const iframe = embed.querySelector('iframe');
-        if (!iframe.src) {
-          iframe.src = iframe.dataset.src;
-        }
-        embed.style.display = 'block';
-        cover.style.display = 'none';
-      });
+      e.preventDefault();
+      e.stopPropagation();
+
+      const iframe = embed.querySelector('iframe');
+      if (!iframe.src) {
+        iframe.src = iframe.dataset.src;
+      }
+      embed.style.display = 'block';
+      cover.style.display = 'none';
     });
   },
 
