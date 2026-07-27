@@ -52,6 +52,18 @@
     .on('about', () => {
       Render.mount(Render.about());
     })
+    .on('gallery', (params) => {
+      const items = params.category
+        ? getGalleryByCategory(params.category)
+        : getAllGalleryItems();
+      Render.mount(Render.gallery(items, params.category || null));
+    })
+    .on('music', (params) => {
+      const tracks = params.category
+        ? getMusicByCategory(params.category)
+        : getAllMusicTracks();
+      Render.mount(Render.music(tracks, params.category || null));
+    })
     .on('404', () => {
       Render.mount(Render.notFound());
     });

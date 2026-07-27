@@ -1,5 +1,5 @@
 /* ============================================
-   静轩小记 — 温暖文艺风博客样式
+   璨泯小记 — 温暖文艺风博客样式
    ============================================ */
 
 /* ----- CSS 变量：亮色主题 ----- */
@@ -602,6 +602,249 @@ body {
   border-color: var(--accent);
 }
 
+/* ----- 画廊页面 ----- */
+.gallery-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.gallery-page .section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
+.gallery-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.gallery-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 画廊卡片 — 水平布局（桌面端图片左、文字右） */
+.gallery-card {
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+
+.gallery-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.gallery-card-image {
+  flex: 0 0 250px;
+  min-height: 200px;
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.gallery-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.gallery-card:hover .gallery-card-image img {
+  transform: scale(1.05);
+}
+
+.gallery-card-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.gallery-card-body {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gallery-card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.gallery-card-meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.gallery-card-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.gallery-card-desc p {
+  margin-bottom: 0.5rem;
+}
+
+/* ----- 音乐页面 ----- */
+.music-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.music-page .section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
+.music-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.music-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 音乐卡片 — 水平布局（桌面端播放器左、文字右） */
+.music-card {
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+
+.music-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.music-card-player {
+  flex: 0 0 auto;
+  min-width: 330px;
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+  padding: 1rem;
+}
+
+.music-card-player iframe {
+  display: block;
+  border-radius: 4px;
+}
+
+.music-card-placeholder {
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: var(--text-muted);
+}
+
+/* 网易云完整收听按钮 */
+.music-netease-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+  padding: 0.45rem 1rem;
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  border-radius: 18px;
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.music-netease-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.music-card-body {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.music-card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+
+.music-card-artist {
+  font-size: 0.95rem;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.music-card-meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.music-card-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+}
+
+.music-card-desc p {
+  margin-bottom: 0.5rem;
+}
+
+.music-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.music-card-link:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
 /* ----- 搜索高亮 ----- */
 .search-highlight {
   background: #f5d65e;
@@ -721,6 +964,23 @@ body {
     flex-direction: column;
     align-items: center;
   }
+
+  .gallery-card {
+    flex-direction: column;
+  }
+  .gallery-card-image {
+    flex: 0 0 200px;
+    min-height: 180px;
+  }
+
+  .music-card {
+    flex-direction: column;
+  }
+  .music-card-player {
+    flex: 0 0 auto;
+    min-height: 80px;
+    padding: 0.5rem;
+  }
 }
 
 /* 手机端 */
@@ -761,5 +1021,21 @@ body {
     flex-direction: column;
     gap: 0.5rem;
     text-align: center;
+  }
+
+  .gallery-card-image {
+    flex: 0 0 160px;
+    min-height: 160px;
+  }
+  .gallery-card-body {
+    padding: 1rem;
+  }
+
+  .music-card-player {
+    min-height: 100px;
+    padding: 0.75rem;
+  }
+  .music-card-body {
+    padding: 1rem;
   }
 }

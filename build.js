@@ -147,3 +147,123 @@ const ABOUT_DATA = ${JSON.stringify(aboutData, null, 2)};
 } else {
   console.log('⚠️  data/about.json 不存在，跳过个人资料生成');
 }
+
+// ===== 生成 js/gallery.js（图片画廊）=====
+const GALLERY_FILE = path.join(__dirname, 'data', 'gallery.json');
+if (fs.existsSync(GALLERY_FILE)) {
+  const galleryData = JSON.parse(fs.readFileSync(GALLERY_FILE, 'utf-8'));
+  const items = (galleryData.items || []).map((item, index) => ({
+    id: index + 1,
+    title: item.title || '无标题',
+    description: item.description
+      ? marked.parse(item.description).trim()
+      : '',
+    image: item.image || '',
+    category: item.category || '未分类',
+    date: item.date || '',
+  })).sort((a, b) => {
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  const galleryOutput = `/**
+ * 图片画廊数据 — 由 build.js 自动生成
+ * 请勿手动修改此文件，在 /admin 后台管理画廊
+ * 生成时间：${new Date().toISOString()}
+ */
+const GALLERY_ITEMS = ${JSON.stringify(items, null, 2)};
+
+/**
+ * 获取所有画廊项目，按日期降序排列
+ */
+function getAllGalleryItems() {
+  return GALLERY_ITEMS;
+}
+
+/**
+ * 获取所有分类及其图片数量
+ */
+function getGalleryCategories() {
+  const catMap = {};
+  GALLERY_ITEMS.forEach(item => {
+    catMap[item.category] = (catMap[item.category] || 0) + 1;
+  });
+  return Object.entries(catMap)
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, count]) => ({ name, count }));
+}
+
+/**
+ * 根据分类筛选画廊项目
+ */
+function getGalleryByCategory(category) {
+  return GALLERY_ITEMS.filter(item => item.category === category);
+}
+`;
+  fs.writeFileSync(path.join(__dirname, 'js', 'gallery.js'), galleryOutput, 'utf-8');
+  console.log(`✅ 已生成 js/gallery.js（${items.length} 张图片）`);
+} else {
+  console.log('⚠️  data/gallery.json 不存在，跳过画廊生成');
+}
+
+// ===== 生成 js/music.js（音乐推荐）=====
+const MUSIC_FILE = path.join(__dirname, 'data', 'music.json');
+if (fs.existsSync(MUSIC_FILE)) {
+  const musicData = JSON.parse(fs.readFileSync(MUSIC_FILE, 'utf-8'));
+  const tracks = (musicData.items || []).map((item, index) => ({
+    id: index + 1,
+    title: item.title || '未知曲目',
+    artist: item.artist || '未知歌手',
+    description: item.description
+      ? marked.parse(item.description).trim()
+      : '',
+    category: item.category || '未分类',
+    neteaseId: item.neteaseId || '',
+    neteaseUrl: item.neteaseUrl || '',
+    date: item.date || '',
+  })).sort((a, b) => {
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  const musicOutput = `/**
+ * 音乐推荐数据 — 由 build.js 自动生成
+ * 请勿手动修改此文件，在 /admin 后台管理音乐
+ * 生成时间：${new Date().toISOString()}
+ */
+const MUSIC_TRACKS = ${JSON.stringify(tracks, null, 2)};
+
+/**
+ * 获取所有音乐，按日期降序排列
+ */
+function getAllMusicTracks() {
+  return MUSIC_TRACKS;
+}
+
+/**
+ * 获取所有分类及其歌曲数量
+ */
+function getMusicCategories() {
+  const catMap = {};
+  MUSIC_TRACKS.forEach(item => {
+    catMap[item.category] = (catMap[item.category] || 0) + 1;
+  });
+  return Object.entries(catMap)
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, count]) => ({ name, count }));
+}
+
+/**
+ * 根据分类筛选音乐
+ */
+function getMusicByCategory(category) {
+  return MUSIC_TRACKS.filter(item => item.category === category);
+}
+`;
+  fs.writeFileSync(path.join(__dirname, 'js', 'music.js'), musicOutput, 'utf-8');
+  console.log(`✅ 已生成 js/music.js（${tracks.length} 首歌曲）`);
+} else {
+  console.log('⚠️  data/music.json 不存在，跳过音乐生成');
+}

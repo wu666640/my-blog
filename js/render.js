@@ -104,7 +104,7 @@ const Render = {
   /* ========== 关于我（动态数据）========== */
   about() {
     const d = (typeof ABOUT_DATA !== 'undefined') ? ABOUT_DATA : {
-      name: '静轩',
+      name: '璨泯',
       avatar: '',
       tagline: '一个喜欢写字、写代码、冲咖啡的人',
       bio: '',
@@ -142,6 +142,105 @@ const Render = {
         ${skillsHTML}
         ${socialHTML}
       </div>`;
+  },
+
+  /* ========== 画廊 ========== */
+  gallery(items, activeCategory) {
+    const categories = getGalleryCategories();
+
+    const catHTML = `
+      <a href="#/gallery" class="tag ${!activeCategory ? 'active' : ''}">全部</a>
+      ${categories.map(c =>
+        `<a href="#/gallery/${encodeURIComponent(c.name)}"
+            class="tag ${activeCategory === c.name ? 'active' : ''}">${c.name} (${c.count})</a>`
+      ).join('')}`;
+
+    const itemsHTML = items.length === 0
+      ? `<div class="empty-state">
+           <div class="empty-icon">🖼️</div>
+           <p>暂无图片</p>
+         </div>`
+      : items.map(item => this._galleryCard(item)).join('');
+
+    return `
+      <div class="gallery-page">
+        <h2 class="section-title">🖼️ 画廊</h2>
+        <div class="gallery-categories">${catHTML}</div>
+        <div class="gallery-list">${itemsHTML}</div>
+      </div>`;
+  },
+
+  /** 画廊卡片 HTML */
+  _galleryCard(item) {
+    const imageHTML = item.image
+      ? `<div class="gallery-card-image">
+           <img src="${item.image}" alt="${item.title}" loading="lazy">
+         </div>`
+      : '<div class="gallery-card-image gallery-card-placeholder">🖼️</div>';
+
+    return `
+      <article class="gallery-card">
+        ${imageHTML}
+        <div class="gallery-card-body">
+          <h3 class="gallery-card-title">${item.title}</h3>
+          <div class="gallery-card-meta">${item.date} · ${item.category}</div>
+          <div class="gallery-card-desc">${item.description}</div>
+        </div>
+      </article>`;
+  },
+
+  /* ========== 音乐 ========== */
+  music(tracks, activeCategory) {
+    const categories = getMusicCategories();
+
+    const catHTML = `
+      <a href="#/music" class="tag ${!activeCategory ? 'active' : ''}">全部</a>
+      ${categories.map(c =>
+        `<a href="#/music/${encodeURIComponent(c.name)}"
+            class="tag ${activeCategory === c.name ? 'active' : ''}">${c.name} (${c.count})</a>`
+      ).join('')}`;
+
+    const tracksHTML = tracks.length === 0
+      ? `<div class="empty-state">
+           <div class="empty-icon">🎵</div>
+           <p>暂无歌曲</p>
+         </div>`
+      : tracks.map(track => this._musicCard(track)).join('');
+
+    return `
+      <div class="music-page">
+        <h2 class="section-title">🎵 音乐推荐</h2>
+        <div class="music-categories">${catHTML}</div>
+        <div class="music-list">${tracksHTML}</div>
+      </div>`;
+  },
+
+  /** 音乐卡片 HTML */
+  _musicCard(track) {
+    const playUrl = track.neteaseUrl || (track.neteaseId ? `https://music.163.com/song?id=${track.neteaseId}` : '#');
+
+    const playerHTML = track.neteaseId
+      ? `<div class="music-card-player">
+           <iframe frameborder="no" border="0" marginwidth="0" marginheight="0"
+                   width="330" height="86"
+                   src="https://music.163.com/outchain/player?type=2&id=${track.neteaseId}&auto=0&height=66">
+           </iframe>
+         </div>`
+      : '<div class="music-card-player music-card-placeholder">🎵</div>';
+
+    return `
+      <article class="music-card">
+        ${playerHTML}
+        <div class="music-card-body">
+          <h3 class="music-card-title">${track.title}</h3>
+          <div class="music-card-artist">🎤 ${track.artist}</div>
+          <div class="music-card-meta">${track.date} · ${track.category}</div>
+          <div class="music-card-desc">${track.description}</div>
+          <a href="${playUrl}" target="_blank" class="music-netease-btn">
+            🎧 在网易云音乐中打开完整版 →
+          </a>
+        </div>
+      </article>`;
   },
 
   /* ========== 404 ========== */

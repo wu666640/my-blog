@@ -92,3 +92,80 @@ collections:
               - { label: "名称", name: "label", widget: "string" }
               - { label: "链接", name: "url", widget: "string" }
               - { label: "图标 Emoji", name: "icon", widget: "string", hint: "如 🐙 📧 🐦" }
+
+  # ----- 画廊 -----
+  - name: "gallery"
+    label: "🖼️ 画廊"
+    files:
+      - name: "gallery"
+        label: "画廊管理"
+        file: "data/gallery.json"
+        fields:
+          - label: "图片列表"
+            name: "items"
+            widget: "list"
+            summary: "{{title}} — {{category}}"
+            fields:
+              - label: "标题"
+                name: "title"
+                widget: "string"
+              - label: "描述"
+                name: "description"
+                widget: "markdown"
+                hint: "支持 Markdown，会显示在图片旁边"
+              - label: "图片"
+                name: "image"
+                widget: "image"
+                hint: "上传或选择一张图片"
+              - label: "分类"
+                name: "category"
+                widget: "string"
+                hint: "如：风景、日常、旅行"
+              - label: "日期"
+                name: "date"
+                widget: "datetime"
+                date_format: "YYYY-MM-DD"
+                time_format: false
+                format: "YYYY-MM-DD"
+
+  # ----- 音乐 -----
+  - name: "music"
+    label: "🎵 音乐"
+    files:
+      - name: "music"
+        label: "音乐管理"
+        file: "data/music.json"
+        fields:
+          - label: "歌曲列表"
+            name: "items"
+            widget: "list"
+            summary: "{{title}} — {{artist}}"
+            fields:
+              - label: "歌曲名"
+                name: "title"
+                widget: "string"
+              - label: "歌手"
+                name: "artist"
+                widget: "string"
+              - label: "推荐语"
+                name: "description"
+                widget: "markdown"
+                hint: "支持 Markdown，描述你为什么喜欢这首歌"
+              - label: "分类"
+                name: "category"
+                widget: "string"
+                hint: "如：华语流行、民谣、摇滚、电子"
+              - label: "网易云歌曲 ID"
+                name: "neteaseId"
+                widget: "string"
+                hint: "从网易云歌曲链接中获取，如 music.163.com/song?id=186016 中的 186016"
+              - label: "网易云链接"
+                name: "neteaseUrl"
+                widget: "string"
+                hint: "完整的网易云歌曲链接"
+              - label: "日期"
+                name: "date"
+                widget: "datetime"
+                date_format: "YYYY-MM-DD"
+                time_format: false
+                format: "YYYY-MM-DD"

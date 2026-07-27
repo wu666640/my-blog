@@ -1,7 +1,7 @@
 {
   "name": "my-blog",
   "version": "1.0.0",
-  "description": "静轩小记 - 个人博客",
+  "description": "璨泯小记 - 个人博客",
   "scripts": {
     "build": "node build.js"
   },
