@@ -977,6 +977,60 @@ body {
   margin-bottom: 0;
 }
 
+/* 歌词区域 */
+.music-lyrics {
+  border-top: 1px solid var(--border);
+  background: var(--bg-secondary);
+}
+
+.music-lyrics-header {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 0.6rem 1.5rem;
+  letter-spacing: 0.05em;
+}
+
+.music-lyrics-scroll {
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 0.5rem 1.5rem 1.2rem;
+  scroll-behavior: smooth;
+}
+
+.music-lyrics-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.music-lyrics-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.lyric-line {
+  font-family: Georgia, "Noto Serif SC", "STSong", serif;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 2.2;
+  padding: 0.1rem 0.5rem;
+  margin: 0;
+  border-radius: 4px;
+  transition: color 0.3s, background 0.3s, font-size 0.25s;
+  cursor: default;
+}
+
+.lyric-line.active {
+  color: var(--accent);
+  background: var(--accent-light);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .lyric-line.active {
+  background: rgba(212, 149, 106, 0.18);
+}
+
 /* 操作按钮区 */
 .music-card-actions {
   display: flex;
@@ -1313,24 +1367,40 @@ body {
 .gmp-panel-header {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: 0.4rem;
-  padding: 1rem 1rem 0.75rem;
+  padding: 0.6rem 0.75rem;
   border-bottom: 1px solid var(--border);
 }
 
-.gmp-panel-header h3 {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text);
-  margin: 0;
+/* 标签切换 */
+.gmp-panel-tabs {
+  display: flex;
+  gap: 0.25rem;
   flex: 1;
 }
 
-.gmp-panel-sub {
+.gmp-tab {
+  padding: 0.35rem 0.75rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   color: var(--text-muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+.gmp-tab:hover {
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+
+.gmp-tab.gmp-tab-active {
+  background: var(--accent-light);
+  color: var(--accent);
 }
 
 .gmp-panel-close {
@@ -1424,6 +1494,65 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 0.68rem;
   color: var(--text-muted);
+}
+
+/* 全局播放器 — 歌词面板 */
+.gmp-panel-lyrics {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.gmp-panel-lyrics.gmp-hidden {
+  display: none;
+}
+
+.gmp-lyrics-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  scroll-behavior: smooth;
+}
+
+.gmp-lyrics-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.gmp-lyrics-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.gmp-lyric-line {
+  font-family: Georgia, "Noto Serif SC", serif;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 2.4;
+  padding: 0.1rem 0.6rem;
+  margin: 0;
+  border-radius: 4px;
+  transition: color 0.3s, background 0.3s, font-size 0.25s;
+  cursor: default;
+}
+
+.gmp-lyric-line.active {
+  color: var(--accent);
+  background: var(--accent-light);
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .gmp-lyric-line.active {
+  background: rgba(212, 149, 106, 0.18);
+}
+
+.gmp-lyrics-empty {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2rem 1rem;
 }
 
 /* ============================================
@@ -1578,6 +1707,16 @@ body {
   }
   .music-card-body {
     padding: 1rem;
+  }
+  .music-lyrics-scroll {
+    max-height: 200px;
+    padding: 0.4rem 1rem 1rem;
+  }
+  .lyric-line {
+    font-size: 0.82rem;
+  }
+  .lyric-line.active {
+    font-size: 0.9rem;
   }
 
   /* 全局播放器手机适配 */

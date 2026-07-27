@@ -222,6 +222,7 @@ if (fs.existsSync(MUSIC_FILE)) {
     file: item.file || '',
     neteaseId: item.neteaseId || '',
     neteaseUrl: item.neteaseUrl || '',
+    lyrics: item.lyrics || '',
     date: item.date || '',
   })).sort((a, b) => {
     if (!a.date) return 1;

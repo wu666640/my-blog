@@ -2,6 +2,77 @@
  * 渲染模块
  * 负责将数据渲染为 DOM，插入到 #app 容器
  */
+/**
+ * 解析 LRC 歌词格式
+ * 输入: "[00:12.50]歌词文本\n[00:25.00]下一句"
+ * 输出: [{ time: 12.5, text: "歌词文本" }, ...]
+ */
+function parseLRC(lrcText) {
+  if (!lrcText || !lrcText.trim()) return [];
+  const lines = lrcText.trim().split('\n');
+  const result = [];
+  const timeRe = /^\[(\d{1,3}):(\d{2})(?:[.:](\d{2,3}))?\]\s*(.*)/;
+  for (const line of lines) {
+    const match = line.match(timeRe);
+    if (match) {
+      const mins = parseInt(match[1], 10);
+      const secs = parseInt(match[2], 10);
+      const cs = match[3] ? parseInt(match[3].padEnd(3, '0'), 10) : 0;
+      const time = mins * 60 + secs + cs / 1000;
+      const text = (match[4] || '').trim();
+      if (text) result.push({ time, text });
+    }
+  }
+  return result.sort((a, b) => a.time - b.time);
+}
+
+/**
+ * 根据当前播放时间找到对应的歌词行索引
+ */
+function findLyricIndex(lyrics, currentTime) {
+  if (!lyrics || lyrics.length === 0) return -1;
+  let idx = -1;
+  for (let i = 0; i < lyrics.length; i++) {
+    if (currentTime >= lyrics[i].time) idx = i;
+    else break;
+  }
+  return idx;
+}
+
+/**
+ * 同步歌词显示：高亮当前行并自动滚动
+ * @param {HTMLElement} scrollEl — .music-lyrics-scroll 容器
+ * @param {number} currentTime — 音频当前播放时间（秒）
+ */
+function syncLyricsDisplay(scrollEl, currentTime) {
+  const lines = scrollEl.querySelectorAll('.lyric-line');
+  if (lines.length === 0) return;
+
+  let activeIdx = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const t = parseFloat(lines[i].dataset.lyricTime);
+    if (!isNaN(t) && currentTime >= t) {
+      activeIdx = i;
+    } else {
+      break;
+    }
+  }
+
+  // 更新高亮
+  const prev = scrollEl.querySelector('.lyric-line.active');
+  if (activeIdx >= 0) {
+    const cur = lines[activeIdx];
+    if (prev !== cur) {
+      if (prev) prev.classList.remove('active');
+      cur.classList.add('active');
+      // 平滑滚动，保持当前行在可见区域中间
+      cur.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  } else if (prev) {
+    prev.classList.remove('active');
+  }
+}
+
 const Render = {
   app: null,
 
@@ -265,6 +336,11 @@ const Render = {
       ? `<a href="${playUrl}" target="_blank" class="music-netease-btn">🎧 在网易云音乐中打开</a>`
       : '';
 
+    // 歌词
+    const lyricsHTML = (track.lyrics && track.lyrics.trim())
+      ? this._lyricsBox(track.lyrics)
+      : '';
+
     return `
       <article class="music-card">
         ${playerHTML}
@@ -280,7 +356,25 @@ const Render = {
             ${neteaseBtn}
           </div>
         </div>
+        ${lyricsHTML}
       </article>`;
+  },
+
+  /** 生成歌词 HTML（解析 LRC 并渲染为可滚动的歌词列表） */
+  _lyricsBox(lrcText) {
+    const lines = parseLRC(lrcText);
+    if (lines.length === 0) return '';
+
+    const linesHTML = lines.map((line, i) =>
+      `<p class="lyric-line" data-lyric-time="${line.time}">${line.text}</p>`
+    ).join('\n');
+
+    return `<div class="music-lyrics">
+      <div class="music-lyrics-header">📜 歌词</div>
+      <div class="music-lyrics-scroll" data-lyrics-scroll>
+        ${linesHTML}
+      </div>
+    </div>`;
   },
 
   /** 初始化自定义音频播放器（在音乐页面渲染后调用） */
@@ -314,11 +408,20 @@ const Render = {
         timeDuration.textContent = fmt(audio.duration);
       });
 
-      // 更新进度条和时间
+      // 更新进度条和时间 + 歌词同步
       audio.addEventListener('timeupdate', () => {
         const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
         progressFill.style.width = pct + '%';
         timeCurrent.textContent = fmt(audio.currentTime);
+
+        // 同步歌词
+        const card = wrapper.closest('.music-card');
+        if (card) {
+          const lyricsScroll = card.querySelector('.music-lyrics-scroll');
+          if (lyricsScroll) {
+            syncLyricsDisplay(lyricsScroll, audio.currentTime);
+          }
+        }
       });
 
       // 播放结束重置

@@ -63,11 +63,17 @@
   <!-- ===== 全局音乐播放器：播放列表面板 ===== -->
   <div id="gmp-panel" class="gmp-panel gmp-hidden">
     <div class="gmp-panel-header">
-      <h3>🎵 播放列表</h3>
-      <span class="gmp-panel-sub">选择歌曲开始播放</span>
+      <div class="gmp-panel-tabs">
+        <button class="gmp-tab gmp-tab-active" data-gmp-tab="list">📋 列表</button>
+        <button class="gmp-tab" data-gmp-tab="lyrics">📜 歌词</button>
+      </div>
       <button class="gmp-panel-close" title="关闭" aria-label="关闭播放列表">✕</button>
     </div>
     <div class="gmp-panel-list" id="gmp-playlist"></div>
+    <div class="gmp-panel-lyrics gmp-hidden" id="gmp-lyrics">
+      <div class="gmp-lyrics-scroll" id="gmp-lyrics-scroll"></div>
+      <div class="gmp-lyrics-empty">选择一首有歌词的歌曲开始播放</div>
+    </div>
   </div>
 
   <audio id="gmp-audio" preload="metadata"></audio>

@@ -170,6 +170,11 @@ collections:
                 widget: "string"
                 required: false
                 hint: "完整的网易云歌曲链接"
+              - label: "LRC 歌词（可选，支持时间轴同步显示）"
+                name: "lyrics"
+                widget: "text"
+                required: false
+                hint: "粘贴 LRC 格式歌词，每行 [mm:ss.xx]歌词内容。上传 MP3 后可在播放时同步显示"
               - label: "日期"
                 name: "date"
                 widget: "datetime"

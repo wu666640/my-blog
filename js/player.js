@@ -43,6 +43,14 @@ const GlobalPlayer = {
     // 面板关闭按钮
     document.querySelector('.gmp-panel-close').addEventListener('click', () => this.hidePanel());
 
+    // 歌词 / 列表标签切换
+    document.querySelectorAll('.gmp-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabName = tab.dataset.gmpTab;
+        this._switchTab(tabName);
+      });
+    });
+
     // 点击面板外关闭
     document.addEventListener('click', (e) => {
       const panel = document.getElementById('gmp-panel');
@@ -57,7 +65,10 @@ const GlobalPlayer = {
     });
 
     // 音频事件
-    this.audio.addEventListener('timeupdate', () => this._onProgress());
+    this.audio.addEventListener('timeupdate', () => {
+      this._onProgress();
+      this._syncLyrics();
+    });
     this.audio.addEventListener('loadedmetadata', () => this._onProgress());
     this.audio.addEventListener('ended', () => this.next());
     this.audio.addEventListener('play', () => { this.isPlaying = true; this._refreshUI(); });
@@ -187,6 +198,88 @@ const GlobalPlayer = {
 
   hidePanel() {
     document.getElementById('gmp-panel').classList.add('gmp-hidden');
+    // 重置到列表标签
+    this._switchTab('list');
+  },
+
+  /* ========== 标签切换 ========== */
+  _switchTab(name) {
+    // 更新标签 UI
+    document.querySelectorAll('.gmp-tab').forEach(t => {
+      t.classList.toggle('gmp-tab-active', t.dataset.gmpTab === name);
+    });
+    // 切换内容区
+    const listEl = document.getElementById('gmp-playlist');
+    const lyricsEl = document.getElementById('gmp-lyrics');
+    if (name === 'lyrics') {
+      listEl.classList.add('gmp-hidden');
+      lyricsEl.classList.remove('gmp-hidden');
+      this._renderLyrics();
+    } else {
+      listEl.classList.remove('gmp-hidden');
+      lyricsEl.classList.add('gmp-hidden');
+      this._renderPlaylist();
+    }
+  },
+
+  /* ========== 歌词 ========== */
+  _renderLyrics() {
+    const container = document.getElementById('gmp-lyrics-scroll');
+    const emptyHint = document.querySelector('.gmp-lyrics-empty');
+    if (!container) return;
+
+    const track = this.tracks[this.currentIndex];
+    if (!track || !track.lyrics || !track.lyrics.trim()) {
+      container.innerHTML = '';
+      if (emptyHint) emptyHint.style.display = 'block';
+      return;
+    }
+
+    if (emptyHint) emptyHint.style.display = 'none';
+
+    const lines = parseLRC(track.lyrics);
+    if (lines.length === 0) {
+      if (emptyHint) emptyHint.style.display = 'block';
+      return;
+    }
+
+    container.innerHTML = lines.map(line =>
+      `<p class="gmp-lyric-line" data-lyric-time="${line.time}">${line.text}</p>`
+    ).join('');
+
+    // 立即同步一次
+    this._syncLyrics();
+  },
+
+  _syncLyrics() {
+    const scrollEl = document.getElementById('gmp-lyrics-scroll');
+    if (!scrollEl || scrollEl.parentElement.classList.contains('gmp-hidden')) return;
+
+    const lines = scrollEl.querySelectorAll('.gmp-lyric-line');
+    if (lines.length === 0) return;
+
+    const currentTime = this.audio.currentTime;
+    let activeIdx = -1;
+    for (let i = 0; i < lines.length; i++) {
+      const t = parseFloat(lines[i].dataset.lyricTime);
+      if (!isNaN(t) && currentTime >= t) {
+        activeIdx = i;
+      } else {
+        break;
+      }
+    }
+
+    const prev = scrollEl.querySelector('.gmp-lyric-line.active');
+    if (activeIdx >= 0) {
+      const cur = lines[activeIdx];
+      if (prev !== cur) {
+        if (prev) prev.classList.remove('active');
+        cur.classList.add('active');
+        cur.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    } else if (prev) {
+      prev.classList.remove('active');
+    }
   },
 
   /* ========== 播放列表渲染 ========== */
