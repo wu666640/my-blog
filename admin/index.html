@@ -3,17 +3,122 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>内容管理 - 璨泯小记</title>
+  <title>内容管理 · 璨泯小记</title>
   <style>
-    /* 自定义 CMS 登录页样式 */
-    body { margin: 0; padding: 0; }
+    :root {
+      --bg: #fdf6f0;
+      --bg-card: #fffaf5;
+      --text: #4a3728;
+      --text-secondary: #7a6a5c;
+      --accent: #c17a4e;
+      --accent-hover: #a5663d;
+      --border: #e8d5c4;
+      --shadow: 0 2px 12px rgba(74,55,40,0.08);
+      --shadow-hover: 0 4px 20px rgba(74,55,40,0.14);
+    }
+    body {
+      margin: 0; padding: 2rem 1.5rem 4rem;
+      font-family: Georgia, "Noto Serif SC", serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh;
+    }
+    .container { max-width: 640px; margin: 0 auto; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; }
+    .sub a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1rem;
+      box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+    .card h2 { font-size: 1.15rem; margin: 0 0 0.5rem; }
+    .card p { font-size: 0.88rem; color: var(--text-secondary); margin: 0 0 0.75rem; line-height: 1.6; }
+    .btn-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.45rem 0.9rem; border-radius: 8px; text-decoration: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.82rem; font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-outline {
+      background: transparent; color: var(--accent); border: 1.5px solid var(--accent);
+    }
+    .btn-outline:hover { background: var(--accent); color: #fff; }
+    .tip {
+      margin-top: 2rem; padding: 1rem 1.25rem; border-radius: 10px;
+      background: #f0e8dc; font-size: 0.82rem; color: #7a6a5c; line-height: 1.7;
+    }
+    .tip strong { color: var(--accent); }
+    .back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--accent); text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 0.85rem; }
+    .back-link:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.5.0/dist/decap-cms.js"></script>
-  <script>
-    // 自定义中文预览样式
-    CMS.registerPreviewStyle('/css/style.css');
-  </script>
+  <div class="container">
+    <a href="/" class="back-link">← 回到博客</a>
+    <h1>📝 内容管理</h1>
+    <p class="sub">在 <a href="https://github.com/wu666640/my-blog" target="_blank">GitHub</a> 上直接编辑，保存后自动部署上线</p>
+
+    <!-- 文章 -->
+    <div class="card">
+      <h2>📝 文章</h2>
+      <p>编辑或新建 Markdown 格式的博客文章，提交后自动构建发布。</p>
+      <div class="btn-group">
+        <a class="btn btn-primary" href="https://github.com/wu666640/my-blog/new/main/posts" target="_blank">＋ 新建文章</a>
+        <a class="btn btn-outline" href="https://github.com/wu666640/my-blog/tree/main/posts" target="_blank">📂 浏览文章</a>
+      </div>
+    </div>
+
+    <!-- 音乐 -->
+    <div class="card">
+      <h2>🎵 音乐</h2>
+      <p>管理音乐收藏：添加曲目、上传 MP3、粘贴 LRC 歌词。</p>
+      <div class="btn-group">
+        <a class="btn btn-primary" href="https://github.com/wu666640/my-blog/edit/main/data/music.json" target="_blank">✏️ 编辑曲目</a>
+        <a class="btn btn-outline" href="https://github.com/wu666640/my-blog/upload/main/images" target="_blank">📤 上传 MP3</a>
+      </div>
+    </div>
+
+    <!-- 画廊 -->
+    <div class="card">
+      <h2>🖼️ 画廊</h2>
+      <p>管理图片收藏：添加图片标题、描述和分类。</p>
+      <div class="btn-group">
+        <a class="btn btn-primary" href="https://github.com/wu666640/my-blog/edit/main/data/gallery.json" target="_blank">✏️ 编辑画廊</a>
+        <a class="btn btn-outline" href="https://github.com/wu666640/my-blog/upload/main/images" target="_blank">📤 上传图片</a>
+      </div>
+    </div>
+
+    <!-- 个人资料 -->
+    <div class="card">
+      <h2>👤 个人资料</h2>
+      <p>修改昵称、头像、技能、社交链接等。</p>
+      <div class="btn-group">
+        <a class="btn btn-primary" href="https://github.com/wu666640/my-blog/edit/main/data/about.json" target="_blank">✏️ 编辑资料</a>
+      </div>
+    </div>
+
+    <!-- 样式 -->
+    <div class="card">
+      <h2>🎨 博客样式</h2>
+      <p>修改主题颜色、字体、布局等 CSS 样式。</p>
+      <div class="btn-group">
+        <a class="btn btn-outline" href="https://github.com/wu666640/my-blog/edit/main/css/style.css" target="_blank">✏️ 编辑样式</a>
+      </div>
+    </div>
+
+    <div class="tip">
+      <strong>💡 使用提示</strong><br>
+      1. 点击按钮 → 登录 GitHub → 编辑文件 → 点「Commit changes」保存<br>
+      2. GitHub Actions 会自动运行构建并部署，1-2 分钟后博客更新<br>
+      3. 上传图片/MP3 时，记下文件名，在 JSON 中引用路径为 <code>images/文件名</code>
+    </div>
+  </div>
 </body>
 </html>
