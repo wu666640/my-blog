@@ -219,12 +219,14 @@ const Render = {
   _musicCard(track) {
     const playUrl = track.neteaseUrl || (track.neteaseId ? `https://music.163.com/song?id=${track.neteaseId}` : '#');
 
+    // HTML5 原生音频播放器 — 兼容性最好，始终可见
     const playerHTML = track.neteaseId
       ? `<div class="music-card-player">
-           <iframe frameborder="no" border="0" marginwidth="0" marginheight="0"
-                   width="330" height="86"
-                   src="https://music.163.com/outchain/player?type=2&id=${track.neteaseId}&auto=0&height=66">
-           </iframe>
+           <div class="music-audio-cover">🎵</div>
+           <audio controls preload="metadata"
+                  src="https://music.163.com/song/media/outer/url?id=${track.neteaseId}.mp3">
+             你的浏览器不支持音频播放
+           </audio>
          </div>`
       : '<div class="music-card-player music-card-placeholder">🎵</div>';
 
