@@ -2,5 +2,9 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".",
   "installCommand": "npm install",
-  "framework": null
+  "framework": null,
+  "rewrites": [
+    { "source": "/auth", "destination": "/api/oauth" },
+    { "source": "/callback", "destination": "/api/oauth" }
+  ]
 }

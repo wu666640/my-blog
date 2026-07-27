@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const clientSecret = process.env.OAUTH_CLIENT_SECRET;
 
   const redirectURI = process.env.OAUTH_REDIRECT_URL ||
-    `https://${process.env.VERCEL_URL}/api/oauth`;
+    `https://${process.env.VERCEL_URL}/callback`;
 
   // 第一步：GitHub 回调，用 code 换 token
   if (code) {
