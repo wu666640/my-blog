@@ -91,7 +91,6 @@ const Render = {
     const el = this.getApp();
     el.innerHTML = html;
   },
-
   /** 关于页密码验证 */
   setupAboutPassword(hash) {
     const locked = document.getElementById("qq-locked");
@@ -101,7 +100,6 @@ const Render = {
     const error = document.getElementById("qq-error");
     if (!locked || !unlocked) return;
 
-    // 已通过验证（sessionStorage）
     if (sessionStorage.getItem("qq_verified") === hash) {
       locked.style.display = "none";
       unlocked.style.display = "block";
@@ -243,7 +241,6 @@ const Render = {
            ${d.social.map(s => `<a href="${s.url}" target="_blank" class="social-link">${s.icon} ${s.label}</a>`).join('')}
          </div>`
       : '';
-
     // QQ密码验证区域
     const qqHTML = (d.qq && d.qqPassword)
       ? `<div class="about-qq-section" id="qq-section">
@@ -262,7 +259,7 @@ const Render = {
              <span class="about-qq-number">${d.qq}</span>
            </div>
          </div>`
-      : ''
+      : '';
 
     return `
       <div class="about-page">
@@ -512,7 +509,7 @@ const Render = {
       ? `🏷️ 标签："${activeTag}"（${tracks.length} 首）`
       : activeArtist
         ? `🎤 歌手："${activeArtist}"（${tracks.length} 首）`
-        : ''🎵 音乐推荐';
+        : '🎵 音乐推荐';
 
     return `
       <div class="music-page">
