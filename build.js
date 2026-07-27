@@ -227,7 +227,12 @@ if (fs.existsSync(MUSIC_FILE)) {
     date: item.date || '',
     tags: (() => {
       const presetTags = (item.tags || []).map(t => typeof t === 'string' ? t : (t.name || t.tag || ''));
-      const overrideTags = (item.tags_override || []).map(t => typeof t === 'string' ? t : (t.tag || t.name || ''));
+      let overrideTags = [];
+      if (typeof item.tags_override === 'string' && item.tags_override.trim()) {
+        overrideTags = item.tags_override.split(/[,，、\s]+/).map(t => t.trim()).filter(Boolean);
+      } else if (Array.isArray(item.tags_override)) {
+        overrideTags = item.tags_override.map(t => typeof t === 'string' ? t : (t.tag || t.name || ''));
+      }
       const all = [...new Set([...presetTags, ...overrideTags])].filter(Boolean);
       return all.length > 0 ? all : [item.category || '未分类'];
     })(),

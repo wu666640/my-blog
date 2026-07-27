@@ -236,12 +236,11 @@ collections:
                   - { label: "日语", value: "日语" }
                   - { label: "英语", value: "英语" }
                   - { label: "韩语", value: "韩语" }
-              - label: "✏️ 自定义标签（手打，追加到上面）"
+              - label: "✏️ 自定义标签（逗号分隔）"
                 name: "tags_override"
-                widget: "list"
+                widget: "string"
                 required: false
-                fields:
-                  - { label: "标签", name: "tag", widget: "string" }
+                hint: "手打标签，多个用逗号分隔。例如：国风, 独立音乐, 老歌"
               - label: "本地上传 MP3（可选，上传后可直接完整播放）"
                 name: "file"
                 widget: "file"
