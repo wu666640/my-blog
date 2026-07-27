@@ -742,25 +742,50 @@ body {
 }
 
 .music-card-player {
-  flex: 0 0 260px;
+  flex: 0 0 340px;
   min-height: 100px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
   background: var(--bg-secondary);
-  padding: 1rem 1.25rem;
+  padding: 0.5rem;
+  overflow: hidden;
 }
 
-.music-card-player audio {
+.music-card-player meting-js {
   width: 100%;
-  height: 36px;
 }
 
-.music-audio-cover {
-  font-size: 2.5rem;
-  opacity: 0.6;
+.music-card-player .aplayer {
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* APlayer 主题色 */
+.music-card-player .aplayer .aplayer-pic {
+  background-color: var(--accent);
+}
+.music-card-player .aplayer .aplayer-played {
+  background: var(--accent) !important;
+}
+.music-card-player .aplayer .aplayer-thumb {
+  background: var(--accent) !important;
+}
+.music-card-player .aplayer .aplayer-icon:hover path {
+  fill: var(--accent);
+}
+
+/* APlayer 暗色模式 */
+[data-theme="dark"] .music-card-player .aplayer {
+  color: var(--text);
+}
+[data-theme="dark"] .music-card-player .aplayer .aplayer-info .aplayer-music {
+  color: var(--text);
+}
+[data-theme="dark"] .music-card-player .aplayer .aplayer-info .aplayer-controller .aplayer-time {
+  color: var(--text-muted);
 }
 
 .music-card-placeholder {
