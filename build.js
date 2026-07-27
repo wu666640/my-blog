@@ -225,9 +225,12 @@ if (fs.existsSync(MUSIC_FILE)) {
     neteaseUrl: item.neteaseUrl || '',
     lyrics: item.lyrics || '',
     date: item.date || '',
-    tags: (item.tags || []).length > 0
-      ? item.tags.map(t => typeof t === 'string' ? t : (t.name || t.tag || ''))
-      : [item.category || '未分类'],
+    tags: (() => {
+      const presetTags = (item.tags || []).map(t => typeof t === 'string' ? t : (t.name || t.tag || ''));
+      const overrideTags = (item.tags_override || []).map(t => typeof t === 'string' ? t : (t.tag || t.name || ''));
+      const all = [...new Set([...presetTags, ...overrideTags])].filter(Boolean);
+      return all.length > 0 ? all : [item.category || '未分类'];
+    })(),
     playCount: item.playCount || 0,
   })).sort((a, b) => {
     if (!a.date) return 1;

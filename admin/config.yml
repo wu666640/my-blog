@@ -181,11 +181,11 @@ collections:
                 name: "description"
                 widget: "markdown"
                 hint: "支持 Markdown，描述你为什么喜欢这首歌"
-              - label: "分类（下拉选择）"
+              - label: "分类"
                 name: "category"
                 widget: "select"
                 required: false
-                hint: "从下拉列表选择。如果没有想要的分类，留空并在下方填自定义"
+                hint: "从下拉选择预设分类。没有想要的？在下方「自定义分类」手打，手打的优先。"
                 options:
                   - { label: "华语流行", value: "华语流行" }
                   - { label: "粤语/华语", value: "粤语/华语" }
@@ -203,17 +203,16 @@ collections:
                   - { label: "爵士", value: "爵士" }
                   - { label: "古典", value: "古典" }
                   - { label: "影视原声", value: "影视原声" }
-              - label: "👉 自定义分类（选填，填了会覆盖上面的选择）"
+              - label: "✏️ 自定义分类（手打，覆盖上面）"
                 name: "category_override"
                 widget: "string"
                 required: false
-                hint: "想要新的分类就直接填这里，会自动使用这里的内容"
-              - label: "标签（多选，可手打）"
+              - label: "标签（多选）"
                 name: "tags"
                 widget: "select"
                 multiple: true
                 required: false
-                hint: "勾选预设标签，也可以直接打字输入自定义标签"
+                hint: "勾选预设标签。没有想要的？在下方「自定义标签」手打。"
                 options:
                   - { label: "华语流行", value: "华语流行" }
                   - { label: "粤语", value: "粤语" }
@@ -237,6 +236,12 @@ collections:
                   - { label: "日语", value: "日语" }
                   - { label: "英语", value: "英语" }
                   - { label: "韩语", value: "韩语" }
+              - label: "✏️ 自定义标签（手打，追加到上面）"
+                name: "tags_override"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "标签", name: "tag", widget: "string" }
               - label: "本地上传 MP3（可选，上传后可直接完整播放）"
                 name: "file"
                 widget: "file"
