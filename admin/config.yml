@@ -137,6 +137,22 @@ collections:
                 time_format: false
                 format: "YYYY-MM-DD"
 
+  # ----- 标签库 -----
+  - name: "music-tags"
+    label: "🏷️ 音乐标签库"
+    files:
+      - name: "music-tags"
+        label: "标签管理"
+        file: "data/music-tags.json"
+        fields:
+          - label: "预设标签"
+            name: "presets"
+            widget: "list"
+            summary: "{{fields.preset}}"
+            hint: "在这里添加标签后，编辑歌曲时就能从下拉列表中选择。删除标签只会从列表中移除，不影响已使用该标签的歌曲。"
+            fields:
+              - { label: "标签名", name: "preset", widget: "string" }
+
   # ----- 音乐 -----
   - name: "music"
     label: "🎵 音乐"
@@ -169,11 +185,35 @@ collections:
                 name: "category"
                 widget: "string"
                 hint: "如：华语流行、民谣、摇滚、电子"
-              - label: "标签（可多选）"
+              - label: "标签（多选）"
                 name: "tags"
-                widget: "list"
+                widget: "select"
+                multiple: true
                 required: false
-                hint: "一首歌可以有多个标签，如：华语流行、深夜、治愈、青春"
+                hint: "可选多个标签。如果列表里没有你想要的，先去「🏷️ 音乐标签库」添加，然后回到这里就能选了。"
+                options:
+                  - { label: "华语流行", value: "华语流行" }
+                  - { label: "粤语", value: "粤语" }
+                  - { label: "民谣", value: "民谣" }
+                  - { label: "摇滚", value: "摇滚" }
+                  - { label: "电子", value: "电子" }
+                  - { label: "青春", value: "青春" }
+                  - { label: "怀旧", value: "怀旧" }
+                  - { label: "深夜", value: "深夜" }
+                  - { label: "治愈", value: "治愈" }
+                  - { label: "暗恋", value: "暗恋" }
+                  - { label: "城市", value: "城市" }
+                  - { label: "慢生活", value: "慢生活" }
+                  - { label: "哲思", value: "哲思" }
+                  - { label: "回忆", value: "回忆" }
+                  - { label: "旅行", value: "旅行" }
+                  - { label: "励志", value: "励志" }
+                  - { label: "说唱", value: "说唱" }
+                  - { label: "古风", value: "古风" }
+                  - { label: "纯音乐", value: "纯音乐" }
+                  - { label: "日语", value: "日语" }
+                  - { label: "英语", value: "英语" }
+                  - { label: "韩语", value: "韩语" }
               - label: "本地上传 MP3（可选，上传后可直接完整播放）"
                 name: "file"
                 widget: "file"
