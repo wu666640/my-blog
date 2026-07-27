@@ -92,6 +92,44 @@ const Render = {
     el.innerHTML = html;
   },
 
+  /** 关于页密码验证 */
+  setupAboutPassword(hash) {
+    const locked = document.getElementById("qq-locked");
+    const unlocked = document.getElementById("qq-unlocked");
+    const input = document.getElementById("qq-pwd-input");
+    const btn = document.getElementById("qq-verify-btn");
+    const error = document.getElementById("qq-error");
+    if (!locked || !unlocked) return;
+
+    // 已通过验证（sessionStorage）
+    if (sessionStorage.getItem("qq_verified") === hash) {
+      locked.style.display = "none";
+      unlocked.style.display = "block";
+      return;
+    }
+
+    const doVerify = async () => {
+      const pwd = input.value.trim();
+      if (!pwd) return;
+      const data = new TextEncoder().encode(pwd);
+      const buf = await crypto.subtle.digest("SHA-256", data);
+      const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+      if (hex === hash) {
+        locked.style.display = "none";
+        unlocked.style.display = "block";
+        sessionStorage.setItem("qq_verified", hash);
+        error.style.display = "none";
+      } else {
+        error.style.display = "block";
+        input.value = "";
+        input.focus();
+      }
+    };
+
+    btn.addEventListener("click", doVerify);
+    input.addEventListener("keydown", e => { if (e.key === "Enter") doVerify(); });
+  },
+
   /* ========== 首页 ========== */
   home(posts, activeTag, titleOverride) {
     const tags = getAllTags();
@@ -132,7 +170,7 @@ const Render = {
   _postCard(post) {
     const coverHTML = post.cover
       ? `<div class="post-card-cover"><img src="${post.cover}" alt="${post.title}" loading="lazy"></div>`
-      : '';
+      : ''';
 
     const tagLinks = post.tags.map(t =>
       `<a href="#/tag/${encodeURIComponent(t)}" class="tag" onclick="event.stopPropagation()">${t}</a>`
@@ -187,7 +225,7 @@ const Render = {
 
     const avatarHTML = d.avatar
       ? `<img src="${d.avatar}" alt="${d.name}" class="about-avatar-img" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">`
-      : '<div class="about-avatar">✍️</div>';
+      : ''<div class="about-avatar">✍️</div>';
 
     const skillsHTML = d.skills && d.skills.length > 0
       ? `<div class="skills-section">
@@ -198,13 +236,33 @@ const Render = {
                <div class="skill-bar"><div class="skill-bar-fill" style="width:${s.level}%"></div></div>
              </div>`).join('')}
          </div>`
-      : '';
+      : ''';
 
     const socialHTML = d.social && d.social.length > 0
       ? `<div class="social-links">
            ${d.social.map(s => `<a href="${s.url}" target="_blank" class="social-link">${s.icon} ${s.label}</a>`).join('')}
          </div>`
-      : '';
+      : ''';
+
+    // QQ密码验证区域
+    const qqHTML = (d.qq && d.qqPassword)
+      ? `<div class="about-qq-section" id="qq-section">
+           <div class="about-qq-locked" id="qq-locked">
+             <span class="about-qq-icon">🔒</span>
+             <span class="about-qq-hint">输入密码查看联系方式</span>
+             <div class="about-qq-input-row">
+               <input type="password" id="qq-pwd-input" class="about-qq-input" placeholder="输入密码..." autocomplete="off">
+               <button id="qq-verify-btn" class="about-qq-btn">验证</button>
+             </div>
+             <span class="about-qq-error" id="qq-error" style="display:none">密码错误，再试一次</span>
+           </div>
+           <div class="about-qq-unlocked" id="qq-unlocked" style="display:none">
+             <span class="about-qq-icon">✅</span>
+             <span class="about-qq-label">QQ：</span>
+             <span class="about-qq-number">${d.qq}</span>
+           </div>
+         </div>`
+      : ''
 
     return `
       <div class="about-page">
@@ -214,6 +272,7 @@ const Render = {
         <div class="about-bio">${d.bio}</div>
         ${skillsHTML}
         ${socialHTML}
+        ${qqHTML}
       </div>`;
   },
 
@@ -249,7 +308,7 @@ const Render = {
       ? `<div class="gallery-card-image">
            <img src="${item.image}" alt="${item.title}" loading="lazy">
          </div>`
-      : '<div class="gallery-card-image gallery-card-placeholder">🖼️</div>';
+      : ''<div class="gallery-card-image gallery-card-placeholder">🖼️</div>';
 
     return `
       <article class="gallery-card">
@@ -453,7 +512,7 @@ const Render = {
       ? `🏷️ 标签："${activeTag}"（${tracks.length} 首）`
       : activeArtist
         ? `🎤 歌手："${activeArtist}"（${tracks.length} 首）`
-        : '🎵 音乐推荐';
+        : ''🎵 音乐推荐';
 
     return `
       <div class="music-page">
@@ -513,26 +572,26 @@ const Render = {
     // 网易云外链按钮
     const neteaseBtn = (track.neteaseUrl || track.neteaseId)
       ? `<a href="${playUrl}" target="_blank" class="music-netease-btn">🎧 在网易云音乐中打开</a>`
-      : '';
+      : ''';
 
     // 歌词
     const lyricsHTML = (track.lyrics && track.lyrics.trim())
       ? this._lyricsBox(track.lyrics)
-      : '';
+      : ''';
 
     // 封面图
     const coverHTML = track.cover
       ? `<div class="music-card-cover">
            <img src="${track.cover}" alt="${track.title} 封面" loading="lazy">
          </div>`
-      : '';
+      : ''';
 
     // 播放次数
     const counts = this._getPlayCounts();
     const plays = counts[track.title] || 0;
     const playCountHTML = plays > 0
       ? `<span class="music-play-count" title="已播放 ${plays} 次">🔊 ${plays}</span>`
-      : '';
+      : ''';
 
     // 标签
     const tagsHTML = (track.tags || []).map(t =>
@@ -728,17 +787,17 @@ const Render = {
   _novelCard(novel) {
     const statusBadge = novel.status === '连载中'
       ? '<span class="novel-badge novel-badge-ongoing">连载中</span>'
-      : '<span class="novel-badge novel-badge-done">已完结</span>';
+      : ''<span class="novel-badge novel-badge-done">已完结</span>';
 
     const coverHTML = novel.cover
       ? `<div class="novel-card-cover">
            <img src="${novel.cover}" alt="${novel.title}" loading="lazy">
          </div>`
-      : '<div class="novel-card-cover novel-card-cover-placeholder">📖</div>';
+      : ''<div class="novel-card-cover novel-card-cover-placeholder">📖</div>';
 
     const descHTML = novel.description
       ? `<div class="novel-card-desc">${novel.description.slice(0, 150)}${novel.description.length > 150 ? '…' : ''}</div>`
-      : '';
+      : ''';
 
     return `
       <a href="#/novel/${novel.id}" class="novel-card-link">
@@ -760,17 +819,17 @@ const Render = {
   novelDetail(novel) {
     const statusBadge = novel.status === '连载中'
       ? '<span class="novel-badge novel-badge-ongoing">连载中</span>'
-      : '<span class="novel-badge novel-badge-done">已完结</span>';
+      : ''<span class="novel-badge novel-badge-done">已完结</span>';
 
     const coverHTML = novel.cover
       ? `<div class="novel-detail-cover">
            <img src="${novel.cover}" alt="${novel.title}">
          </div>`
-      : '';
+      : ''';
 
     const fanqieLink = novel.fanqieUrl
       ? `<a href="${novel.fanqieUrl}" target="_blank" class="novel-fanqie-btn">📱 在番茄小说阅读</a>`
-      : '';
+      : ''';
 
     // 章节目录
     const tocHTML = novel.volumes.map((vol, vi) => {
@@ -823,11 +882,11 @@ const Render = {
   novelChapter(novel, chapter, prev, next, allChapters) {
     const prevHTML = prev
       ? `<a href="#/novel/${novel.id}/${prev.chapterId}" class="novel-chapter-nav-link novel-chapter-nav-prev">← 第${prev.chapterId}章 ${prev.title}</a>`
-      : '<span class="novel-chapter-nav-link novel-chapter-nav-prev novel-chapter-nav-disabled">← 已是第一章</span>';
+      : ''<span class="novel-chapter-nav-link novel-chapter-nav-prev novel-chapter-nav-disabled">← 已是第一章</span>';
 
     const nextHTML = next
       ? `<a href="#/novel/${novel.id}/${next.chapterId}" class="novel-chapter-nav-link novel-chapter-nav-next">第${next.chapterId}章 ${next.title} →</a>`
-      : '<span class="novel-chapter-nav-link novel-chapter-nav-next novel-chapter-nav-disabled">已是最后一章 →</span>';
+      : ''<span class="novel-chapter-nav-link novel-chapter-nav-next novel-chapter-nav-disabled">已是最后一章 →</span>';
 
     // 目录侧栏
     const tocLinksHTML = allChapters.map(ch => `

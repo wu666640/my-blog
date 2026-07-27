@@ -602,6 +602,37 @@ body {
   border-color: var(--accent);
 }
 
+/* ----- 关于页 QQ密码验证 ----- */
+.about-qq-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  text-align: center;
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.about-qq-icon { font-size: 1.5rem; display: block; margin-bottom: 0.5rem; }
+.about-qq-hint { font-size: 0.9rem; color: var(--text-secondary); display: block; margin-bottom: 0.8rem; }
+.about-qq-input-row { display: flex; gap: 0.5rem; justify-content: center; }
+.about-qq-input {
+  flex: 1; max-width: 200px; padding: 0.5rem 0.8rem;
+  border: 2px solid var(--border); border-radius: 8px;
+  font-size: 0.95rem; background: var(--bg-card); color: var(--text);
+  outline: none; transition: border-color .2s;
+}
+.about-qq-input:focus { border-color: var(--accent); }
+.about-qq-btn {
+  padding: 0.5rem 1.2rem; border: none; border-radius: 8px;
+  background: var(--accent); color: #fff; font-size: 0.95rem;
+  cursor: pointer; transition: opacity .2s;
+}
+.about-qq-btn:hover { opacity: 0.85; }
+.about-qq-error { display: block; color: #e74c3c; font-size: 0.85rem; margin-top: 0.5rem; }
+.about-qq-label { font-size: 0.9rem; color: var(--text-secondary); }
+.about-qq-number { font-size: 1.1rem; font-weight: 600; color: var(--accent); }
+
 /* ----- 画廊页面 ----- */
 .gallery-page {
   max-width: 800px;

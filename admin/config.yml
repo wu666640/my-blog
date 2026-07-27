@@ -101,6 +101,16 @@ collections:
               - { label: "名称", name: "label", widget: "string" }
               - { label: "链接", name: "url", widget: "string" }
               - { label: "图标 Emoji", name: "icon", widget: "string", hint: "如 🐙 📧 🐦" }
+          - label: "QQ号（需密码验证才能查看）"
+            name: "qq"
+            widget: "string"
+            required: false
+            hint: "填入QQ号后，关于页会显示密码输入框。访客输入正确密码才能看到"
+          - label: "QQ验证密码哈希"
+            name: "qqPassword"
+            widget: "string"
+            required: false
+            hint: "⚠️ 不要直接填密码！打开 /admin/hash.html 生成 SHA-256 哈希后粘贴到这里。留空则不显示验证入口"
 
   # ----- 画廊 -----
   - name: "gallery"

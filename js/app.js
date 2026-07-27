@@ -51,6 +51,10 @@
     })
     .on('about', () => {
       Render.mount(Render.about());
+      const d = (typeof ABOUT_DATA !== 'undefined') ? ABOUT_DATA : {};
+      if (d.qq && d.qqPassword) {
+        setTimeout(() => Render.setupAboutPassword(d.qqPassword), 0);
+      }
     })
     .on('gallery', (params) => {
       const items = params.category
