@@ -110,7 +110,8 @@ collections:
     create: true
     extension: json
     format: json
-    slug: "{{title}}"
+    identifier_field: "title"
+    slug: "{{slug}}"
     summary: "{{title}} — {{category}}"
     editor:
       preview: false
@@ -161,7 +162,8 @@ collections:
     create: true
     extension: json
     format: json
-    slug: "{{title}}"
+    identifier_field: "title"
+    slug: "{{slug}}"
     summary: "{{title}} — {{artist}}"
     editor:
       preview: false
@@ -276,7 +278,8 @@ collections:
     create: true
     extension: json
     format: json
-    slug: "{{title}}"
+    identifier_field: "title"
+    slug: "{{slug}}"
     summary: "{{title}} — {{platform}}"
     editor:
       preview: false
