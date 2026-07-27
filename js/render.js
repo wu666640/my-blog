@@ -262,6 +262,60 @@ const Render = {
       </article>`;
   },
 
+  /* ========== 视频 ========== */
+  video(items, activeCategory) {
+    const categories = getVideoCategories();
+
+    const catHTML = `
+      <a href="#/video" class="tag ${!activeCategory ? 'active' : ''}">全部</a>
+      ${categories.map(c =>
+        `<a href="#/video/${encodeURIComponent(c.name)}"
+            class="tag ${activeCategory === c.name ? 'active' : ''}">${c.name} (${c.count})</a>`
+      ).join('')}`;
+
+    const itemsHTML = items.length === 0
+      ? `<div class="empty-state">
+           <div class="empty-icon">🎬</div>
+           <p>暂无视频</p>
+         </div>`
+      : items.map(item => this._videoCard(item)).join('');
+
+    return `
+      <div class="video-page">
+        <h2 class="section-title">🎬 视频推荐</h2>
+        <div class="music-categories">${catHTML}</div>
+        <div class="video-list">${itemsHTML}</div>
+      </div>`;
+  },
+
+  /** 视频卡片 */
+  _videoCard(item) {
+    const platformIcon = { bilibili: '🅱️', youtube: '▶️', other: '🎬' }[item.platform] || '🎬';
+    const coverHTML = item.cover
+      ? `<div class="video-card-cover">
+           <img src="${item.cover}" alt="${item.title}" loading="lazy">
+           <span class="video-play-icon">▶️</span>
+         </div>`
+      : `<div class="video-card-cover video-card-cover-placeholder">
+           <span class="video-play-icon">▶️</span>
+         </div>`;
+
+    return `
+      <article class="video-card">
+        <a href="${item.url}" target="_blank" class="video-card-link" aria-label="观看 ${item.title}">
+          ${coverHTML}
+        </a>
+        <div class="video-card-body">
+          <div class="video-card-title-row">
+            <h3 class="video-card-title">${item.title}</h3>
+            <span class="video-badge">${platformIcon} ${item.platform}</span>
+          </div>
+          <div class="video-card-meta">${item.date} · ${item.category}</div>
+          <div class="video-card-desc">${item.description}</div>
+        </div>
+      </article>`;
+  },
+
   /* ========== 音乐 ========== */
   music(tracks, activeCategory) {
     const categories = getMusicCategories();

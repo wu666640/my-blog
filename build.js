@@ -270,3 +270,64 @@ function getMusicByCategory(category) {
 } else {
   console.log('⚠️  data/music.json 不存在，跳过音乐生成');
 }
+
+// ===== 生成 js/video.js（视频推荐）=====
+const VIDEO_FILE = path.join(__dirname, 'data', 'video.json');
+if (fs.existsSync(VIDEO_FILE)) {
+  const videoData = JSON.parse(fs.readFileSync(VIDEO_FILE, 'utf-8'));
+  const videos = (videoData.items || []).map((item, index) => ({
+    id: index + 1,
+    title: item.title || '无标题',
+    url: item.url || '',
+    platform: item.platform || 'other',
+    cover: item.cover || '',
+    description: item.description
+      ? marked.parse(item.description).trim()
+      : '',
+    category: item.category || '未分类',
+    date: item.date || '',
+  })).sort((a, b) => {
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  const videoOutput = `/**
+ * 视频推荐数据 — 由 build.js 自动生成
+ * 请勿手动修改此文件，在 /admin 后台管理视频
+ * 生成时间：${new Date().toISOString()}
+ */
+const VIDEOS = ${JSON.stringify(videos, null, 2)};
+
+/**
+ * 获取所有视频，按日期降序排列
+ */
+function getAllVideos() {
+  return VIDEOS;
+}
+
+/**
+ * 获取所有分类及其视频数量
+ */
+function getVideoCategories() {
+  const catMap = {};
+  VIDEOS.forEach(item => {
+    catMap[item.category] = (catMap[item.category] || 0) + 1;
+  });
+  return Object.entries(catMap)
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, count]) => ({ name, count }));
+}
+
+/**
+ * 根据分类筛选视频
+ */
+function getVideosByCategory(category) {
+  return VIDEOS.filter(item => item.category === category);
+}
+`;
+  fs.writeFileSync(path.join(__dirname, 'js', 'video.js'), videoOutput, 'utf-8');
+  console.log(`✅ 已生成 js/video.js（${videos.length} 个视频）`);
+} else {
+  console.log('⚠️  data/video.json 不存在，跳过视频生成');
+}

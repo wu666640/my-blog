@@ -66,6 +66,12 @@
       // 初始化自定义音频播放器
       setTimeout(() => Render.setupMusicPlayers(), 0);
     })
+    .on('video', (params) => {
+      const items = params.category
+        ? getVideosByCategory(params.category)
+        : getAllVideos();
+      Render.mount(Render.video(items, params.category || null));
+    })
     .on('404', () => {
       Render.mount(Render.notFound());
     });

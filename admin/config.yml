@@ -195,3 +195,50 @@ collections:
                 date_format: "YYYY-MM-DD"
                 time_format: false
                 format: "YYYY-MM-DD"
+
+  # ----- 视频 -----
+  - name: "video"
+    label: "🎬 视频"
+    files:
+      - name: "video"
+        label: "视频管理"
+        file: "data/video.json"
+        fields:
+          - label: "视频列表"
+            name: "items"
+            widget: "list"
+            summary: "{{title}} — {{platform}}"
+            fields:
+              - label: "标题"
+                name: "title"
+                widget: "string"
+              - label: "视频链接"
+                name: "url"
+                widget: "string"
+                hint: "B站/YouTube 等视频链接"
+              - label: "平台"
+                name: "platform"
+                widget: "select"
+                options:
+                  - { label: "Bilibili", value: "bilibili" }
+                  - { label: "YouTube", value: "youtube" }
+                  - { label: "其他", value: "other" }
+              - label: "封面图"
+                name: "cover"
+                widget: "image"
+                required: false
+                hint: "可选，视频封面，建议 16:9"
+              - label: "推荐语"
+                name: "description"
+                widget: "markdown"
+                hint: "支持 Markdown"
+              - label: "分类"
+                name: "category"
+                widget: "string"
+                hint: "如：教程、Vlog、音乐MV"
+              - label: "日期"
+                name: "date"
+                widget: "datetime"
+                date_format: "YYYY-MM-DD"
+                time_format: false
+                format: "YYYY-MM-DD"

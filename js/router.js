@@ -65,6 +65,19 @@ const Router = {
       return this.current;
     }
 
+    // #/video/xxx
+    match = hash.match(/^\/video\/(.+)$/);
+    if (match) {
+      this.current = { page: 'video', params: { category: decodeURIComponent(match[1]) } };
+      return this.current;
+    }
+
+    // #/video
+    if (hash === '/video') {
+      this.current = { page: 'video', params: {} };
+      return this.current;
+    }
+
     // #/search?q=xxx
     match = hash.match(/^\/search\?q=(.*)$/);
     if (match) {
@@ -111,6 +124,8 @@ const Router = {
       } else if (this.current.page === 'gallery' && href === '#/gallery') {
         link.classList.add('active');
       } else if (this.current.page === 'music' && href === '#/music') {
+        link.classList.add('active');
+      } else if (this.current.page === 'video' && href === '#/video') {
         link.classList.add('active');
       } else {
         link.classList.remove('active');
