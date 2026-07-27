@@ -108,7 +108,9 @@ collections:
     label_singular: "图片"
     folder: "data/gallery"
     create: true
-    slug: "{{slug}}"
+    extension: json
+    format: json
+    slug: "{{title}}"
     summary: "{{title}} — {{category}}"
     editor:
       preview: false
@@ -157,7 +159,9 @@ collections:
     label_singular: "歌曲"
     folder: "data/music"
     create: true
-    slug: "{{slug}}"
+    extension: json
+    format: json
+    slug: "{{title}}"
     summary: "{{title}} — {{artist}}"
     editor:
       preview: false
@@ -270,7 +274,9 @@ collections:
     label_singular: "视频"
     folder: "data/video"
     create: true
-    slug: "{{slug}}"
+    extension: json
+    format: json
+    slug: "{{title}}"
     summary: "{{title}} — {{platform}}"
     editor:
       preview: false
