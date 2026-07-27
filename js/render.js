@@ -174,15 +174,22 @@ const Render = {
       `<a href="#/tag/${encodeURIComponent(t)}" class="tag" onclick="event.stopPropagation()">${t}</a>`
     ).join('');
 
+    const liked = typeof Likes !== 'undefined' && Likes.isLiked('posts', post.id);
+    const readingTime = post.content ? Math.max(1, Math.ceil(post.content.replace(/<[^>]+>/g, '').length / 500)) : 0;
+
     return `
       <article class="post-card" onclick="Router.navigate('#/post/${post.id}')">
         ${coverHTML}
         <h3 class="post-card-title">${post.title}</h3>
         <div class="post-card-meta">
           <span class="post-card-date">${post.date}</span>
+          ${readingTime > 0 ? `<span class="post-card-reading">☕ ${readingTime} 分钟</span>` : ''}
         </div>
         <p class="post-card-excerpt">${post.excerpt}</p>
         <div class="post-card-tags">${tagLinks}</div>
+        <div class="post-card-actions" onclick="event.stopPropagation()">
+          ${typeof Likes !== 'undefined' ? Likes.buttonHTML('posts', post.id, liked) : ''}
+        </div>
       </article>`;
   },
 
@@ -192,6 +199,9 @@ const Render = {
       `<a href="#/tag/${encodeURIComponent(t)}" class="tag">${t}</a>`
     ).join('');
 
+    const liked = typeof Likes !== 'undefined' && Likes.isLiked('posts', post.id);
+    const readingTime = post.content ? Math.max(1, Math.ceil(post.content.replace(/<[^>]+>/g, '').length / 500)) : 0;
+
     return `
       <article class="post-detail">
         <a href="#/" class="back-link">← 返回首页</a>
@@ -199,10 +209,14 @@ const Render = {
           <h1>${post.title}</h1>
           <div class="post-detail-meta">
             <span>📅 ${post.date}</span>
+            ${readingTime > 0 ? `<span>☕ 阅读约 ${readingTime} 分钟</span>` : ''}
+            <span id="busuanzi_container_page_pv" style="display:none">👁️ <span id="busuanzi_value_page_pv"></span> 次阅读</span>
+            <span>${typeof Likes !== 'undefined' ? Likes.buttonHTML('posts', post.id, liked) : ''}</span>
           </div>
           <div class="post-detail-tags">${tagsHTML}</div>
         </header>
         <div class="post-detail-body">${post.content}</div>
+        <div class="giscus"></div>
         <nav class="post-nav">
           <span>${prevPost ? `<a href="#/post/${prevPost.id}">← ${prevPost.title}</a>` : ''}</span>
           <span>${nextPost ? `<a href="#/post/${nextPost.id}">${nextPost.title} →</a>` : ''}</span>
@@ -307,6 +321,8 @@ const Render = {
          </div>`
       : '<div class="gallery-card-image gallery-card-placeholder">🖼️</div>';
 
+    const liked = typeof Likes !== 'undefined' && Likes.isLiked('gallery', item.id);
+
     return `
       <article class="gallery-card">
         ${imageHTML}
@@ -314,6 +330,9 @@ const Render = {
           <h3 class="gallery-card-title">${item.title}</h3>
           <div class="gallery-card-meta">${item.date} · ${item.category}</div>
           <div class="gallery-card-desc">${item.description}</div>
+          <div class="gallery-card-actions">
+            ${typeof Likes !== 'undefined' ? Likes.buttonHTML('gallery', item.id, liked) : ''}
+          </div>
         </div>
       </article>`;
   },
@@ -395,6 +414,7 @@ const Render = {
       ? `<a href="${item.url}" target="_blank" class="video-external-link">🔗 在 ${item.platform === 'bilibili' ? 'B站' : item.platform === 'youtube' ? 'YouTube' : '原站'} 观看</a>`
       : (hasLocal ? '' : '');
 
+    const liked = typeof Likes !== 'undefined' && Likes.isLiked('video', item.id);
     const badgeHTML = hasLocal
       ? '<span class="video-badge video-badge-local">📁 本地视频</span>'
       : `<span class="video-badge">${platformIcon} ${item.platform}</span>`;
@@ -409,7 +429,10 @@ const Render = {
           </div>
           <div class="video-card-meta">${item.date} · ${item.category}</div>
           <div class="video-card-desc">${item.description}</div>
-          ${externalLink ? `<div class="video-card-actions">${externalLink}</div>` : ''}
+          <div class="video-card-actions">
+            ${externalLink || ''}
+            ${typeof Likes !== 'undefined' ? Likes.buttonHTML('video', item.id, liked) : ''}
+          </div>
         </div>
       </article>`;
   },
@@ -591,12 +614,13 @@ const Render = {
       : '';
 
     // 标签
+    const liked = typeof Likes !== 'undefined' && Likes.isLiked('music', track.id);
     const tagsHTML = (track.tags || []).map(t =>
       `<a href="#/music/tag/${encodeURIComponent(t)}" class="music-card-tag">${t}</a>`
     ).join('');
 
     return `
-      <article class="music-card" data-date="${track.date}" data-playcount="${plays}">
+      <article class="music-card" data-date="${track.date}" data-playcount="${plays}" data-likes="${liked ? 1 : 0}">
         ${playerHTML}
         <div class="music-card-body">
           ${coverHTML}
@@ -614,6 +638,7 @@ const Render = {
             <div class="music-card-desc">${track.description}</div>
             <div class="music-card-actions">
               ${neteaseBtn}
+              ${typeof Likes !== 'undefined' ? Likes.buttonHTML('music', track.id, liked) : ''}
             </div>
           </div>
         </div>

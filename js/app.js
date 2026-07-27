@@ -123,6 +123,17 @@
   Search.bind();
   Search.initOverlay();
 
+  // ===== 初始化点赞 =====
+  if (typeof Likes !== 'undefined') {
+    // 路由变化后重新加载点赞计数
+    const origRun = Router.run.bind(Router);
+    Router.run = function () {
+      origRun();
+      setTimeout(() => { if (typeof Likes !== 'undefined') Likes._loadAllCounts(); }, 100);
+    };
+    Likes.init();
+  }
+
   // ===== 启动路由 =====
   Router.init();
 
