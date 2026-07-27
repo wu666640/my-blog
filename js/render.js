@@ -288,18 +288,17 @@ const Render = {
       </div>`;
   },
 
-  /** 解析视频嵌入链接 */
+  /** 解析视频嵌入链接（返回编码后的 URL） */
   _videoEmbedURL(item) {
     if (item.platform === 'bilibili') {
-      // 支持 bv 号和 av 号
       const bv = item.url.match(/BV[a-zA-Z0-9]+/);
-      if (bv) return `//player.bilibili.com/player.html?bvid=${bv[0]}&page=1&high_quality=1&autoplay=0`;
+      if (bv) return `https://player.bilibili.com/player.html?bvid=${bv[0]}&page=1&high_quality=1&autoplay=0`;
       const av = item.url.match(/av(\d+)/i);
-      if (av) return `//player.bilibili.com/player.html?aid=${av[1]}&page=1&high_quality=1&autoplay=0`;
+      if (av) return `https://player.bilibili.com/player.html?aid=${av[1]}&page=1&high_quality=1&autoplay=0`;
     }
     if (item.platform === 'youtube') {
       const id = item.url.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/);
-      if (id) return `//www.youtube.com/embed/${id[1]}`;
+      if (id) return `https://www.youtube.com/embed/${id[1]}`;
     }
     return null;
   },
