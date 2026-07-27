@@ -1,7 +1,7 @@
 /**
  * Decap CMS GitHub OAuth 代理
  */
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const { code, state } = req.query;
   const clientId = process.env.OAUTH_CLIENT_ID;
   const clientSecret = process.env.OAUTH_CLIENT_SECRET;
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   if (code) {
     try {
       const tokenRes = await fetch(
-        `https://github.com/login/oauth/access_token`,
+        'https://github.com/login/oauth/access_token',
         {
           method: 'POST',
           headers: {
@@ -65,4 +65,4 @@ export default async function handler(req, res) {
   });
   res.writeHead(302, { Location: `https://github.com/login/oauth/authorize?${params}` });
   res.end();
-}
+};
