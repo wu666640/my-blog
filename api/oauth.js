@@ -38,12 +38,16 @@ module.exports = async function handler(req, res) {
         return;
       }
 
+      // Decap CMS 3.x 期望的消息格式: "authorization:<provider>:success:<json>"
+      // 且要求 r.origin === base_url，postMessage 时 origin 匹配才会处理
+      const authMessage = 'authorization:github:success:' + JSON.stringify({
+        token: tokenData.access_token,
+        provider: 'github',
+      });
       res.status(200).send(`<!DOCTYPE html>
 <html><head><meta charset="utf-8"><script>
-  var data = { token: '${tokenData.access_token}', provider: 'github' };
   try {
-    window.opener.postMessage(data, '*');
-    window.opener.postMessage(JSON.stringify(data), '*');
+    window.opener.postMessage('${authMessage.replace(/'/g, "\\'")}', '*');
   } catch(e) {}
   window.close();
   setTimeout(function(){ document.body.innerHTML = '<p style="font-family:sans-serif;padding:2rem;">✅ 登录成功！窗口即将关闭...<br><small>如未自动跳转请刷新页面</small></p>'; }, 800);
