@@ -820,6 +820,25 @@ body {
   color: #fff;
 }
 
+/* 试听标签 */
+.music-preview-tag {
+  display: block;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* VIP 提示 */
+.music-vip-hint {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
 .music-card-body {
   flex: 1;
   padding: 1.5rem;

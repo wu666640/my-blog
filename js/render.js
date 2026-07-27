@@ -219,7 +219,6 @@ const Render = {
   _musicCard(track) {
     const playUrl = track.neteaseUrl || (track.neteaseId ? `https://music.163.com/song?id=${track.neteaseId}` : '#');
 
-    // APlayer 内嵌播放器：封面、进度条、音量、时间，完整控件
     const playerHTML = track.neteaseId
       ? `<div class="music-card-player">
            <meting-js
@@ -228,6 +227,7 @@ const Render = {
              id="${track.neteaseId}"
              autoplay="false">
            </meting-js>
+           <span class="music-preview-tag">◈ 试听片段</span>
          </div>`
       : '<div class="music-card-player music-card-placeholder">🎵</div>';
 
@@ -240,8 +240,9 @@ const Render = {
           <div class="music-card-meta">${track.date} · ${track.category}</div>
           <div class="music-card-desc">${track.description}</div>
           <a href="${playUrl}" target="_blank" class="music-netease-btn">
-            🎧 在网易云音乐中打开完整版 →
+            🎧 在网易云音乐中听完整版
           </a>
+          <span class="music-vip-hint">VIP 歌曲请通过上方链接在网易云播放</span>
         </div>
       </article>`;
   },
