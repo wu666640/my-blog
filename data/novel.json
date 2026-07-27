@@ -11,45 +11,35 @@
       "fanqieUrl": "https://fanqienovel.com/page/7667102653431680024",
       "volumes": [
         {
-          "title": "第一卷：聚首",
+          "title": "第一卷",
           "chapters": [
             { "id": 1, "title": "无痕酒馆", "file": "data/novels/chapters/第1章.md" },
             { "id": 2, "title": "剑与仇", "file": "data/novels/chapters/第2章.md" },
             { "id": 3, "title": "无名道观", "file": "data/novels/chapters/第3章.md" },
             { "id": 4, "title": "被抹掉的人", "file": "data/novels/chapters/第4章.md" },
-            { "id": 5, "title": "五个人的理由", "file": "data/novels/chapters/第5章.md" }
-          ]
-        },
-        {
-          "title": "第二卷：追踪",
-          "chapters": [
+            { "id": 5, "title": "五个人的理由", "file": "data/novels/chapters/第5章.md" },
             { "id": 6, "title": "被偷走的目的地", "file": "data/novels/chapters/第6章.md" },
             { "id": 7, "title": "篝火", "file": "data/novels/chapters/第7章.md" },
             { "id": 8, "title": "追踪者", "file": "data/novels/chapters/第8章.md" },
             { "id": 9, "title": "铁与信", "file": "data/novels/chapters/第9章.md" },
             { "id": 10, "title": "陆长老的三年", "file": "data/novels/chapters/第10章.md" },
             { "id": 11, "title": "苏忘的碎片", "file": "data/novels/chapters/第11章.md" },
-            { "id": 12, "title": "第一道裂痕", "file": "data/novels/chapters/第12章.md" }
-          ]
-        },
-        {
-          "title": "第三卷：深渊",
-          "chapters": [
+            { "id": 12, "title": "第一道裂痕", "file": "data/novels/chapters/第12章.md" },
             { "id": 13, "title": "深渊中的台阶", "file": "data/novels/chapters/第13章.md" },
             { "id": 14, "title": "门的外面", "file": "data/novels/chapters/第14章.md" },
             { "id": 15, "title": "门的另一侧", "file": "data/novels/chapters/第15章.md" },
             { "id": 16, "title": "忘还", "file": "data/novels/chapters/第16章.md" },
             { "id": 17, "title": "第三层", "file": "data/novels/chapters/第17章.md" },
             { "id": 18, "title": "石壁遗言", "file": "data/novels/chapters/第18章.md" },
-            { "id": 19, "title": "六人晚餐", "file": "data/novels/chapters/第19章.md" }
+            { "id": 19, "title": "六人晚餐", "file": "data/novels/chapters/第19章.md" },
+            { "id": 20, "title": "无痕者的第一夜", "file": "data/novels/chapters/第20章.md" },
+            { "id": 21, "title": "下山", "file": "data/novels/chapters/第21章.md" },
+            { "id": 22, "title": "坐标指向的地方", "file": "data/novels/chapters/第22章.md" }
           ]
         },
         {
-          "title": "第四卷：下山",
+          "title": "第二卷",
           "chapters": [
-            { "id": 20, "title": "无痕者的第一夜", "file": "data/novels/chapters/第20章.md" },
-            { "id": 21, "title": "下山", "file": "data/novels/chapters/第21章.md" },
-            { "id": 22, "title": "坐标指向的地方", "file": "data/novels/chapters/第22章.md" },
             { "id": 23, "title": "路上", "file": "data/novels/chapters/第23章.md" },
             { "id": 24, "title": "落痕镇", "file": "data/novels/chapters/第24章.md" },
             { "id": 25, "title": "论痕大会", "file": "data/novels/chapters/第25章.md" }
