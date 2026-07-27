@@ -40,14 +40,13 @@ module.exports = async function handler(req, res) {
 
       res.status(200).send(`<!DOCTYPE html>
 <html><head><meta charset="utf-8"><script>
+  var data = { token: '${tokenData.access_token}', provider: 'github' };
   try {
-    window.opener.postMessage(
-      JSON.stringify({ token: '${tokenData.access_token}', provider: 'github' }),
-      '*'
-    );
+    window.opener.postMessage(data, '*');
+    window.opener.postMessage(JSON.stringify(data), '*');
   } catch(e) {}
   window.close();
-  setTimeout(function(){ document.body.innerHTML = '<p style="font-family:sans-serif;padding:2rem;">✅ 登录成功！窗口即将关闭...</p>'; }, 500);
+  setTimeout(function(){ document.body.innerHTML = '<p style="font-family:sans-serif;padding:2rem;">✅ 登录成功！窗口即将关闭...<br><small>如未自动跳转请刷新页面</small></p>'; }, 800);
 </script></head><body></body></html>`);
     } catch (err) {
       res.status(200).send(`<!DOCTYPE html><html><body style="font-family:sans-serif;padding:2rem;">
