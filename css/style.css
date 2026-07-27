@@ -788,6 +788,22 @@ body {
   color: var(--text-muted);
 }
 
+/* 本地文件播放 */
+.music-card-player.music-local {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.music-card-player.music-local audio {
+  width: 100%;
+  height: 40px;
+}
+
+.music-audio-cover {
+  font-size: 2.5rem;
+  opacity: 0.6;
+}
+
 .music-card-placeholder {
   min-width: 200px;
   display: flex;

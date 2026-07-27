@@ -218,18 +218,23 @@ const Render = {
   /** 音乐卡片 HTML */
   _musicCard(track) {
     const playUrl = track.neteaseUrl || (track.neteaseId ? `https://music.163.com/song?id=${track.neteaseId}` : '#');
+    const hasLocalFile = track.file && track.file.trim() !== '';
 
-    const playerHTML = track.neteaseId
-      ? `<div class="music-card-player">
-           <meting-js
-             server="netease"
-             type="song"
-             id="${track.neteaseId}"
-             autoplay="false">
-           </meting-js>
+    // 有本地 MP3 → HTML5 完整播放；没有 → APlayer 试听
+    let playerHTML;
+    if (hasLocalFile) {
+      playerHTML = `<div class="music-card-player music-local">
+           <div class="music-audio-cover">🎵</div>
+           <audio controls preload="metadata" src="${track.file}"></audio>
+         </div>`;
+    } else if (track.neteaseId) {
+      playerHTML = `<div class="music-card-player">
+           <meting-js server="netease" type="song" id="${track.neteaseId}" autoplay="false"></meting-js>
            <span class="music-preview-tag">◈ 试听片段</span>
-         </div>`
-      : '<div class="music-card-player music-card-placeholder">🎵</div>';
+         </div>`;
+    } else {
+      playerHTML = '<div class="music-card-player music-card-placeholder">🎵</div>';
+    }
 
     return `
       <article class="music-card">
@@ -240,9 +245,8 @@ const Render = {
           <div class="music-card-meta">${track.date} · ${track.category}</div>
           <div class="music-card-desc">${track.description}</div>
           <a href="${playUrl}" target="_blank" class="music-netease-btn">
-            🎧 在网易云音乐中听完整版
+            🎧 在网易云音乐中打开
           </a>
-          <span class="music-vip-hint">VIP 歌曲请通过上方链接在网易云播放</span>
         </div>
       </article>`;
   },

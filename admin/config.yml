@@ -155,13 +155,20 @@ collections:
                 name: "category"
                 widget: "string"
                 hint: "如：华语流行、民谣、摇滚、电子"
-              - label: "网易云歌曲 ID"
+              - label: "本地上传 MP3（可选，上传后可直接完整播放）"
+                name: "file"
+                widget: "file"
+                required: false
+                hint: "上传 MP3 文件即可在页面完整播放，无需依赖网易云"
+              - label: "网易云歌曲 ID（可选，用于试听）"
                 name: "neteaseId"
                 widget: "string"
-                hint: "从网易云歌曲链接中获取，如 music.163.com/song?id=186016 中的 186016"
+                required: false
+                hint: "从网易云歌曲链接中获取"
               - label: "网易云链接"
                 name: "neteaseUrl"
                 widget: "string"
+                required: false
                 hint: "完整的网易云歌曲链接"
               - label: "日期"
                 name: "date"

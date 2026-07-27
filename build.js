@@ -219,6 +219,7 @@ if (fs.existsSync(MUSIC_FILE)) {
       ? marked.parse(item.description).trim()
       : '',
     category: item.category || '未分类',
+    file: item.file || '',
     neteaseId: item.neteaseId || '',
     neteaseUrl: item.neteaseUrl || '',
     date: item.date || '',
