@@ -336,64 +336,77 @@ function getVideosByCategory(category) {
 const NOVEL_FILE = path.join(__dirname, 'data', 'novel.json');
 if (fs.existsSync(NOVEL_FILE)) {
   const novelData = JSON.parse(fs.readFileSync(NOVEL_FILE, 'utf-8'));
-  const novels = (novelData.novels || []).map((novel) => ({
-    id: novel.id,
-    title: novel.title || '无标题',
-    author: novel.author || '佚名',
-    cover: novel.cover || '',
-    description: novel.description
-      ? marked.parse(novel.description).trim()
-      : '',
-    status: novel.status || '连载中',
-    genre: novel.genre || '',
-    wordCount: novel.wordCount || 0,
-    fanqieUrl: novel.fanqieUrl || '',
-    volumes: (novel.volumes || []).map((vol) => ({
-      title: vol.title || '未分卷',
-      chapters: (vol.chapters || []).map((ch) => {
-        let content = '';
-        let wordCount = ch.wordCount || 0;
-        if (ch.file) {
-          const filePath = path.join(__dirname, ch.file);
-          if (fs.existsSync(filePath)) {
-            const raw = fs.readFileSync(filePath, 'utf-8');
-            // 去掉第一行标题（# 第X章 xxx）
-            const body = raw.replace(/^# .+\n\n?/, '');
-            content = marked.parse(body).trim();
-            // 自动统计中文字数
-            if (!ch.wordCount) {
-              const chineseChars = body.match(/[一-鿿㐀-䶿]/g);
-              wordCount = chineseChars ? chineseChars.length : 0;
-            }
-          } else {
-            console.log(`⚠️  章节文件不存在: ${ch.file}`);
+
+  const novels = (novelData.novels || []).map((novel) => {
+    const chapterDir = path.join(__dirname, novel.chapterDir || 'data/novels/chapters');
+
+    // 扫描目录，自动发现所有 .md 文件
+    const chapterFiles = {};
+    if (fs.existsSync(chapterDir)) {
+      fs.readdirSync(chapterDir)
+        .filter(f => f.endsWith('.md'))
+        .forEach(f => {
+          const match = f.match(/第(\d+)章/);
+          if (match) {
+            chapterFiles[parseInt(match[1])] = path.join(chapterDir, f);
           }
-        } else if (ch.content) {
-          // 兼容旧格式：直接写在 JSON 里的 content
-          content = marked.parse(ch.content).trim();
+        });
+    }
+
+    // 根据卷的 range 配置组装章节
+    const volumes = (novel.volumes || []).map((vol) => {
+      const [start, end] = vol.range;
+      const chapters = [];
+      for (let i = start; i <= end; i++) {
+        const filePath = chapterFiles[i];
+        if (!filePath) {
+          console.log(`⚠️  缺失章节文件: 第${i}章.md`);
+          continue;
         }
-        return {
-          id: ch.id,
-          title: ch.title || '无标题',
+        const raw = fs.readFileSync(filePath, 'utf-8');
+        // 提取标题（第一行 # xxx）
+        const titleMatch = raw.match(/^#\s*(?:第[一二三四五六七八九十\d]+章\s*)?(.+)/);
+        const chTitle = titleMatch ? titleMatch[1].trim() : `第${i}章`;
+        // 去掉第一行标题，剩余为正文
+        const body = raw.replace(/^# .+\n\n?/, '');
+        const content = marked.parse(body).trim();
+        // 统计中文字数
+        const chineseChars = body.match(/[一-鿿㐀-䶿]/g);
+        const wordCount = chineseChars ? chineseChars.length : 0;
+
+        chapters.push({
+          id: i,
+          title: chTitle,
           wordCount,
           content,
-        };
-      }),
-    })),
-  }));
+        });
+      }
+      return { title: vol.title, chapters };
+    });
 
-  // 自动计算总字数
-  novels.forEach((novel) => {
-    let total = 0;
-    novel.volumes.forEach(v => v.chapters.forEach(ch => total += ch.wordCount));
-    if (!novel.wordCount || novel.wordCount < total) {
-      novel.wordCount = total;
-    }
+    // 自动计算总字数
+    let totalWordCount = 0;
+    volumes.forEach(v => v.chapters.forEach(ch => totalWordCount += ch.wordCount));
+
+    return {
+      id: novel.id,
+      title: novel.title || '无标题',
+      author: novel.author || '佚名',
+      cover: novel.cover || '',
+      description: novel.description
+        ? marked.parse(novel.description).trim()
+        : '',
+      status: novel.status || '连载中',
+      genre: novel.genre || '',
+      wordCount: totalWordCount,
+      fanqieUrl: novel.fanqieUrl || '',
+      volumes,
+    };
   });
 
   const novelOutput = `/**
- * 小说数据 — 由 build.js 自动生成
- * 请勿手动修改此文件，在 /admin 后台管理小说
+ * 小说数据 — 由 build.js 自动生成（章节从 data/novels/chapters/ 自动扫描）
+ * 请勿手动修改此文件
  * 生成时间：${new Date().toISOString()}
  */
 const NOVELS = ${JSON.stringify(novels, null, 2)};
