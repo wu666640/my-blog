@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pages: write
-      id-token: write
 
     steps:
       - name: 检出代码
@@ -46,4 +44,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
           enable_jekyll: false
-          exclude_assets: '.github/**,node_modules/**,.git/**,package.json,package-lock.json,build.js,netlify.toml'
