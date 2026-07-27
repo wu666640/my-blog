@@ -225,6 +225,8 @@ if (fs.existsSync(MUSIC_FILE)) {
     neteaseUrl: item.neteaseUrl || '',
     lyrics: item.lyrics || '',
     date: item.date || '',
+    tags: item.tags || [item.category || '未分类'],
+    playCount: item.playCount || 0,
   })).sort((a, b) => {
     if (!a.date) return 1;
     if (!b.date) return -1;
@@ -263,6 +265,49 @@ function getMusicCategories() {
  */
 function getMusicByCategory(category) {
   return MUSIC_TRACKS.filter(item => item.category === category);
+}
+
+/**
+ * 获取所有标签及其歌曲数量
+ */
+function getAllTags() {
+  const tagMap = {};
+  MUSIC_TRACKS.forEach(item => {
+    (item.tags || []).forEach(tag => {
+      tagMap[tag] = (tagMap[tag] || 0) + 1;
+    });
+  });
+  return Object.entries(tagMap)
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, count]) => ({ name, count }));
+}
+
+/**
+ * 根据标签筛选音乐
+ */
+function getMusicByTag(tag) {
+  return MUSIC_TRACKS.filter(item => (item.tags || []).includes(tag));
+}
+
+/**
+ * 获取所有歌手及其歌曲数量
+ */
+function getAllArtists() {
+  const artistMap = {};
+  MUSIC_TRACKS.forEach(item => {
+    const artist = item.artist || '未知';
+    artistMap[artist] = (artistMap[artist] || 0) + 1;
+  });
+  return Object.entries(artistMap)
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, count]) => ({ name, count }));
+}
+
+/**
+ * 根据歌手筛选音乐
+ */
+function getMusicByArtist(artist) {
+  return MUSIC_TRACKS.filter(item => item.artist === artist);
 }
 `;
   fs.writeFileSync(path.join(__dirname, 'js', 'music.js'), musicOutput, 'utf-8');

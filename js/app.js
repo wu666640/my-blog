@@ -59,11 +59,30 @@
       Render.mount(Render.gallery(items, params.category || null));
     })
     .on('music', (params) => {
-      const tracks = params.category
-        ? getMusicByCategory(params.category)
-        : getAllMusicTracks();
-      Render.mount(Render.music(tracks, params.category || null));
-      // 初始化自定义音频播放器
+      let tracks;
+      if (params.tag) {
+        tracks = getMusicByTag(params.tag);
+      } else if (params.artist) {
+        tracks = getMusicByArtist(params.artist);
+      } else if (params.category) {
+        tracks = getMusicByCategory(params.category);
+      } else {
+        tracks = getAllMusicTracks();
+      }
+
+      // 读取 localStorage 播放次数附加到 tracks
+      let playCounts = {};
+      try { playCounts = JSON.parse(localStorage.getItem('music_play_counts') || '{}'); } catch {}
+
+      tracks = tracks.map(t => ({
+        ...t,
+        _plays: playCounts[t.title] || 0,
+      }));
+
+      // 默认按播放次数排序
+      tracks.sort((a, b) => (b._plays - a._plays) || new Date(b.date || 0) - new Date(a.date || 0));
+
+      Render.mount(Render.music(tracks, params.tag || null, params.artist || null, true));
       setTimeout(() => Render.setupMusicPlayers(), 0);
     })
     .on('video', (params) => {

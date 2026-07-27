@@ -1093,6 +1093,154 @@ body {
   text-decoration: underline;
 }
 
+/* ----- 音乐筛选栏（标签 + 歌手 + 排序）----- */
+.music-filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.music-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.music-tag {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.76rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 15px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.music-tag:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.music-tag.active {
+  background: var(--tag-active-bg);
+  color: var(--tag-active-text);
+  font-weight: 600;
+}
+
+.music-tag-count {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  margin-left: 0.15rem;
+}
+
+.music-artists {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.music-artist-link {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.music-artist-link:hover,
+.music-artist-link.active {
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+.music-artist-count {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* 排序按钮 */
+.music-sort {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.music-sort-btn {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.music-sort-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.music-sort-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* 卡片内标签 */
+.music-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.music-card-tag {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 10px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.music-card-tag:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+/* 卡片内艺术家链接 */
+.music-card-artist-link-inline {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.music-card-artist-link-inline:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* 播放次数 */
+.music-play-count {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-left: 0.25rem;
+}
+
 /* 视频推荐卡片 */
 .video-list {
   display: flex;
@@ -2643,6 +2791,18 @@ body {
   }
   .gmp-bar-time {
     min-width: 55px;
+  }
+
+  /* 音乐筛选栏平板适配 */
+  .music-tags {
+    gap: 0.3rem;
+  }
+  .music-tag {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+  }
+  .music-artists {
+    gap: 0.3rem;
   }
 }
 

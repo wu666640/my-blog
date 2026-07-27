@@ -52,7 +52,21 @@ const Router = {
       return this.current;
     }
 
-    // #/music/xxx
+    // #/music/tag/xxx（必须在 #/music/xxx 之前）
+    match = hash.match(/^\/music\/tag\/(.+)$/);
+    if (match) {
+      this.current = { page: 'music', params: { tag: decodeURIComponent(match[1]) } };
+      return this.current;
+    }
+
+    // #/music/artist/xxx
+    match = hash.match(/^\/music\/artist\/(.+)$/);
+    if (match) {
+      this.current = { page: 'music', params: { artist: decodeURIComponent(match[1]) } };
+      return this.current;
+    }
+
+    // #/music/xxx（兼容旧的 category 路由）
     match = hash.match(/^\/music\/(.+)$/);
     if (match) {
       this.current = { page: 'music', params: { category: decodeURIComponent(match[1]) } };

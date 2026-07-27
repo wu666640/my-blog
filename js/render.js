@@ -381,33 +381,77 @@ const Render = {
   },
 
   /* ========== 音乐 ========== */
-  music(tracks, activeCategory) {
-    const categories = getMusicCategories();
 
-    const catHTML = `
-      <a href="#/music" class="tag ${!activeCategory ? 'active' : ''}">全部</a>
-      ${categories.map(c =>
-        `<a href="#/music/${encodeURIComponent(c.name)}"
-            class="tag ${activeCategory === c.name ? 'active' : ''}">${c.name} (${c.count})</a>`
+  /** 读取播放次数 */
+  _getPlayCounts() {
+    try {
+      return JSON.parse(localStorage.getItem('music_play_counts') || '{}');
+    } catch { return {}; }
+  },
+
+  /** 保存播放次数 */
+  _savePlayCounts(counts) {
+    localStorage.setItem('music_play_counts', JSON.stringify(counts));
+  },
+
+  /** 增加播放次数 */
+  _incrPlayCount(title) {
+    const counts = this._getPlayCounts();
+    counts[title] = (counts[title] || 0) + 1;
+    this._savePlayCounts(counts);
+    return counts[title];
+  },
+
+  music(tracks, activeTag, activeArtist, sortByPlays) {
+    const allTags = getAllTags();
+    const allArtists = getAllArtists();
+
+    // 标签栏
+    const tagHTML = `
+      <a href="#/music" class="music-tag ${!activeTag && !activeArtist ? 'active' : ''}">全部</a>
+      ${allTags.map(t =>
+        `<a href="#/music/tag/${encodeURIComponent(t.name)}"
+            class="music-tag ${activeTag === t.name ? 'active' : ''}">${t.name} <span class="music-tag-count">${t.count}</span></a>`
       ).join('')}`;
 
+    // 歌手列表
+    const artistHTML = allArtists.map(a =>
+      `<a href="#/music/artist/${encodeURIComponent(a.name)}"
+          class="music-artist-link ${activeArtist === a.name ? 'active' : ''}">🎤 ${a.name} <span class="music-artist-count">${a.count}</span></a>`
+    ).join('');
+
+    // 排序按钮
+    const sortHTML = `
+      <div class="music-sort">
+        <button class="music-sort-btn ${sortByPlays ? 'active' : ''}" data-sort="plays">🔥 播放最多</button>
+        <button class="music-sort-btn ${!sortByPlays ? 'active' : ''}" data-sort="date">📅 最新发布</button>
+      </div>`;
+
+    // 空状态
     const tracksHTML = tracks.length === 0
-      ? `<div class="empty-state">
-           <div class="empty-icon">🎵</div>
-           <p>暂无歌曲</p>
-         </div>`
-      : tracks.map(track => this._musicCard(track)).join('');
+      ? `<div class="empty-state"><div class="empty-icon">🎵</div><p>暂无歌曲</p></div>`
+      : tracks.map(track => this._musicCard(track, sortByPlays)).join('');
+
+    const headerLabel = activeTag
+      ? `🏷️ 标签："${activeTag}"（${tracks.length} 首）`
+      : activeArtist
+        ? `🎤 歌手："${activeArtist}"（${tracks.length} 首）`
+        : '🎵 音乐推荐';
 
     return `
       <div class="music-page">
-        <h2 class="section-title">🎵 音乐推荐</h2>
-        <div class="music-categories">${catHTML}</div>
+        <h2 class="section-title">${headerLabel}</h2>
+        <div class="music-filter-bar">
+          <div class="music-tags">${tagHTML}</div>
+          <div class="music-artists">${artistHTML}</div>
+        </div>
+        ${sortHTML}
         <div class="music-list">${tracksHTML}</div>
       </div>`;
   },
 
   /** 音乐卡片 HTML */
-  _musicCard(track) {
+  _musicCard(track, sortByPlays) {
     const playUrl = track.neteaseUrl || (track.neteaseId ? `https://music.163.com/song?id=${track.neteaseId}` : '#');
     const hasLocalFile = track.file && track.file.trim() !== '';
 
@@ -421,7 +465,6 @@ const Render = {
 
     let playerHTML;
     if (hasLocalFile) {
-      // 自定义音频播放器 — 本地上传 MP3 可完整播放
       playerHTML = `<div class="music-card-player music-local">
         <div class="cp-wrapper" data-audio-src="${track.file}" data-audio-title="${track.title}">
           <button class="cp-btn cp-play-btn" aria-label="播放" title="播放 / 暂停">
@@ -439,7 +482,6 @@ const Render = {
         <audio class="cp-audio-el" src="${track.file}" preload="metadata"></audio>
       </div>`;
     } else if (track.neteaseId) {
-      // 网易云官方 iframe 播放器
       playerHTML = `<div class="music-card-player" style="background:#f0f0f0;">
         <iframe frameborder="no" border="0" marginwidth="0" marginheight="0"
                 width="330" height="86"
@@ -468,8 +510,20 @@ const Render = {
          </div>`
       : '';
 
+    // 播放次数
+    const counts = this._getPlayCounts();
+    const plays = counts[track.title] || 0;
+    const playCountHTML = plays > 0
+      ? `<span class="music-play-count" title="已播放 ${plays} 次">🔊 ${plays}</span>`
+      : '';
+
+    // 标签
+    const tagsHTML = (track.tags || []).map(t =>
+      `<a href="#/music/tag/${encodeURIComponent(t)}" class="music-card-tag">${t}</a>`
+    ).join('');
+
     return `
-      <article class="music-card">
+      <article class="music-card" data-date="${track.date}" data-playcount="${plays}">
         ${playerHTML}
         <div class="music-card-body">
           ${coverHTML}
@@ -477,9 +531,13 @@ const Render = {
             <div class="music-card-title-row">
               <h3 class="music-card-title">${track.title}</h3>
               ${badgeHTML}
+              ${playCountHTML}
             </div>
-            <div class="music-card-artist">🎤 ${track.artist}</div>
+            <div class="music-card-artist">
+              <a href="#/music/artist/${encodeURIComponent(track.artist)}" class="music-card-artist-link-inline">🎤 ${track.artist}</a>
+            </div>
             <div class="music-card-meta">${track.date} · ${track.category}</div>
+            ${tagsHTML ? `<div class="music-card-tags">${tagsHTML}</div>` : ''}
             <div class="music-card-desc">${track.description}</div>
             <div class="music-card-actions">
               ${neteaseBtn}
@@ -583,6 +641,10 @@ const Render = {
           });
           audio.play().catch(() => {});
           icon.textContent = '⏸️';
+          // 播放计数（从头播放时 +1）
+          if (audio.currentTime < 0.5) {
+            Render._incrPlayCount(wrapper.dataset.audioTitle);
+          }
         } else {
           audio.pause();
           icon.textContent = '▶️';
@@ -603,6 +665,28 @@ const Render = {
           e.preventDefault();
           playBtn.click();
         }
+      });
+    });
+
+    // 排序切换按钮
+    document.querySelectorAll('.music-sort-btn').forEach(btn => {
+      if (btn.dataset.sortInit === 'true') return;
+      btn.dataset.sortInit = 'true';
+      btn.addEventListener('click', () => {
+        const sortBy = btn.dataset.sort;
+        const list = document.querySelector('.music-list');
+        if (!list) return;
+        const cards = [...list.querySelectorAll('.music-card')];
+        cards.sort((a, b) => {
+          if (sortBy === 'plays') {
+            return (parseInt(b.dataset.playcount) || 0) - (parseInt(a.dataset.playcount) || 0);
+          }
+          return (b.dataset.date || '').localeCompare(a.dataset.date || '');
+        });
+        cards.forEach(c => list.appendChild(c));
+        document.querySelectorAll('.music-sort-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.sort === sortBy);
+        });
       });
     });
   },
