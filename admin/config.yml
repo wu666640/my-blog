@@ -183,40 +183,32 @@ collections:
                 hint: "支持 Markdown，描述你为什么喜欢这首歌"
               - label: "分类"
                 name: "category"
-                widget: "string"
-                hint: "如：华语流行、民谣、摇滚、电子"
+                widget: "select"
+                hint: "选择歌曲分类"
+                options:
+                  - { label: "华语流行", value: "华语流行" }
+                  - { label: "粤语/华语", value: "粤语/华语" }
+                  - { label: "民谣", value: "民谣" }
+                  - { label: "摇滚", value: "摇滚" }
+                  - { label: "电子", value: "电子" }
+                  - { label: "说唱", value: "说唱" }
+                  - { label: "古风", value: "古风" }
+                  - { label: "纯音乐", value: "纯音乐" }
+                  - { label: "日语", value: "日语" }
+                  - { label: "英语", value: "英语" }
+                  - { label: "韩语", value: "韩语" }
+                  - { label: "轻音乐", value: "轻音乐" }
+                  - { label: "R&B", value: "R&B" }
+                  - { label: "爵士", value: "爵士" }
+                  - { label: "古典", value: "古典" }
+                  - { label: "影视原声", value: "影视原声" }
               - label: "标签"
                 name: "tags"
                 widget: "list"
                 required: false
-                hint: "每首歌可添加多个标签，点击下拉选择。新标签先去「🏷️ 音乐标签库」添加。"
+                hint: "自由输入标签，每首歌可加多个。常用标签参考：华语流行、粤语、民谣、摇滚、青春、怀旧、深夜、治愈、暗恋、城市、慢生活、哲思、回忆"
                 fields:
-                  - label: "标签"
-                    name: "name"
-                    widget: "select"
-                    options:
-                      - "华语流行"
-                      - "粤语"
-                      - "民谣"
-                      - "摇滚"
-                      - "电子"
-                      - "青春"
-                      - "怀旧"
-                      - "深夜"
-                      - "治愈"
-                      - "暗恋"
-                      - "城市"
-                      - "慢生活"
-                      - "哲思"
-                      - "回忆"
-                      - "旅行"
-                      - "励志"
-                      - "说唱"
-                      - "古风"
-                      - "纯音乐"
-                      - "日语"
-                      - "英语"
-                      - "韩语"
+                  - { label: "标签", name: "name", widget: "string" }
               - label: "本地上传 MP3（可选，上传后可直接完整播放）"
                 name: "file"
                 widget: "file"

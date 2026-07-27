@@ -314,6 +314,19 @@ function getMusicByArtist(artist) {
 `;
   fs.writeFileSync(path.join(__dirname, 'js', 'music.js'), musicOutput, 'utf-8');
   console.log(`✅ 已生成 js/music.js（${tracks.length} 首歌曲）`);
+
+  // 自动同步：把所有用过的标签收集到 music-tags.json
+  const TAGS_FILE = path.join(__dirname, 'data', 'music-tags.json');
+  const allTags = new Set();
+  tracks.forEach(t => (t.tags || []).forEach(tag => allTags.add(tag)));
+  if (fs.existsSync(TAGS_FILE)) {
+    const tagsData = JSON.parse(fs.readFileSync(TAGS_FILE, 'utf-8'));
+    const existing = new Set(tagsData.presets || []);
+    allTags.forEach(t => existing.add(t));
+    tagsData.presets = [...existing].sort();
+    fs.writeFileSync(TAGS_FILE, JSON.stringify(tagsData, null, 2) + '\n', 'utf-8');
+    console.log(`✅ 已同步标签库（${tagsData.presets.length} 个标签）`);
+  }
 } else {
   console.log('⚠️  data/music.json 不存在，跳过音乐生成');
 }
