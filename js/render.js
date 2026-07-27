@@ -331,6 +331,12 @@ const Render = {
       // 播放 / 暂停
       playBtn.addEventListener('click', () => {
         if (audio.paused) {
+          // 暂停全局播放器
+          const gmpAudio = document.getElementById('gmp-audio');
+          if (gmpAudio && !gmpAudio.paused) {
+            gmpAudio.pause();
+            if (typeof GlobalPlayer !== 'undefined') GlobalPlayer._refreshUI();
+          }
           // 暂停页面上其他正在播放的音频
           document.querySelectorAll('.cp-audio-el').forEach(el => {
             if (el !== audio && !el.paused) {

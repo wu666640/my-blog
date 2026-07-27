@@ -38,6 +38,40 @@
     </div>
   </footer>
 
+  <!-- ===== 全局音乐播放器：浮动按钮 ===== -->
+  <button id="gmp-fab" class="gmp-fab" title="音乐播放器" aria-label="打开音乐播放器">
+    <span class="gmp-fab-icon">🎵</span>
+  </button>
+
+  <!-- ===== 全局音乐播放器：底部播放栏 ===== -->
+  <div id="gmp-bar" class="gmp-bar gmp-hidden">
+    <div class="gmp-bar-inner">
+      <button class="gmp-bar-btn gmp-bar-play" title="播放 / 暂停" aria-label="播放 / 暂停">▶️</button>
+      <div class="gmp-bar-info">
+        <span class="gmp-bar-title">选一首歌听听吧</span>
+        <span class="gmp-bar-artist"></span>
+      </div>
+      <div class="gmp-bar-progress-track">
+        <div class="gmp-bar-progress-fill"></div>
+      </div>
+      <span class="gmp-bar-time">0:00</span>
+      <button class="gmp-bar-btn gmp-bar-list" title="播放列表" aria-label="播放列表">📋</button>
+      <button class="gmp-bar-btn gmp-bar-close" title="关闭播放器" aria-label="关闭">✕</button>
+    </div>
+  </div>
+
+  <!-- ===== 全局音乐播放器：播放列表面板 ===== -->
+  <div id="gmp-panel" class="gmp-panel gmp-hidden">
+    <div class="gmp-panel-header">
+      <h3>🎵 播放列表</h3>
+      <span class="gmp-panel-sub">选择歌曲开始播放</span>
+      <button class="gmp-panel-close" title="关闭" aria-label="关闭播放列表">✕</button>
+    </div>
+    <div class="gmp-panel-list" id="gmp-playlist"></div>
+  </div>
+
+  <audio id="gmp-audio" preload="metadata"></audio>
+
   <!-- Netlify Identity（注册/登录用） -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <!-- JS 模块 -->
@@ -45,6 +79,7 @@
   <script src="js/about.js"></script>
   <script src="js/gallery.js"></script>
   <script src="js/music.js"></script>
+  <script src="js/player.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/router.js"></script>
   <script src="js/render.js"></script>
