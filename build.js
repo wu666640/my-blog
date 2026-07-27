@@ -219,7 +219,11 @@ if (fs.existsSync(MUSIC_FILE)) {
     description: item.description
       ? marked.parse(item.description).trim()
       : '',
-    category: item.category || '未分类',
+    category: (() => {
+      let cat = item.category_override || item.category || '未分类';
+      if (cat === '___custom___') cat = item.category_override || '其他';
+      return cat;
+    })(),
     file: item.file || '',
     neteaseId: item.neteaseId || '',
     neteaseUrl: item.neteaseUrl || '',

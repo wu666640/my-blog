@@ -184,7 +184,7 @@ collections:
               - label: "分类"
                 name: "category"
                 widget: "select"
-                hint: "选择歌曲分类"
+                hint: "选择预设分类，或选「✏️ 自定义」后在下方的「自定义分类」填写"
                 options:
                   - { label: "华语流行", value: "华语流行" }
                   - { label: "粤语/华语", value: "粤语/华语" }
@@ -202,6 +202,12 @@ collections:
                   - { label: "爵士", value: "爵士" }
                   - { label: "古典", value: "古典" }
                   - { label: "影视原声", value: "影视原声" }
+                  - { label: "✏️ 自定义…", value: "___custom___" }
+              - label: "👉 自定义分类（上面选了✏️才填）"
+                name: "category_override"
+                widget: "string"
+                required: false
+                hint: "填了这里就会用自定义分类名，覆盖上面的选择"
               - label: "标签"
                 name: "tags"
                 widget: "list"
