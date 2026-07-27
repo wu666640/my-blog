@@ -7,6 +7,12 @@ const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 const { marked } = require('marked');
+const yaml = require('js-yaml');
+
+// 安全读取 YAML/JSON 文件，避免日期字符串被自动转换为 Date 对象
+function readDataFile(filePath) {
+  return yaml.load(fs.readFileSync(filePath, 'utf-8'), { schema: yaml.JSON_SCHEMA });
+}
 
 // 配置 marked
 marked.setOptions({
@@ -154,13 +160,13 @@ const GALLERY_FILE = path.join(__dirname, 'data', 'gallery.json');
 
 let galleryItems = [];
 if (fs.existsSync(GALLERY_DIR) && fs.statSync(GALLERY_DIR).isDirectory()) {
-  const files = fs.readdirSync(GALLERY_DIR).filter(f => f.endsWith('.json'));
+  const files = fs.readdirSync(GALLERY_DIR).filter(f => f.endsWith('.yml') || f.endsWith('.json'));
   galleryItems = files.map(f => {
-    try { return JSON.parse(fs.readFileSync(path.join(GALLERY_DIR, f), 'utf-8')); }
+    try { return readDataFile(path.join(GALLERY_DIR, f)); }
     catch (e) { return null; }
   }).filter(Boolean);
 } else if (fs.existsSync(GALLERY_FILE)) {
-  galleryItems = JSON.parse(fs.readFileSync(GALLERY_FILE, 'utf-8')).items || [];
+  galleryItems = readDataFile(GALLERY_FILE).items || [];
 }
 
 if (galleryItems.length > 0) {
@@ -225,12 +231,12 @@ const MUSIC_FILE = path.join(__dirname, 'data', 'music.json');
 
 let musicItems = [];
 
-// 优先从文件夹读取（新格式：每首歌一个 JSON 文件）
+// 优先从文件夹读取（新格式：每首歌一个 YML 文件，兼容旧 JSON）
 if (fs.existsSync(MUSIC_DIR) && fs.statSync(MUSIC_DIR).isDirectory()) {
-  const files = fs.readdirSync(MUSIC_DIR).filter(f => f.endsWith('.json'));
+  const files = fs.readdirSync(MUSIC_DIR).filter(f => f.endsWith('.yml') || f.endsWith('.json'));
   musicItems = files.map(f => {
     try {
-      return JSON.parse(fs.readFileSync(path.join(MUSIC_DIR, f), 'utf-8'));
+      return readDataFile(path.join(MUSIC_DIR, f));
     } catch (e) {
       console.log(`⚠️  解析失败: ${f}`);
       return null;
@@ -239,7 +245,7 @@ if (fs.existsSync(MUSIC_DIR) && fs.statSync(MUSIC_DIR).isDirectory()) {
   console.log(`📁 从 data/music/ 读取 ${musicItems.length} 首歌曲`);
 } else if (fs.existsSync(MUSIC_FILE)) {
   // 兼容旧格式：单个 JSON 文件
-  const musicData = JSON.parse(fs.readFileSync(MUSIC_FILE, 'utf-8'));
+  const musicData = readDataFile(MUSIC_FILE);
   musicItems = musicData.items || [];
   console.log(`📄 从 data/music.json 读取 ${musicItems.length} 首歌曲`);
 }
@@ -379,13 +385,13 @@ const VIDEO_FILE = path.join(__dirname, 'data', 'video.json');
 
 let videoItems = [];
 if (fs.existsSync(VIDEO_DIR) && fs.statSync(VIDEO_DIR).isDirectory()) {
-  const files = fs.readdirSync(VIDEO_DIR).filter(f => f.endsWith('.json'));
+  const files = fs.readdirSync(VIDEO_DIR).filter(f => f.endsWith('.yml') || f.endsWith('.json'));
   videoItems = files.map(f => {
-    try { return JSON.parse(fs.readFileSync(path.join(VIDEO_DIR, f), 'utf-8')); }
+    try { return readDataFile(path.join(VIDEO_DIR, f)); }
     catch (e) { return null; }
   }).filter(Boolean);
 } else if (fs.existsSync(VIDEO_FILE)) {
-  videoItems = JSON.parse(fs.readFileSync(VIDEO_FILE, 'utf-8')).items || [];
+  videoItems = readDataFile(VIDEO_FILE).items || [];
 }
 
 if (videoItems.length > 0) {

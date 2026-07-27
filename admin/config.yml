@@ -108,8 +108,8 @@ collections:
     label_singular: "图片"
     folder: "data/gallery"
     create: true
-    extension: json
-    format: json
+    extension: yml
+    format: yml
     identifier_field: "title"
     slug: "{{slug}}"
     summary: "{{title}} — {{category}}"
@@ -160,8 +160,8 @@ collections:
     label_singular: "歌曲"
     folder: "data/music"
     create: true
-    extension: json
-    format: json
+    extension: yml
+    format: yml
     identifier_field: "title"
     slug: "{{slug}}"
     summary: "{{title}} — {{artist}}"
@@ -276,8 +276,8 @@ collections:
     label_singular: "视频"
     folder: "data/video"
     create: true
-    extension: json
-    format: json
+    extension: yml
+    format: yml
     identifier_field: "title"
     slug: "{{slug}}"
     summary: "{{title}} — {{platform}}"
