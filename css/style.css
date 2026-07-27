@@ -1116,10 +1116,46 @@ body {
   transform: translateY(-2px);
 }
 
+.video-card-cover-area {
+  cursor: pointer;
+  position: relative;
+}
+
 .video-card-link {
   display: block;
   text-decoration: none;
   color: inherit;
+}
+
+/* 嵌入式视频播放器 */
+.video-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* 外部链接按钮 */
+.video-card-actions {
+  margin-top: 0.6rem;
+}
+
+.video-external-link {
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.video-external-link:hover {
+  opacity: 0.75;
 }
 
 .video-card-cover {

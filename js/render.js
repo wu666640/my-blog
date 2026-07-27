@@ -288,23 +288,51 @@ const Render = {
       </div>`;
   },
 
+  /** 解析视频嵌入链接 */
+  _videoEmbedURL(item) {
+    if (item.platform === 'bilibili') {
+      // 支持 bv 号和 av 号
+      const bv = item.url.match(/BV[a-zA-Z0-9]+/);
+      if (bv) return `//player.bilibili.com/player.html?bvid=${bv[0]}&page=1&high_quality=1&autoplay=0`;
+      const av = item.url.match(/av(\d+)/i);
+      if (av) return `//player.bilibili.com/player.html?aid=${av[1]}&page=1&high_quality=1&autoplay=0`;
+    }
+    if (item.platform === 'youtube') {
+      const id = item.url.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/);
+      if (id) return `//www.youtube.com/embed/${id[1]}`;
+    }
+    return null;
+  },
+
   /** 视频卡片 */
   _videoCard(item) {
     const platformIcon = { bilibili: '🅱️', youtube: '▶️', other: '🎬' }[item.platform] || '🎬';
+    const embedURL = this._videoEmbedURL(item);
     const coverHTML = item.cover
-      ? `<div class="video-card-cover">
+      ? `<div class="video-card-cover" data-video-cover>
            <img src="${item.cover}" alt="${item.title}" loading="lazy">
            <span class="video-play-icon">▶️</span>
          </div>`
-      : `<div class="video-card-cover video-card-cover-placeholder">
+      : `<div class="video-card-cover video-card-cover-placeholder" data-video-cover>
            <span class="video-play-icon">▶️</span>
          </div>`;
 
+    // 可嵌入的播放器
+    const embedHTML = embedURL
+      ? `<div class="video-embed" data-video-embed style="display:none">
+           <iframe src="" data-src="${embedURL}"
+                   frameborder="0" allowfullscreen="true"
+                   allow="autoplay; encrypted-media"
+                   loading="lazy"></iframe>
+         </div>`
+      : '';
+
     return `
-      <article class="video-card">
-        <a href="${item.url}" target="_blank" class="video-card-link" aria-label="观看 ${item.title}">
+      <article class="video-card" data-video-card>
+        <div class="video-card-cover-area" data-video-trigger>
           ${coverHTML}
-        </a>
+        </div>
+        ${embedHTML}
         <div class="video-card-body">
           <div class="video-card-title-row">
             <h3 class="video-card-title">${item.title}</h3>
@@ -312,8 +340,33 @@ const Render = {
           </div>
           <div class="video-card-meta">${item.date} · ${item.category}</div>
           <div class="video-card-desc">${item.description}</div>
+          <div class="video-card-actions">
+            <a href="${item.url}" target="_blank" class="video-external-link">🔗 在 ${item.platform === 'bilibili' ? 'B站' : item.platform === 'youtube' ? 'YouTube' : '原站'} 观看</a>
+          </div>
         </div>
       </article>`;
+  },
+
+  /** 初始化视频卡片点击播放 */
+  setupVideoPlayers() {
+    document.querySelectorAll('[data-video-card]').forEach(card => {
+      if (card.dataset.videoInit === 'true') return;
+      card.dataset.videoInit = 'true';
+
+      const trigger = card.querySelector('[data-video-trigger]');
+      const embed = card.querySelector('[data-video-embed]');
+      const cover = card.querySelector('[data-video-cover]');
+      if (!trigger || !embed) return;
+
+      trigger.addEventListener('click', () => {
+        const iframe = embed.querySelector('iframe');
+        if (!iframe.src) {
+          iframe.src = iframe.dataset.src;
+        }
+        embed.style.display = 'block';
+        cover.style.display = 'none';
+      });
+    });
   },
 
   /* ========== 音乐 ========== */

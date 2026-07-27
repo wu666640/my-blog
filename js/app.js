@@ -71,6 +71,8 @@
         ? getVideosByCategory(params.category)
         : getAllVideos();
       Render.mount(Render.video(items, params.category || null));
+      // 初始化视频播放器
+      setTimeout(() => Render.setupVideoPlayers(), 0);
     })
     .on('404', () => {
       Render.mount(Render.notFound());
