@@ -536,7 +536,7 @@ const Render = {
             <div class="music-card-artist">
               <a href="#/music/artist/${encodeURIComponent(track.artist)}" class="music-card-artist-link-inline">🎤 ${track.artist}</a>
             </div>
-            <div class="music-card-meta">${track.date} · ${track.category}</div>
+            <div class="music-card-meta">${(track.date || '').replace('T', ' ')} · ${track.category}</div>
             ${tagsHTML ? `<div class="music-card-tags">${tagsHTML}</div>` : ''}
             <div class="music-card-desc">${track.description}</div>
             <div class="music-card-actions">
@@ -681,7 +681,7 @@ const Render = {
           if (sortBy === 'plays') {
             return (parseInt(b.dataset.playcount) || 0) - (parseInt(a.dataset.playcount) || 0);
           }
-          return (b.dataset.date || '').localeCompare(a.dataset.date || '');
+          return new Date(b.dataset.date || 0) - new Date(a.dataset.date || 0);
         });
         cards.forEach(c => list.appendChild(c));
         document.querySelectorAll('.music-sort-btn').forEach(b => {
