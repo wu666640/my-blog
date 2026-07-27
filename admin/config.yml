@@ -184,7 +184,7 @@ collections:
               - label: "分类"
                 name: "category"
                 widget: "select"
-                hint: "选择预设分类，或选「✏️ 自定义」后在下方的「自定义分类」填写"
+                hint: "从下拉列表选择，也可以直接手打自定义分类"
                 options:
                   - { label: "华语流行", value: "华语流行" }
                   - { label: "粤语/华语", value: "粤语/华语" }
@@ -202,17 +202,11 @@ collections:
                   - { label: "爵士", value: "爵士" }
                   - { label: "古典", value: "古典" }
                   - { label: "影视原声", value: "影视原声" }
-                  - { label: "✏️ 自定义…", value: "___custom___" }
-              - label: "👉 自定义分类（上面选了✏️才填）"
-                name: "category_override"
-                widget: "string"
-                required: false
-                hint: "填了这里就会用自定义分类名，覆盖上面的选择"
               - label: "标签"
                 name: "tags"
                 widget: "list"
                 required: false
-                hint: "自由输入标签，每首歌可加多个。常用标签参考：华语流行、粤语、民谣、摇滚、青春、怀旧、深夜、治愈、暗恋、城市、慢生活、哲思、回忆"
+                hint: "每首歌可加多个标签。可以从常用标签里选，也可以直接手打新标签。常用：华语流行、民谣、摇滚、电子、青春、怀旧、深夜、治愈、暗恋、城市、慢生活、哲思、回忆"
                 fields:
                   - { label: "标签", name: "name", widget: "string" }
               - label: "本地上传 MP3（可选，上传后可直接完整播放）"
