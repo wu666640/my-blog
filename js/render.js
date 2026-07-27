@@ -65,8 +65,10 @@ function syncLyricsDisplay(scrollEl, currentTime) {
     if (prev !== cur) {
       if (prev) prev.classList.remove('active');
       cur.classList.add('active');
-      // 平滑滚动，保持当前行在可见区域中间
-      cur.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // 将当前行滚动到容器 35% 位置，留更多空间给即将到来的歌词
+      const lineTop = cur.offsetTop;
+      const targetScroll = lineTop - scrollEl.clientHeight * 0.35;
+      scrollEl.scrollTo({ top: Math.max(0, targetScroll), behavior: 'smooth' });
     }
   } else if (prev) {
     prev.classList.remove('active');
