@@ -1,15 +1,16 @@
-name: 构建并部署
+name: 构建检查
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: 检出代码
@@ -37,23 +38,3 @@ jobs:
             git commit -m "🤖 自动构建：更新生成文件 [skip ci]"
             git push
           fi
-
-      - name: 部署到 gh-pages
-        run: |
-          # 创建临时发布目录
-          mkdir /tmp/publish
-          cp -r . /tmp/publish/
-          cd /tmp/publish
-          rm -rf .git .github node_modules package.json build.js netlify.toml
-          touch .nojekyll
-
-          # 推送到 gh-pages 分支
-          git init
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b gh-pages
-          git add -A
-          git commit -m "Deploy $(date +%Y-%m-%d-%H%M%S)"
-          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          git push -f origin gh-pages
-          echo "✅ 已部署到 gh-pages 分支"

@@ -4,11 +4,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>内容管理 · 璨泯小记</title>
+  <!-- 显式声明 CMS 配置文件路径，不依赖自动查找 -->
+  <link rel="cms-config" href="config.yml">
 </head>
 <body>
+  <!-- 本地化 Decap CMS JS，避免追踪防护拦截 CDN -->
   <script src="decap-cms.js"></script>
   <script>
-    CMS.registerPreviewStyle('/css/style.css');
+    // 注册预览样式：等待 CMS 全局对象就绪
+    (function registerPreview() {
+      if (window.CMS) {
+        CMS.registerPreviewStyle('/css/style.css');
+      } else {
+        // 如果 CMS 尚未初始化（极少情况），延迟重试
+        document.addEventListener('DOMContentLoaded', function () {
+          if (window.CMS) CMS.registerPreviewStyle('/css/style.css');
+        });
+      }
+    })();
   </script>
 </body>
 </html>
