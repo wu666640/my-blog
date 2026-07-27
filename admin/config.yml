@@ -5,7 +5,7 @@ backend:
   name: github
   repo: wu666640/my-blog
   branch: main
-  base_url: https://my-blog-one-tau-42.vercel.app
+  base_url: https://my-blog-a9ja.vercel.app
 
 # 媒体文件存储位置
 media_folder: "images"
