@@ -1,3 +1,4 @@
 [build]
-  command = "npm run build"
+  # 额度用完时注释掉下面这行，本地构建后直接推送即可
+  # command = "npm run build"
   publish = "."
