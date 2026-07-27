@@ -63,6 +63,8 @@
         ? getMusicByCategory(params.category)
         : getAllMusicTracks();
       Render.mount(Render.music(tracks, params.category || null));
+      // 初始化自定义音频播放器
+      setTimeout(() => Render.setupMusicPlayers(), 0);
     })
     .on('404', () => {
       Render.mount(Render.notFound());

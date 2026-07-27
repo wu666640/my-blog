@@ -220,39 +220,152 @@ const Render = {
     const playUrl = track.neteaseUrl || (track.neteaseId ? `https://music.163.com/song?id=${track.neteaseId}` : '#');
     const hasLocalFile = track.file && track.file.trim() !== '';
 
+    // 播放模式标签
+    let badgeHTML = '';
+    if (hasLocalFile) {
+      badgeHTML = '<span class="music-badge music-badge-local">🎧 完整播放</span>';
+    } else if (track.neteaseId) {
+      badgeHTML = '<span class="music-badge music-badge-netease">🔗 在线试听</span>';
+    }
+
     let playerHTML;
     if (hasLocalFile) {
-      // 本地上传 MP3 → 完整播放
+      // 自定义音频播放器 — 本地上传 MP3 可完整播放
       playerHTML = `<div class="music-card-player music-local">
-           <div class="music-audio-cover">🎵</div>
-           <audio controls preload="metadata" src="${track.file}"></audio>
-         </div>`;
+        <div class="cp-wrapper" data-audio-src="${track.file}" data-audio-title="${track.title}">
+          <button class="cp-btn cp-play-btn" aria-label="播放" title="播放 / 暂停">
+            <span class="cp-icon">▶️</span>
+          </button>
+          <div class="cp-track-area">
+            <div class="cp-progress-bar">
+              <div class="cp-progress-fill"></div>
+            </div>
+            <span class="cp-time-current">0:00</span>
+          </div>
+          <span class="cp-time-duration">0:00</span>
+          <a class="cp-dl-btn" href="${track.file}" download title="下载 MP3" aria-label="下载 MP3">📥</a>
+        </div>
+        <audio class="cp-audio-el" src="${track.file}" preload="metadata"></audio>
+      </div>`;
     } else if (track.neteaseId) {
       // 网易云官方 iframe 播放器
       playerHTML = `<div class="music-card-player" style="background:#f0f0f0;">
-           <iframe frameborder="no" border="0" marginwidth="0" marginheight="0"
-                   width="330" height="86"
-                   src="https://music.163.com/outchain/player?type=2&id=${track.neteaseId}&auto=0&height=66">
-           </iframe>
-           <span style="font-size:0.7rem;color:#999;text-align:center;display:block;">如无法播放，请先<a href="https://music.163.com" target="_blank" style="color:#e07a5f;">登录网易云</a>后刷新</span>
-         </div>`;
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0"
+                width="330" height="86"
+                src="https://music.163.com/outchain/player?type=2&id=${track.neteaseId}&auto=0&height=66">
+        </iframe>
+        <span class="music-netease-hint">如无法播放，请先<a href="https://music.163.com" target="_blank">登录网易云</a>后刷新</span>
+      </div>`;
     } else {
       playerHTML = '<div class="music-card-player music-card-placeholder">🎵</div>';
     }
+
+    // 网易云外链按钮
+    const neteaseBtn = (track.neteaseUrl || track.neteaseId)
+      ? `<a href="${playUrl}" target="_blank" class="music-netease-btn">🎧 在网易云音乐中打开</a>`
+      : '';
 
     return `
       <article class="music-card">
         ${playerHTML}
         <div class="music-card-body">
-          <h3 class="music-card-title">${track.title}</h3>
+          <div class="music-card-title-row">
+            <h3 class="music-card-title">${track.title}</h3>
+            ${badgeHTML}
+          </div>
           <div class="music-card-artist">🎤 ${track.artist}</div>
           <div class="music-card-meta">${track.date} · ${track.category}</div>
           <div class="music-card-desc">${track.description}</div>
-          <a href="${playUrl}" target="_blank" class="music-netease-btn">
-            🎧 在网易云音乐中打开
-          </a>
+          <div class="music-card-actions">
+            ${neteaseBtn}
+          </div>
         </div>
       </article>`;
+  },
+
+  /** 初始化自定义音频播放器（在音乐页面渲染后调用） */
+  setupMusicPlayers() {
+    const wrappers = document.querySelectorAll('.cp-wrapper');
+    wrappers.forEach(wrapper => {
+      // 避免重复初始化
+      if (wrapper.dataset.initialized === 'true') return;
+      wrapper.dataset.initialized = 'true';
+
+      const playBtn = wrapper.querySelector('.cp-play-btn');
+      const icon = playBtn ? playBtn.querySelector('.cp-icon') : null;
+      const progressBar = wrapper.querySelector('.cp-progress-bar');
+      const progressFill = wrapper.querySelector('.cp-progress-fill');
+      const timeCurrent = wrapper.querySelector('.cp-time-current');
+      const timeDuration = wrapper.querySelector('.cp-time-duration');
+      const audio = wrapper.parentElement.querySelector('.cp-audio-el');
+
+      if (!audio || !playBtn || !icon) return;
+
+      // 格式化时间 mm:ss
+      const fmt = (s) => {
+        if (isNaN(s) || !isFinite(s)) return '0:00';
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60);
+        return m + ':' + String(sec).padStart(2, '0');
+      };
+
+      // 加载完成时显示时长
+      audio.addEventListener('loadedmetadata', () => {
+        timeDuration.textContent = fmt(audio.duration);
+      });
+
+      // 更新进度条和时间
+      audio.addEventListener('timeupdate', () => {
+        const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+        progressFill.style.width = pct + '%';
+        timeCurrent.textContent = fmt(audio.currentTime);
+      });
+
+      // 播放结束重置
+      audio.addEventListener('ended', () => {
+        icon.textContent = '▶️';
+        progressFill.style.width = '0%';
+        timeCurrent.textContent = '0:00';
+      });
+
+      // 播放 / 暂停
+      playBtn.addEventListener('click', () => {
+        if (audio.paused) {
+          // 暂停页面上其他正在播放的音频
+          document.querySelectorAll('.cp-audio-el').forEach(el => {
+            if (el !== audio && !el.paused) {
+              el.pause();
+              const sibling = el.parentElement.querySelector('.cp-wrapper');
+              if (sibling) {
+                const sibIcon = sibling.querySelector('.cp-icon');
+                if (sibIcon) sibIcon.textContent = '▶️';
+              }
+            }
+          });
+          audio.play().catch(() => {});
+          icon.textContent = '⏸️';
+        } else {
+          audio.pause();
+          icon.textContent = '▶️';
+        }
+      });
+
+      // 点击进度条跳转
+      progressBar.addEventListener('click', (e) => {
+        if (!audio.duration || !isFinite(audio.duration)) return;
+        const rect = progressBar.getBoundingClientRect();
+        const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        audio.currentTime = pct * audio.duration;
+      });
+
+      // 键盘可访问性
+      playBtn.addEventListener('keydown', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          playBtn.click();
+        }
+      });
+    });
   },
 
   /* ========== 404 ========== */
