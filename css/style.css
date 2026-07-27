@@ -728,12 +728,56 @@ body {
 /* 音乐卡片 — 水平布局（桌面端播放器左、文字右） */
 .music-card {
   display: flex;
+  flex-direction: column;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--shadow);
   transition: box-shadow 0.25s, transform 0.25s;
+}
+
+/* ===== 桌面端：歌词右侧栏 ===== */
+@media (min-width: 769px) {
+  /* 有歌词时：两栏布局 */
+  .music-card:has(.music-lyrics) {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    grid-template-rows: auto auto;
+  }
+
+  /* 播放器横跨顶部整行 */
+  .music-card:has(.music-lyrics) > .music-card-player {
+    grid-column: 1 / -1;
+    /* 默认 row 1 */
+  }
+
+  /* 没有播放器时只有一行 */
+  .music-card:has(.music-lyrics):not(:has(.music-card-player)) {
+    grid-template-rows: auto;
+  }
+
+  /* 歌曲信息固定在左列 */
+  .music-card:has(.music-lyrics) > .music-card-body {
+    grid-column: 1;
+  }
+
+  /* 歌词固定在右列，与歌曲信息同行 */
+  .music-card > .music-lyrics {
+    grid-column: 2;
+    border-top: none;
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+  }
+
+  .music-card > .music-lyrics .music-lyrics-scroll {
+    flex: 1;
+    max-height: none;
+    overflow-y: auto;
+    padding: 0.5rem 1rem 1.2rem;
+  }
 }
 
 .music-card:hover {
