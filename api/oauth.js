@@ -7,8 +7,11 @@ export default async function handler(req, res) {
   const clientId = process.env.OAUTH_CLIENT_ID;
   const clientSecret = process.env.OAUTH_CLIENT_SECRET;
 
-  const redirectURI = process.env.OAUTH_REDIRECT_URL ||
-    `https://${process.env.VERCEL_URL}/callback`;
+  // 用自定义域名（优先环境变量，其次写死的域名）
+  const baseHost = process.env.OAUTH_REDIRECT_URL
+    ? new URL(process.env.OAUTH_REDIRECT_URL).origin
+    : 'https://my-blog-a9ja.vercel.app';
+  const redirectURI = `${baseHost}/callback`;
 
   // 第一步：GitHub 回调，用 code 换 token
   if (code) {
