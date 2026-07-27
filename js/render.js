@@ -220,17 +220,20 @@ const Render = {
     const playUrl = track.neteaseUrl || (track.neteaseId ? `https://music.163.com/song?id=${track.neteaseId}` : '#');
     const hasLocalFile = track.file && track.file.trim() !== '';
 
-    // 有本地 MP3 → HTML5 完整播放；没有 → APlayer 试听
     let playerHTML;
     if (hasLocalFile) {
+      // 本地上传 MP3 → 完整播放
       playerHTML = `<div class="music-card-player music-local">
            <div class="music-audio-cover">🎵</div>
            <audio controls preload="metadata" src="${track.file}"></audio>
          </div>`;
     } else if (track.neteaseId) {
+      // 网易云官方 iframe 播放器
       playerHTML = `<div class="music-card-player">
-           <meting-js server="netease" type="song" id="${track.neteaseId}" autoplay="false"></meting-js>
-           <span class="music-preview-tag">◈ 试听片段</span>
+           <iframe frameborder="no" border="0" marginwidth="0" marginheight="0"
+                   width="330" height="86"
+                   src="//music.163.com/outchain/player?type=2&id=${track.neteaseId}&auto=0&height=66">
+           </iframe>
          </div>`;
     } else {
       playerHTML = '<div class="music-card-player music-card-placeholder">🎵</div>';
