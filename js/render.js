@@ -305,38 +305,55 @@ const Render = {
 
   /** 视频卡片 */
   _videoCard(item) {
+    const hasLocal = item.file && item.file.trim() !== '';
     const platformIcon = { bilibili: '🅱️', youtube: '▶️', other: '🎬' }[item.platform] || '🎬';
     const embedURL = this._videoEmbedURL(item);
-    const coverHTML = item.cover
-      ? `<div class="video-card-cover" data-video-cover>
-           <img src="${item.cover}" alt="${item.title}" loading="lazy">
-           <span class="video-play-icon">▶️</span>
-         </div>`
-      : `<div class="video-card-cover video-card-cover-placeholder" data-video-cover>
-           <span class="video-play-icon">▶️</span>
-         </div>`;
 
-    // 可嵌入的播放器（iframe 在点击时动态创建）
-    const embedHTML = embedURL
-      ? `<div class="video-embed" data-video-embed style="display:none" data-embed-url="${embedURL.replace(/&/g, '&amp;')}"></div>`
-      : '';
+    // 本地视频：直接显示 HTML5 播放器
+    let playerHTML;
+    if (hasLocal) {
+      playerHTML = `<div class="video-local-player">
+        <video class="video-local-el" src="${item.file}" controls preload="metadata"
+               ${item.cover ? `poster="${item.cover}"` : ''}>
+          您的浏览器不支持视频播放
+        </video>
+      </div>`;
+    } else if (embedURL) {
+      // 可嵌入的外部播放器
+      const coverHTML = item.cover
+        ? `<div class="video-card-cover" data-video-cover>
+             <img src="${item.cover}" alt="${item.title}" loading="lazy">
+             <span class="video-play-icon">▶️</span>
+           </div>`
+        : `<div class="video-card-cover video-card-cover-placeholder" data-video-cover>
+             <span class="video-play-icon">▶️</span>
+           </div>`;
+      playerHTML = `<div class="video-card-cover-area" data-video-trigger>${coverHTML}</div>
+        <div class="video-embed" data-video-embed style="display:none" data-embed-url="${embedURL.replace(/&/g, '&amp;')}"></div>`;
+    } else {
+      playerHTML = '<div class="video-card-cover video-card-cover-placeholder">🎬</div>';
+    }
+
+    // 外部链接
+    const externalLink = item.url
+      ? `<a href="${item.url}" target="_blank" class="video-external-link">🔗 在 ${item.platform === 'bilibili' ? 'B站' : item.platform === 'youtube' ? 'YouTube' : '原站'} 观看</a>`
+      : (hasLocal ? '' : '');
+
+    const badgeHTML = hasLocal
+      ? '<span class="video-badge video-badge-local">📁 本地视频</span>'
+      : `<span class="video-badge">${platformIcon} ${item.platform}</span>`;
 
     return `
-      <article class="video-card" data-video-card>
-        <div class="video-card-cover-area" data-video-trigger>
-          ${coverHTML}
-        </div>
-        ${embedHTML}
+      <article class="video-card" data-video-card ${hasLocal ? 'data-video-local="true"' : ''}>
+        ${playerHTML}
         <div class="video-card-body">
           <div class="video-card-title-row">
             <h3 class="video-card-title">${item.title}</h3>
-            <span class="video-badge">${platformIcon} ${item.platform}</span>
+            ${badgeHTML}
           </div>
           <div class="video-card-meta">${item.date} · ${item.category}</div>
           <div class="video-card-desc">${item.description}</div>
-          <div class="video-card-actions">
-            <a href="${item.url}" target="_blank" class="video-external-link">🔗 在 ${item.platform === 'bilibili' ? 'B站' : item.platform === 'youtube' ? 'YouTube' : '原站'} 观看</a>
-          </div>
+          ${externalLink ? `<div class="video-card-actions">${externalLink}</div>` : ''}
         </div>
       </article>`;
   },

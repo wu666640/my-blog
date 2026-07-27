@@ -1275,6 +1275,29 @@ body {
   color: inherit;
 }
 
+/* 本地视频播放器 */
+.video-local-player {
+  width: 100%;
+  background: #000;
+}
+
+.video-local-el {
+  display: block;
+  width: 100%;
+  max-height: 480px;
+  background: #000;
+}
+
+.video-badge-local {
+  background: #d4edda;
+  color: #2d6a4f;
+}
+
+[data-theme="dark"] .video-badge-local {
+  background: #1b4332;
+  color: #95d5b2;
+}
+
 /* 嵌入式视频播放器 */
 .video-embed {
   position: relative;

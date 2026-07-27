@@ -281,7 +281,13 @@ collections:
       - label: "视频链接"
         name: "url"
         widget: "string"
-        hint: "B站/YouTube 等视频链接"
+        required: false
+        hint: "B站/YouTube 等视频链接。如果上传了本地视频，此项可留空"
+      - label: "本地上传视频（可选，优先于链接）"
+        name: "file"
+        widget: "file"
+        required: false
+        hint: "上传 MP4 等视频文件即可在页面直接播放"
       - label: "平台"
         name: "platform"
         widget: "select"

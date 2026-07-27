@@ -394,6 +394,7 @@ if (videoItems.length > 0) {
     title: item.title || '无标题',
     url: item.url || '',
     platform: item.platform || 'other',
+    file: item.file || '',
     cover: item.cover || '',
     description: item.description
       ? marked.parse(item.description).trim()
