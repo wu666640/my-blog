@@ -14,11 +14,11 @@
     // 注册预览样式：等待 CMS 全局对象就绪
     (function registerPreview() {
       if (window.CMS) {
-        CMS.registerPreviewStyle('/css/style.css');
+        CMS.registerPreviewStyle('../css/style.css');
       } else {
         // 如果 CMS 尚未初始化（极少情况），延迟重试
         document.addEventListener('DOMContentLoaded', function () {
-          if (window.CMS) CMS.registerPreviewStyle('/css/style.css');
+          if (window.CMS) CMS.registerPreviewStyle('../css/style.css');
         });
       }
     })();

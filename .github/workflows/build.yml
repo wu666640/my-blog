@@ -1,17 +1,12 @@
-name: 构建检查
+name: 构建并部署
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
-    # 跳过 GitHub Actions 自己的提交，避免死循环
-    if: github.actor != 'github-actions[bot]'
+  build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -31,14 +26,20 @@ jobs:
       - name: 运行构建
         run: npm run build
 
-      - name: 提交生成文件
+      - name: 部署到 GitHub Pages
         run: |
+          mkdir /tmp/publish
+          cp -r . /tmp/publish/
+          cd /tmp/publish
+          rm -rf .git .github node_modules package.json package-lock.json build.js netlify.toml
+          touch .nojekyll
+
+          git init
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add js/posts.js js/about.js js/gallery.js js/music.js js/video.js
-          if git diff --staged --quiet; then
-            echo "生成文件无变化"
-          else
-            git commit -m "🤖 自动构建：更新生成文件"
-            git push
-          fi
+          git checkout -b gh-pages
+          git add -A
+          git commit -m "Deploy $(date +%Y-%m-%d-%H%M%S)" || exit 0
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push -f origin gh-pages
+          echo "✅ 已部署到 gh-pages"
