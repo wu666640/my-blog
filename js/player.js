@@ -64,14 +64,21 @@ const GlobalPlayer = {
       }
     });
 
+    // 侧栏歌词关闭按钮
+    const sidebarClose = document.querySelector('.lyrics-sidebar-close');
+    if (sidebarClose) {
+      sidebarClose.addEventListener('click', () => this._hideSidebar());
+    }
+
     // 音频事件
     this.audio.addEventListener('timeupdate', () => {
       this._onProgress();
       this._syncLyrics();
+      this._syncSidebarLyrics();
     });
     this.audio.addEventListener('loadedmetadata', () => this._onProgress());
     this.audio.addEventListener('ended', () => this.next());
-    this.audio.addEventListener('play', () => { this.isPlaying = true; this._refreshUI(); });
+    this.audio.addEventListener('play', () => { this.isPlaying = true; this._refreshUI(); this._showSidebar(); });
     this.audio.addEventListener('pause', () => { this.isPlaying = false; this._refreshUI(); });
     this.audio.addEventListener('error', () => this._onError());
 
@@ -111,6 +118,7 @@ const GlobalPlayer = {
 
     this._refreshUI();
     this._renderPlaylist();
+    this._updateLyricsSidebar();
     this.show();
     this.hidePanel();
     this._saveState();
@@ -167,6 +175,7 @@ const GlobalPlayer = {
     this._refreshUI();
     this._onProgress();
     this.hide();
+    this._hideSidebar();
     localStorage.removeItem('gmp_state');
   },
 
@@ -284,6 +293,89 @@ const GlobalPlayer = {
     } else if (prev) {
       prev.classList.remove('active');
     }
+  },
+
+  /* ========== 右侧歌词面板 ========== */
+  /** 渲染并显示/隐藏侧栏歌词 */
+  _updateLyricsSidebar() {
+    const sidebar = document.getElementById('lyrics-sidebar');
+    if (!sidebar) return;
+
+    const track = this.tracks[this.currentIndex];
+    const hasLyrics = track && track.lyrics && track.lyrics.trim();
+
+    if (hasLyrics && this.isPlaying) {
+      const songEl = sidebar.querySelector('.lyrics-sidebar-song');
+      const artistEl = sidebar.querySelector('.lyrics-sidebar-artist');
+      const linesContainer = document.getElementById('lyrics-sidebar-lines');
+      const emptyHint = sidebar.querySelector('.lyrics-sidebar-empty');
+
+      if (songEl) songEl.textContent = track.title;
+      if (artistEl) artistEl.textContent = track.artist;
+
+      const lines = parseLRC(track.lyrics);
+      if (lines.length > 0) {
+        linesContainer.innerHTML = lines.map(line =>
+          `<p class="lyrics-sb-line" data-sb-time="${line.time}">${line.text}</p>`
+        ).join('');
+        if (emptyHint) emptyHint.style.display = 'none';
+        this._showSidebar();
+        this._syncSidebarLyrics();
+      } else if (emptyHint) {
+        emptyHint.style.display = 'block';
+        linesContainer.innerHTML = '';
+        this._hideSidebar();
+      }
+    } else {
+      this._hideSidebar();
+    }
+  },
+
+  /** 同步侧栏歌词高亮和滚动 */
+  _syncSidebarLyrics() {
+    const sidebar = document.getElementById('lyrics-sidebar');
+    if (!sidebar || sidebar.classList.contains('gmp-hidden')) return;
+
+    const lines = sidebar.querySelectorAll('.lyrics-sb-line');
+    if (lines.length === 0) return;
+
+    const currentTime = this.audio.currentTime;
+    let activeIdx = -1;
+    for (let i = 0; i < lines.length; i++) {
+      const t = parseFloat(lines[i].dataset.sbTime);
+      if (!isNaN(t) && currentTime >= t) {
+        activeIdx = i;
+      } else {
+        break;
+      }
+    }
+
+    const prev = sidebar.querySelector('.lyrics-sb-line.active');
+    if (activeIdx >= 0) {
+      const cur = lines[activeIdx];
+      if (prev !== cur) {
+        if (prev) prev.classList.remove('active');
+        cur.classList.add('active');
+        const scrollEl = document.getElementById('lyrics-sidebar-scroll');
+        if (scrollEl) {
+          const lineTop = cur.offsetTop;
+          const targetScroll = lineTop - scrollEl.clientHeight * 0.35;
+          scrollEl.scrollTo({ top: Math.max(0, targetScroll), behavior: 'smooth' });
+        }
+      }
+    } else if (prev) {
+      prev.classList.remove('active');
+    }
+  },
+
+  _showSidebar() {
+    const sidebar = document.getElementById('lyrics-sidebar');
+    if (sidebar) sidebar.classList.remove('gmp-hidden');
+  },
+
+  _hideSidebar() {
+    const sidebar = document.getElementById('lyrics-sidebar');
+    if (sidebar) sidebar.classList.add('gmp-hidden');
   },
 
   /* ========== 播放列表渲染 ========== */

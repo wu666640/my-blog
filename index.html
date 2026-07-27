@@ -31,6 +31,22 @@
     <!-- 页面内容由 JS 渲染 -->
   </main>
 
+  <!-- ===== 右侧歌词面板（桌面端利用右边空白） ===== -->
+  <aside id="lyrics-sidebar" class="lyrics-sidebar gmp-hidden" aria-label="歌词面板">
+    <div class="lyrics-sidebar-header">
+      <span class="lyrics-sidebar-title">📜 歌词</span>
+      <button class="lyrics-sidebar-close" title="隐藏歌词" aria-label="隐藏歌词">✕</button>
+    </div>
+    <div class="lyrics-sidebar-track">
+      <span class="lyrics-sidebar-song"></span>
+      <span class="lyrics-sidebar-artist"></span>
+    </div>
+    <div class="lyrics-sidebar-scroll" id="lyrics-sidebar-scroll">
+      <div class="lyrics-sidebar-lines" id="lyrics-sidebar-lines"></div>
+      <div class="lyrics-sidebar-empty">选择一首有歌词的歌曲开始播放</div>
+    </div>
+  </aside>
+
   <!-- ===== 页脚 ===== -->
   <footer class="site-footer">
     <div class="footer-inner">
