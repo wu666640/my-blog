@@ -208,10 +208,32 @@ function getGalleryByCategory(category) {
 }
 
 // ===== 生成 js/music.js（音乐推荐）=====
+const MUSIC_DIR = path.join(__dirname, 'data', 'music');
 const MUSIC_FILE = path.join(__dirname, 'data', 'music.json');
-if (fs.existsSync(MUSIC_FILE)) {
+
+let musicItems = [];
+
+// 优先从文件夹读取（新格式：每首歌一个 JSON 文件）
+if (fs.existsSync(MUSIC_DIR) && fs.statSync(MUSIC_DIR).isDirectory()) {
+  const files = fs.readdirSync(MUSIC_DIR).filter(f => f.endsWith('.json'));
+  musicItems = files.map(f => {
+    try {
+      return JSON.parse(fs.readFileSync(path.join(MUSIC_DIR, f), 'utf-8'));
+    } catch (e) {
+      console.log(`⚠️  解析失败: ${f}`);
+      return null;
+    }
+  }).filter(Boolean);
+  console.log(`📁 从 data/music/ 读取 ${musicItems.length} 首歌曲`);
+} else if (fs.existsSync(MUSIC_FILE)) {
+  // 兼容旧格式：单个 JSON 文件
   const musicData = JSON.parse(fs.readFileSync(MUSIC_FILE, 'utf-8'));
-  const tracks = (musicData.items || []).map((item, index) => ({
+  musicItems = musicData.items || [];
+  console.log(`📄 从 data/music.json 读取 ${musicItems.length} 首歌曲`);
+}
+
+if (musicItems.length > 0) {
+  const tracks = musicItems.map((item, index) => ({
     id: index + 1,
     title: item.title || '未知曲目',
     artist: item.artist || '未知歌手',
@@ -336,7 +358,7 @@ function getMusicByArtist(artist) {
     console.log(`✅ 已同步标签库（${tagsData.presets.length} 个标签）`);
   }
 } else {
-  console.log('⚠️  data/music.json 不存在，跳过音乐生成');
+  console.log('⚠️  没有找到歌曲数据，跳过音乐生成');
 }
 
 // ===== 生成 js/video.js（视频推荐）=====
