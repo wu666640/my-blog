@@ -607,6 +607,242 @@ const Render = {
     });
   },
 
+  /* ========== 小说列表 ========== */
+  novelList(novels) {
+    const itemsHTML = novels.length === 0
+      ? `<div class="empty-state">
+           <div class="empty-icon">📚</div>
+           <p>暂无小说</p>
+         </div>`
+      : novels.map(novel => this._novelCard(novel)).join('');
+
+    return `
+      <div class="novel-page">
+        <h2 class="section-title">📚 小说</h2>
+        <div class="novel-list">${itemsHTML}</div>
+      </div>`;
+  },
+
+  /** 小说卡片 */
+  _novelCard(novel) {
+    const statusBadge = novel.status === '连载中'
+      ? '<span class="novel-badge novel-badge-ongoing">连载中</span>'
+      : '<span class="novel-badge novel-badge-done">已完结</span>';
+
+    const coverHTML = novel.cover
+      ? `<div class="novel-card-cover">
+           <img src="${novel.cover}" alt="${novel.title}" loading="lazy">
+         </div>`
+      : '<div class="novel-card-cover novel-card-cover-placeholder">📖</div>';
+
+    const descHTML = novel.description
+      ? `<div class="novel-card-desc">${novel.description.slice(0, 150)}${novel.description.length > 150 ? '…' : ''}</div>`
+      : '';
+
+    return `
+      <a href="#/novel/${novel.id}" class="novel-card-link">
+        <article class="novel-card">
+          ${coverHTML}
+          <div class="novel-card-body">
+            <div class="novel-card-title-row">
+              <h3 class="novel-card-title">${novel.title}</h3>
+              ${statusBadge}
+            </div>
+            <div class="novel-card-meta">✍️ ${novel.author} · ${novel.genre} · ${novel.wordCount.toLocaleString()} 字</div>
+            ${descHTML}
+          </div>
+        </article>
+      </a>`;
+  },
+
+  /* ========== 小说详情 ========== */
+  novelDetail(novel) {
+    const statusBadge = novel.status === '连载中'
+      ? '<span class="novel-badge novel-badge-ongoing">连载中</span>'
+      : '<span class="novel-badge novel-badge-done">已完结</span>';
+
+    const coverHTML = novel.cover
+      ? `<div class="novel-detail-cover">
+           <img src="${novel.cover}" alt="${novel.title}">
+         </div>`
+      : '';
+
+    const fanqieLink = novel.fanqieUrl
+      ? `<a href="${novel.fanqieUrl}" target="_blank" class="novel-fanqie-btn">📱 在番茄小说阅读</a>`
+      : '';
+
+    // 章节目录
+    const tocHTML = novel.volumes.map((vol, vi) => {
+      const chaptersHTML = vol.chapters.map(ch => `
+        <a href="#/novel/${novel.id}/${ch.id}" class="novel-chapter-link">
+          <span class="novel-chapter-link-title">第${ch.id}章 ${ch.title}</span>
+          <span class="novel-chapter-link-count">${ch.wordCount ? ch.wordCount.toLocaleString() + ' 字' : ''}</span>
+        </a>
+      `).join('');
+
+      return `
+        <div class="novel-volume">
+          <div class="novel-volume-header" data-volume-toggle>
+            <span class="novel-volume-arrow">${vi === 0 ? '▽' : '▸'}</span>
+            <span class="novel-volume-title">${vol.title}</span>
+            <span class="novel-volume-count">${vol.chapters.length} 章</span>
+          </div>
+          <div class="novel-volume-chapters${vi === 0 ? '' : ' novel-volume-collapsed'}">
+            ${chaptersHTML}
+          </div>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="novel-detail-page">
+        <div class="novel-detail">
+          ${coverHTML}
+          <div class="novel-detail-info">
+            <h1 class="novel-detail-title">${novel.title}</h1>
+            <div class="novel-detail-meta">
+              <span>✍️ ${novel.author}</span>
+              <span>${statusBadge}</span>
+              <span>📂 ${novel.genre}</span>
+              <span>📝 ${novel.wordCount.toLocaleString()} 字</span>
+            </div>
+            <div class="novel-detail-desc">${novel.description}</div>
+            <div class="novel-detail-actions">
+              ${fanqieLink}
+            </div>
+          </div>
+        </div>
+        <div class="novel-toc">
+          <h2 class="novel-toc-title">📑 目录</h2>
+          ${tocHTML}
+        </div>
+      </div>`;
+  },
+
+  /* ========== 章节阅读 ========== */
+  novelChapter(novel, chapter, prev, next, allChapters) {
+    const prevHTML = prev
+      ? `<a href="#/novel/${novel.id}/${prev.chapterId}" class="novel-chapter-nav-link novel-chapter-nav-prev">← 第${prev.chapterId}章 ${prev.title}</a>`
+      : '<span class="novel-chapter-nav-link novel-chapter-nav-prev novel-chapter-nav-disabled">← 已是第一章</span>';
+
+    const nextHTML = next
+      ? `<a href="#/novel/${novel.id}/${next.chapterId}" class="novel-chapter-nav-link novel-chapter-nav-next">第${next.chapterId}章 ${next.title} →</a>`
+      : '<span class="novel-chapter-nav-link novel-chapter-nav-next novel-chapter-nav-disabled">已是最后一章 →</span>';
+
+    // 目录侧栏
+    const tocLinksHTML = allChapters.map(ch => `
+      <a href="#/novel/${novel.id}/${ch.chapterId}"
+         class="novel-toc-drawer-link ${ch.chapterId === chapter.id ? 'novel-toc-drawer-link-active' : ''}">
+        <span>第${ch.chapterId}章 ${ch.title}</span>
+        <span>${ch.volumeTitle}</span>
+      </a>
+    `).join('');
+
+    // 找到章节所属卷名
+    let volumeTitle = '';
+    for (const vol of novel.volumes) {
+      if (vol.chapters.some(c => c.id === chapter.id)) {
+        volumeTitle = vol.title;
+        break;
+      }
+    }
+
+    // 正文为空时的提示
+    const bodyHTML = chapter.content
+      ? chapter.content
+      : `<div class="novel-chapter-empty">
+           <p>📝 此章节内容尚在搬运中……</p>
+           <p>请前往 <a href="${novel.fanqieUrl || '#'}" target="_blank">番茄小说</a> 阅读完整内容</p>
+         </div>`;
+
+    return `
+      <div class="novel-chapter-page">
+        <div class="novel-progress" id="novel-progress"></div>
+        <div class="novel-chapter-header">
+          <div class="novel-chapter-breadcrumb">
+            <a href="#/novel/${novel.id}">📚 ${novel.title}</a>
+            <span> / </span>
+            <span>${volumeTitle}</span>
+          </div>
+          <h1 class="novel-chapter-title">第${chapter.id}章 ${chapter.title}</h1>
+          <div class="novel-chapter-meta">📝 ${chapter.wordCount ? chapter.wordCount.toLocaleString() + ' 字' : ''}</div>
+        </div>
+        <div class="novel-chapter-body">
+          ${bodyHTML}
+        </div>
+        <div class="novel-chapter-nav">
+          ${prevHTML}
+          ${nextHTML}
+        </div>
+      </div>
+
+      <!-- 浮动目录按钮 -->
+      <button class="novel-chapter-toc-btn" id="novel-toc-btn" title="目录" aria-label="打开章节目录">📑</button>
+
+      <!-- 目录抽屉遮罩 -->
+      <div class="novel-toc-overlay" id="novel-toc-overlay" style="display:none"></div>
+
+      <!-- 目录抽屉 -->
+      <div class="novel-toc-drawer" id="novel-toc-drawer" style="display:none">
+        <div class="novel-toc-drawer-header">
+          <span>📑 ${novel.title}</span>
+          <button class="novel-toc-drawer-close" id="novel-toc-drawer-close">✕</button>
+        </div>
+        <div class="novel-toc-drawer-list">
+          ${tocLinksHTML}
+        </div>
+      </div>
+    `;
+  },
+
+  /** 初始化小说页面交互（目录折叠、浮动目录按钮、阅读进度条） */
+  setupNovelPage() {
+    // 卷折叠/展开
+    document.querySelectorAll('[data-volume-toggle]').forEach(header => {
+      header.addEventListener('click', () => {
+        const volume = header.parentElement;
+        const chapters = volume.querySelector('.novel-volume-chapters');
+        const arrow = header.querySelector('.novel-volume-arrow');
+        if (chapters) {
+          const isCollapsed = chapters.classList.toggle('novel-volume-collapsed');
+          if (arrow) arrow.textContent = isCollapsed ? '▸' : '▽';
+        }
+      });
+    });
+
+    // 浮动目录按钮
+    const tocBtn = document.getElementById('novel-toc-btn');
+    const tocOverlay = document.getElementById('novel-toc-overlay');
+    const tocDrawer = document.getElementById('novel-toc-drawer');
+    const tocClose = document.getElementById('novel-toc-drawer-close');
+
+    if (tocBtn && tocOverlay && tocDrawer) {
+      const openToc = () => {
+        tocOverlay.style.display = 'block';
+        tocDrawer.style.display = 'block';
+      };
+      const closeToc = () => {
+        tocOverlay.style.display = 'none';
+        tocDrawer.style.display = 'none';
+      };
+      tocBtn.addEventListener('click', openToc);
+      tocOverlay.addEventListener('click', closeToc);
+      if (tocClose) tocClose.addEventListener('click', closeToc);
+    }
+
+    // 阅读进度条
+    const progressBar = document.getElementById('novel-progress');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+        progressBar.style.width = pct + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress();
+    }
+  },
+
   /* ========== 404 ========== */
   notFound() {
     return `

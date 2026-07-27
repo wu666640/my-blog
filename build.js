@@ -331,3 +331,104 @@ function getVideosByCategory(category) {
 } else {
   console.log('⚠️  data/video.json 不存在，跳过视频生成');
 }
+
+// ===== 生成 js/novel.js（小说）=====
+const NOVEL_FILE = path.join(__dirname, 'data', 'novel.json');
+if (fs.existsSync(NOVEL_FILE)) {
+  const novelData = JSON.parse(fs.readFileSync(NOVEL_FILE, 'utf-8'));
+  const novels = (novelData.novels || []).map((novel) => ({
+    id: novel.id,
+    title: novel.title || '无标题',
+    author: novel.author || '佚名',
+    cover: novel.cover || '',
+    description: novel.description
+      ? marked.parse(novel.description).trim()
+      : '',
+    status: novel.status || '连载中',
+    genre: novel.genre || '',
+    wordCount: novel.wordCount || 0,
+    fanqieUrl: novel.fanqieUrl || '',
+    volumes: (novel.volumes || []).map((vol) => ({
+      title: vol.title || '未分卷',
+      chapters: (vol.chapters || []).map((ch) => ({
+        id: ch.id,
+        title: ch.title || '无标题',
+        wordCount: ch.wordCount || 0,
+        content: ch.content
+          ? marked.parse(ch.content).trim()
+          : '',
+      })),
+    })),
+  }));
+
+  const novelOutput = `/**
+ * 小说数据 — 由 build.js 自动生成
+ * 请勿手动修改此文件，在 /admin 后台管理小说
+ * 生成时间：${new Date().toISOString()}
+ */
+const NOVELS = ${JSON.stringify(novels, null, 2)};
+
+/**
+ * 获取所有小说
+ */
+function getAllNovels() {
+  return NOVELS;
+}
+
+/**
+ * 根据 ID 获取小说
+ */
+function getNovelById(id) {
+  return NOVELS.find(n => n.id === id) || null;
+}
+
+/**
+ * 获取小说的章节信息（含上下章和完整目录）
+ * 返回 { novel, chapter, prev, next, allChapters }
+ */
+function getNovelChapter(novelId, chapterId) {
+  const novel = NOVELS.find(n => n.id === novelId);
+  if (!novel) return null;
+
+  let chapter = null;
+  let prev = null;
+  let next = null;
+  const allChapters = [];
+
+  // 遍历卷和章节构建扁平列表
+  let lastChapter = null;
+  for (const vol of novel.volumes) {
+    for (const ch of vol.chapters) {
+      const entry = {
+        chapterId: ch.id,
+        title: ch.title,
+        volumeTitle: vol.title,
+        wordCount: ch.wordCount || 0,
+      };
+      allChapters.push(entry);
+
+      if (ch.id === chapterId) {
+        chapter = ch;
+        prev = lastChapter ? { chapterId: lastChapter.chapterId, title: lastChapter.title, volumeTitle: lastChapter.volumeTitle } : null;
+      }
+      if (lastChapter && lastChapter.chapterId === chapterId) {
+        next = { chapterId: ch.id, title: ch.title, volumeTitle: vol.title };
+      }
+      lastChapter = entry;
+    }
+  }
+  lastChapter = null; // 第二遍用于找到 next（chapter 找到后下一个）
+
+  if (!chapter) return null;
+
+  return { novel, chapter, prev, next, allChapters };
+}
+`;
+  fs.writeFileSync(path.join(__dirname, 'js', 'novel.js'), novelOutput, 'utf-8');
+
+  let totalChapters = 0;
+  novels.forEach(n => n.volumes.forEach(v => totalChapters += v.chapters.length));
+  console.log(`✅ 已生成 js/novel.js（${novels.length} 本小说，${totalChapters} 章）`);
+} else {
+  console.log('⚠️  data/novel.json 不存在，跳过小说生成');
+}

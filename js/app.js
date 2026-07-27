@@ -74,6 +74,24 @@
       // 初始化视频播放器
       setTimeout(() => Render.setupVideoPlayers(), 0);
     })
+    .on('novel-list', () => {
+      const novels = getAllNovels();
+      Render.mount(Render.novelList(novels));
+    })
+    .on('novel', (params) => {
+      const novel = getNovelById(params.id);
+      if (!novel) { Render.mount(Render.notFound()); return; }
+      Render.mount(Render.novelDetail(novel));
+      setTimeout(() => Render.setupNovelPage(), 0);
+    })
+    .on('novel-chapter', (params) => {
+      const result = getNovelChapter(params.id, params.chapterId);
+      if (!result) { Render.mount(Render.notFound()); return; }
+      Render.mount(Render.novelChapter(
+        result.novel, result.chapter, result.prev, result.next, result.allChapters
+      ));
+      setTimeout(() => Render.setupNovelPage(), 0);
+    })
     .on('404', () => {
       Render.mount(Render.notFound());
     });

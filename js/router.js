@@ -78,6 +78,26 @@ const Router = {
       return this.current;
     }
 
+    // #/novel/:id/:chapterId（必须在 #/novel/:id 之前）
+    match = hash.match(/^\/novel\/(\d+)\/(\d+)$/);
+    if (match) {
+      this.current = { page: 'novel-chapter', params: { id: parseInt(match[1]), chapterId: parseInt(match[2]) } };
+      return this.current;
+    }
+
+    // #/novel/:id
+    match = hash.match(/^\/novel\/(\d+)$/);
+    if (match) {
+      this.current = { page: 'novel', params: { id: parseInt(match[1]) } };
+      return this.current;
+    }
+
+    // #/novel
+    if (hash === '/novel') {
+      this.current = { page: 'novel-list', params: {} };
+      return this.current;
+    }
+
     // #/search?q=xxx
     match = hash.match(/^\/search\?q=(.*)$/);
     if (match) {
@@ -126,6 +146,8 @@ const Router = {
       } else if (this.current.page === 'music' && href === '#/music') {
         link.classList.add('active');
       } else if (this.current.page === 'video' && href === '#/video') {
+        link.classList.add('active');
+      } else if (this.current.page.startsWith('novel') && href === '#/novel') {
         link.classList.add('active');
       } else {
         link.classList.remove('active');
