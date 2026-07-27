@@ -350,16 +350,46 @@ if (fs.existsSync(NOVEL_FILE)) {
     fanqieUrl: novel.fanqieUrl || '',
     volumes: (novel.volumes || []).map((vol) => ({
       title: vol.title || '未分卷',
-      chapters: (vol.chapters || []).map((ch) => ({
-        id: ch.id,
-        title: ch.title || '无标题',
-        wordCount: ch.wordCount || 0,
-        content: ch.content
-          ? marked.parse(ch.content).trim()
-          : '',
-      })),
+      chapters: (vol.chapters || []).map((ch) => {
+        let content = '';
+        let wordCount = ch.wordCount || 0;
+        if (ch.file) {
+          const filePath = path.join(__dirname, ch.file);
+          if (fs.existsSync(filePath)) {
+            const raw = fs.readFileSync(filePath, 'utf-8');
+            // 去掉第一行标题（# 第X章 xxx）
+            const body = raw.replace(/^# .+\n\n?/, '');
+            content = marked.parse(body).trim();
+            // 自动统计中文字数
+            if (!ch.wordCount) {
+              const chineseChars = body.match(/[一-鿿㐀-䶿]/g);
+              wordCount = chineseChars ? chineseChars.length : 0;
+            }
+          } else {
+            console.log(`⚠️  章节文件不存在: ${ch.file}`);
+          }
+        } else if (ch.content) {
+          // 兼容旧格式：直接写在 JSON 里的 content
+          content = marked.parse(ch.content).trim();
+        }
+        return {
+          id: ch.id,
+          title: ch.title || '无标题',
+          wordCount,
+          content,
+        };
+      }),
     })),
   }));
+
+  // 自动计算总字数
+  novels.forEach((novel) => {
+    let total = 0;
+    novel.volumes.forEach(v => v.chapters.forEach(ch => total += ch.wordCount));
+    if (!novel.wordCount || novel.wordCount < total) {
+      novel.wordCount = total;
+    }
+  });
 
   const novelOutput = `/**
  * 小说数据 — 由 build.js 自动生成
