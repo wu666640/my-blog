@@ -18,6 +18,11 @@ const GlobalPlayer = {
       return;
     }
 
+    // 恢复音量
+    const savedVol = localStorage.getItem('gmp_volume');
+    this.audio.volume = savedVol !== null ? parseFloat(savedVol) : 0.8;
+    this.audio.muted = localStorage.getItem('gmp_muted') === 'true';
+
     this._bindEvents();
     this._restoreState();
   },
@@ -31,6 +36,30 @@ const GlobalPlayer = {
     document.querySelector('.gmp-bar-play').addEventListener('click', () => this.togglePlay());
     document.querySelector('.gmp-bar-list').addEventListener('click', () => this.togglePanel());
     document.querySelector('.gmp-bar-close').addEventListener('click', () => this.stop());
+
+    // 音量控制
+    const volumeSlider = document.querySelector('.gmp-volume-slider');
+    const volumeBtn = document.querySelector('.gmp-volume-btn');
+    if (volumeSlider && volumeBtn) {
+      volumeSlider.value = Math.round(this.audio.volume * 100);
+      this._updateVolumeIcon(volumeBtn);
+
+      volumeSlider.addEventListener('input', () => {
+        const vol = parseInt(volumeSlider.value) / 100;
+        this.audio.volume = vol;
+        this.audio.muted = false;
+        localStorage.setItem('gmp_volume', vol);
+        localStorage.setItem('gmp_muted', 'false');
+        this._updateVolumeIcon(volumeBtn);
+      });
+
+      volumeBtn.addEventListener('click', () => {
+        this.audio.muted = !this.audio.muted;
+        localStorage.setItem('gmp_muted', String(this.audio.muted));
+        this._updateVolumeIcon(volumeBtn);
+        volumeSlider.value = Math.round(this.audio.volume * 100);
+      });
+    }
 
     // 进度条点击跳转
     document.querySelector('.gmp-bar-progress-track').addEventListener('click', (e) => {
@@ -449,6 +478,21 @@ const GlobalPlayer = {
       titleEl.textContent = '选一首歌听听吧';
       artistEl.textContent = '';
       if (playBtn) playBtn.textContent = '▶️';
+    }
+
+    // 同步音量图标
+    const volumeBtn = document.querySelector('.gmp-volume-btn');
+    if (volumeBtn) this._updateVolumeIcon(volumeBtn);
+  },
+
+  /** 更新音量图标 */
+  _updateVolumeIcon(btn) {
+    if (this.audio.muted || this.audio.volume === 0) {
+      btn.textContent = '🔇';
+    } else if (this.audio.volume < 0.4) {
+      btn.textContent = '🔉';
+    } else {
+      btn.textContent = '🔊';
     }
   },
 

@@ -96,7 +96,7 @@ function getPostById(id) {
 /**
  * 获取所有标签及其文章数量
  */
-function getAllTags() {
+function getAllPostTags() {
   const tagMap = {};
   POSTS.forEach(post => {
     post.tags.forEach(tag => {
@@ -320,7 +320,7 @@ function getMusicByCategory(category) {
 /**
  * 获取所有标签及其歌曲数量
  */
-function getAllTags() {
+function getAllMusicTags() {
   const tagMap = {};
   MUSIC_TRACKS.forEach(item => {
     (item.tags || []).forEach(tag => {

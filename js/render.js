@@ -130,7 +130,7 @@ const Render = {
 
   /* ========== 首页 ========== */
   home(posts, activeTag, titleOverride) {
-    const tags = getAllTags();
+    const tags = getAllPostTags();
 
     const postsHTML = posts.length === 0
       ? `<div class="empty-state">
@@ -476,7 +476,7 @@ const Render = {
   },
 
   music(tracks, activeTag, activeArtist, sortByPlays) {
-    const allTags = getAllTags();
+    const allTags = getAllMusicTags();
     const allArtists = getAllArtists();
 
     // 标签栏
@@ -921,7 +921,14 @@ const Render = {
             <span>${volumeTitle}</span>
           </div>
           <h1 class="novel-chapter-title">第${chapter.id}章 ${chapter.title}</h1>
-          <div class="novel-chapter-meta">📝 ${chapter.wordCount ? chapter.wordCount.toLocaleString() + ' 字' : ''}</div>
+          <div class="novel-chapter-meta">
+            <span>📝 ${chapter.wordCount ? chapter.wordCount.toLocaleString() + ' 字' : ''}</span>
+            <span class="novel-font-controls" id="novel-font-controls">
+              <button class="novel-font-btn" data-font-size="small" title="小号字体" aria-label="小号字体">A⁻</button>
+              <button class="novel-font-btn novel-font-btn-active" data-font-size="medium" title="中号字体" aria-label="中号字体">A</button>
+              <button class="novel-font-btn" data-font-size="large" title="大号字体" aria-label="大号字体">A⁺</button>
+            </span>
+          </div>
         </div>
         <div class="novel-chapter-body">
           ${bodyHTML}
@@ -997,6 +1004,35 @@ const Render = {
       };
       window.addEventListener('scroll', updateProgress, { passive: true });
       updateProgress();
+    }
+
+    // 字体大小调节
+    const fontSizeControls = document.getElementById('novel-font-controls');
+    const chapterBody = document.querySelector('.novel-chapter-body');
+    if (fontSizeControls && chapterBody) {
+      const FONT_KEY = 'novel-font-size';
+      const FONT_SIZES = { small: '0.9rem', medium: '1.05rem', large: '1.2rem' };
+
+      // 恢复保存的偏好
+      const savedSize = localStorage.getItem(FONT_KEY) || 'medium';
+      chapterBody.style.fontSize = FONT_SIZES[savedSize] || FONT_SIZES.medium;
+      fontSizeControls.querySelectorAll('.novel-font-btn').forEach(btn => {
+        btn.classList.toggle('novel-font-btn-active', btn.dataset.fontSize === savedSize);
+      });
+
+      fontSizeControls.addEventListener('click', (e) => {
+        const btn = e.target.closest('.novel-font-btn');
+        if (!btn) return;
+        const size = btn.dataset.fontSize;
+        if (!size || !FONT_SIZES[size]) return;
+
+        chapterBody.style.fontSize = FONT_SIZES[size];
+        localStorage.setItem(FONT_KEY, size);
+
+        fontSizeControls.querySelectorAll('.novel-font-btn').forEach(b => {
+          b.classList.toggle('novel-font-btn-active', b.dataset.fontSize === size);
+        });
+      });
     }
   },
 

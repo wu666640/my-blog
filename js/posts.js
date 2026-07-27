@@ -1,7 +1,7 @@
 /**
  * 博客文章数据 — 由 build.js 自动生成
  * 请勿手动修改此文件，在 /admin 后台编辑文章
- * 生成时间：2026-07-27T06:58:07.754Z
+ * 生成时间：2026-07-27T14:47:34.657Z
  */
 const POSTS = [
   {
@@ -12,7 +12,7 @@ const POSTS = [
     "tags": [
       "生活"
     ],
-    "cover": "/images/1670183564-2070769768.suf.jpg",
+    "cover": "images/1670183564-2070769768.suf.jpg",
     "content": "<p>顶顶顶</p>"
   },
   {
@@ -94,7 +94,7 @@ function getPostById(id) {
 /**
  * 获取所有标签及其文章数量
  */
-function getAllTags() {
+function getAllPostTags() {
   const tagMap = {};
   POSTS.forEach(post => {
     post.tags.forEach(tag => {

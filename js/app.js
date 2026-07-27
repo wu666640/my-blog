@@ -121,6 +121,7 @@
 
   // ===== 绑定搜索 =====
   Search.bind();
+  Search.initOverlay();
 
   // ===== 启动路由 =====
   Router.init();
@@ -132,5 +133,63 @@
       Router.init(); // 重新渲染首页
     }
   });
+
+  // ===== 移动端汉堡菜单 =====
+  const navToggle = document.getElementById('nav-toggle');
+  const siteNav = document.getElementById('site-nav');
+
+  if (navToggle && siteNav) {
+    const closeNav = () => {
+      siteNav.classList.remove('nav-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.textContent = '☰';
+    };
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = siteNav.classList.toggle('nav-open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      navToggle.textContent = isOpen ? '✕' : '☰';
+    });
+
+    // 点击导航链接后自动关闭
+    siteNav.addEventListener('click', (e) => {
+      if (e.target.closest('.nav-link')) {
+        closeNav();
+      }
+    });
+
+    // 路由变化时关闭菜单
+    window.addEventListener('hashchange', closeNav);
+
+    // 点击菜单外部关闭
+    document.addEventListener('click', (e) => {
+      if (siteNav.classList.contains('nav-open') &&
+          !siteNav.contains(e.target) &&
+          e.target !== navToggle &&
+          !navToggle.contains(e.target)) {
+        closeNav();
+      }
+    });
+  }
+
+  // ===== 返回顶部按钮 =====
+  const backToTopBtn = document.getElementById('back-to-top');
+  if (backToTopBtn) {
+    let scrollTicking = false;
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) {
+        requestAnimationFrame(() => {
+          const shouldShow = window.scrollY > 300;
+          backToTopBtn.classList.toggle('visible', shouldShow);
+          scrollTicking = false;
+        });
+        scrollTicking = true;
+      }
+    }, { passive: true });
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
 })();

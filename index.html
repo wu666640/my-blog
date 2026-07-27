@@ -13,13 +13,15 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="#/" class="site-logo">📖 璨泯小记</a>
-      <nav class="site-nav">
+      <button class="nav-toggle" id="nav-toggle" aria-label="菜单" aria-expanded="false">☰</button>
+      <nav class="site-nav" id="site-nav">
         <a href="#/" class="nav-link">首页</a>
         <a href="#/gallery" class="nav-link">画廊</a>
         <a href="#/music" class="nav-link">音乐</a>
         <a href="#/video" class="nav-link">视频</a>
         <a href="#/novel" class="nav-link">小说</a>
         <a href="#/about" class="nav-link">关于</a>
+        <button id="search-nav-btn" class="nav-search-btn" title="搜索 (/) " aria-label="搜索">🔍</button>
         <button id="theme-toggle" class="theme-btn" title="切换主题" aria-label="切换暗色模式">
           <span class="icon-sun">☀️</span>
           <span class="icon-moon">🌙</span>
@@ -74,6 +76,10 @@
       </div>
       <span class="gmp-bar-time">0:00</span>
       <button class="gmp-bar-btn gmp-bar-list" title="播放列表" aria-label="播放列表">📋</button>
+      <div class="gmp-volume-control">
+        <button class="gmp-bar-btn gmp-volume-btn" title="静音 / 取消静音" aria-label="静音切换">🔊</button>
+        <input type="range" class="gmp-volume-slider" min="0" max="100" value="80" title="音量" aria-label="音量">
+      </div>
       <button class="gmp-bar-btn gmp-bar-close" title="关闭播放器" aria-label="关闭">✕</button>
     </div>
   </div>
@@ -95,6 +101,25 @@
   </div>
 
   <audio id="gmp-audio" preload="metadata"></audio>
+
+  <!-- ===== 返回顶部按钮 ===== -->
+  <button id="back-to-top" class="back-to-top" title="回到顶部" aria-label="回到顶部">↑</button>
+
+  <!-- ===== 全局搜索覆盖层 ===== -->
+  <div id="search-overlay" class="search-overlay" style="display:none">
+    <div class="search-overlay-backdrop"></div>
+    <div class="search-overlay-dialog">
+      <div class="search-overlay-header">
+        <span class="search-overlay-icon">🔍</span>
+        <input type="text" id="search-overlay-input" class="search-overlay-input"
+               placeholder="搜索文章、音乐、视频..." autocomplete="off" autofocus>
+        <kbd class="search-overlay-kbd">ESC</kbd>
+      </div>
+      <div class="search-overlay-results" id="search-overlay-results">
+        <div class="search-overlay-placeholder">输入关键词开始搜索…</div>
+      </div>
+    </div>
+  </div>
 
   <!-- JS 模块 -->
   <script src="js/posts.js"></script>

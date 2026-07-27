@@ -1,7 +1,7 @@
 /**
  * 个人资料 — 由 build.js 自动生成
  * 请勿手动修改此文件，在 /admin > 个人资料 编辑
- * 生成时间：2026-07-27T06:58:07.759Z
+ * 生成时间：2026-07-27T14:47:34.662Z
  */
 const ABOUT_DATA = {
   "name": "璨泯",
@@ -26,6 +26,8 @@ const ABOUT_DATA = {
       "level": 75
     }
   ],
+  "qq": "1373083451",
+  "qqPassword": "738374814483d254ac14b0f35991f8ba2aae7193efb24c3ba74af1619d200df7",
   "social": [
     {
       "label": "GitHub",
