@@ -215,6 +215,7 @@ if (fs.existsSync(MUSIC_FILE)) {
     id: index + 1,
     title: item.title || '未知曲目',
     artist: item.artist || '未知歌手',
+    cover: item.cover || '',
     description: item.description
       ? marked.parse(item.description).trim()
       : '',

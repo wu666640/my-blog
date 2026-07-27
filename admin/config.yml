@@ -156,6 +156,11 @@ collections:
               - label: "歌手"
                 name: "artist"
                 widget: "string"
+              - label: "封面图"
+                name: "cover"
+                widget: "image"
+                required: false
+                hint: "可选，歌曲/专辑封面，建议 1:1 方形图片"
               - label: "推荐语"
                 name: "description"
                 widget: "markdown"

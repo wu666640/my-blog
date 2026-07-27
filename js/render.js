@@ -343,19 +343,29 @@ const Render = {
       ? this._lyricsBox(track.lyrics)
       : '';
 
+    // 封面图
+    const coverHTML = track.cover
+      ? `<div class="music-card-cover">
+           <img src="${track.cover}" alt="${track.title} 封面" loading="lazy">
+         </div>`
+      : '';
+
     return `
       <article class="music-card">
         ${playerHTML}
         <div class="music-card-body">
-          <div class="music-card-title-row">
-            <h3 class="music-card-title">${track.title}</h3>
-            ${badgeHTML}
-          </div>
-          <div class="music-card-artist">🎤 ${track.artist}</div>
-          <div class="music-card-meta">${track.date} · ${track.category}</div>
-          <div class="music-card-desc">${track.description}</div>
-          <div class="music-card-actions">
-            ${neteaseBtn}
+          ${coverHTML}
+          <div class="music-card-info">
+            <div class="music-card-title-row">
+              <h3 class="music-card-title">${track.title}</h3>
+              ${badgeHTML}
+            </div>
+            <div class="music-card-artist">🎤 ${track.artist}</div>
+            <div class="music-card-meta">${track.date} · ${track.category}</div>
+            <div class="music-card-desc">${track.description}</div>
+            <div class="music-card-actions">
+              ${neteaseBtn}
+            </div>
           </div>
         </div>
         ${lyricsHTML}
