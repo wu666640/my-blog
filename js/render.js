@@ -229,11 +229,12 @@ const Render = {
          </div>`;
     } else if (track.neteaseId) {
       // 网易云官方 iframe 播放器
-      playerHTML = `<div class="music-card-player">
+      playerHTML = `<div class="music-card-player" style="background:#f0f0f0;">
            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0"
                    width="330" height="86"
-                   src="//music.163.com/outchain/player?type=2&id=${track.neteaseId}&auto=0&height=66">
+                   src="https://music.163.com/outchain/player?type=2&id=${track.neteaseId}&auto=0&height=66">
            </iframe>
+           <span style="font-size:0.7rem;color:#999;text-align:center;display:block;">如无法播放，请先<a href="https://music.163.com" target="_blank" style="color:#e07a5f;">登录网易云</a>后刷新</span>
          </div>`;
     } else {
       playerHTML = '<div class="music-card-player music-card-placeholder">🎵</div>';
