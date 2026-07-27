@@ -149,10 +149,22 @@ const ABOUT_DATA = ${JSON.stringify(aboutData, null, 2)};
 }
 
 // ===== 生成 js/gallery.js（图片画廊）=====
+const GALLERY_DIR = path.join(__dirname, 'data', 'gallery');
 const GALLERY_FILE = path.join(__dirname, 'data', 'gallery.json');
-if (fs.existsSync(GALLERY_FILE)) {
-  const galleryData = JSON.parse(fs.readFileSync(GALLERY_FILE, 'utf-8'));
-  const items = (galleryData.items || []).map((item, index) => ({
+
+let galleryItems = [];
+if (fs.existsSync(GALLERY_DIR) && fs.statSync(GALLERY_DIR).isDirectory()) {
+  const files = fs.readdirSync(GALLERY_DIR).filter(f => f.endsWith('.json'));
+  galleryItems = files.map(f => {
+    try { return JSON.parse(fs.readFileSync(path.join(GALLERY_DIR, f), 'utf-8')); }
+    catch (e) { return null; }
+  }).filter(Boolean);
+} else if (fs.existsSync(GALLERY_FILE)) {
+  galleryItems = JSON.parse(fs.readFileSync(GALLERY_FILE, 'utf-8')).items || [];
+}
+
+if (galleryItems.length > 0) {
+  const items = galleryItems.map((item, index) => ({
     id: index + 1,
     title: item.title || '无标题',
     description: item.description
@@ -204,7 +216,7 @@ function getGalleryByCategory(category) {
   fs.writeFileSync(path.join(__dirname, 'js', 'gallery.js'), galleryOutput, 'utf-8');
   console.log(`✅ 已生成 js/gallery.js（${items.length} 张图片）`);
 } else {
-  console.log('⚠️  data/gallery.json 不存在，跳过画廊生成');
+  console.log('⚠️  没有找到画廊数据，跳过画廊生成');
 }
 
 // ===== 生成 js/music.js（音乐推荐）=====
@@ -362,10 +374,22 @@ function getMusicByArtist(artist) {
 }
 
 // ===== 生成 js/video.js（视频推荐）=====
+const VIDEO_DIR = path.join(__dirname, 'data', 'video');
 const VIDEO_FILE = path.join(__dirname, 'data', 'video.json');
-if (fs.existsSync(VIDEO_FILE)) {
-  const videoData = JSON.parse(fs.readFileSync(VIDEO_FILE, 'utf-8'));
-  const videos = (videoData.items || []).map((item, index) => ({
+
+let videoItems = [];
+if (fs.existsSync(VIDEO_DIR) && fs.statSync(VIDEO_DIR).isDirectory()) {
+  const files = fs.readdirSync(VIDEO_DIR).filter(f => f.endsWith('.json'));
+  videoItems = files.map(f => {
+    try { return JSON.parse(fs.readFileSync(path.join(VIDEO_DIR, f), 'utf-8')); }
+    catch (e) { return null; }
+  }).filter(Boolean);
+} else if (fs.existsSync(VIDEO_FILE)) {
+  videoItems = JSON.parse(fs.readFileSync(VIDEO_FILE, 'utf-8')).items || [];
+}
+
+if (videoItems.length > 0) {
+  const videos = videoItems.map((item, index) => ({
     id: index + 1,
     title: item.title || '无标题',
     url: item.url || '',
@@ -419,7 +443,7 @@ function getVideosByCategory(category) {
   fs.writeFileSync(path.join(__dirname, 'js', 'video.js'), videoOutput, 'utf-8');
   console.log(`✅ 已生成 js/video.js（${videos.length} 个视频）`);
 } else {
-  console.log('⚠️  data/video.json 不存在，跳过视频生成');
+  console.log('⚠️  没有找到视频数据，跳过视频生成');
 }
 
 // ===== 生成 js/novel.js（小说）=====
