@@ -1,4 +1,4 @@
-name: 构建生成文件
+name: 构建并部署
 
 on:
   push:
@@ -6,10 +6,12 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pages: write
+      id-token: write
 
     steps:
       - name: 检出代码
@@ -36,5 +38,12 @@ jobs:
           else
             git commit -m "🤖 自动构建：更新生成文件 [skip ci]"
             git push
-            echo "已提交更新，将触发 Netlify 部署"
           fi
+
+      - name: 部署到 GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          enable_jekyll: false
+          exclude_assets: '.github/**,node_modules/**,.git/**,package.json,package-lock.json,build.js,netlify.toml'
