@@ -59,13 +59,25 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  // 发起 GitHub 授权
-  const params = new URLSearchParams({
+  // ============================================================
+  // 第一步：握手 — 发送 "authorizing:github" 给 CMS
+  // Decap CMS 的 handshakeCallback 收到后才会注册 authorizeCallback
+  // 之前用服务端 302 重定向，JavaScript 没机会执行，握手从未发生！
+  // ============================================================
+  const authURL = `https://github.com/login/oauth/authorize?${new URLSearchParams({
     client_id: clientId,
     scope: 'repo,user',
     redirect_uri: redirectURI,
-    state: state || '',
-  });
-  res.writeHead(302, { Location: `https://github.com/login/oauth/authorize?${params}` });
-  res.end();
+  })}`;
+  res.status(200).send(`<!DOCTYPE html>
+<html><head><meta charset="utf-8"><script>
+  // ① 发送握手消息，触发 CMS 注册 authorizeCallback
+  try {
+    window.opener.postMessage('authorizing:github', '*');
+  } catch(e) {}
+  // ② 稍等片刻确保 CMS 收到握手，然后跳转 GitHub 授权
+  setTimeout(function() {
+    window.location.href = '${authURL}';
+  }, 200);
+</script></head><body></body></html>`);
 };
