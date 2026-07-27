@@ -193,6 +193,8 @@ const GlobalPlayer = {
     const playPromise = this.audio.play();
     if (playPromise) playPromise.catch(() => {});
 
+    // 提前设置 isPlaying，避免 _updateLyricsSidebar 因 play 事件异步延迟而隐藏歌词
+    this.isPlaying = true;
     this._refreshUI();
     this._renderPlaylist();
     this._updateLyricsSidebar();
