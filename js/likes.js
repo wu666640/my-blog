@@ -1,6 +1,6 @@
 /**
  * 点赞模块
- * 使用 localStorage 存储点赞状态和计数，即时响应
+ * 使用 localStorage 存储点赞状态和计数，支持点赞/取消点赞切换
  */
 const Likes = {
   KEY_LIKED: 'blog_liked',
@@ -31,23 +31,22 @@ const Likes = {
     return this._liked().includes(`${type}-${id}`);
   },
 
-  /** 获取点赞数（从 localStorage） */
+  /** 获取点赞数 */
   getCount(type, id) {
-    return this._counts()[`${type}-${id}`] || 0;
+    const key = `${type}-${id}`;
+    const counts = this._counts();
+    return counts[key] || 0;
   },
 
-  /** 点赞（乐观更新，立即生效） */
-  like(type, id) {
+  /** 点赞 */
+  _doLike(type, id) {
     const key = `${type}-${id}`;
     const liked = this._liked();
+    if (liked.includes(key)) return null;
 
-    if (liked.includes(key)) return null; // 已点赞
-
-    // 更新已点赞列表
     liked.push(key);
     this._saveLiked(liked);
 
-    // 更新计数
     const counts = this._counts();
     counts[key] = (counts[key] || 0) + 1;
     this._saveCounts(counts);
@@ -55,18 +54,37 @@ const Likes = {
     return counts[key];
   },
 
+  /** 取消点赞 */
+  _doUnlike(type, id) {
+    const key = `${type}-${id}`;
+    const liked = this._liked();
+    const idx = liked.indexOf(key);
+    if (idx === -1) return null;
+
+    liked.splice(idx, 1);
+    this._saveLiked(liked);
+
+    const counts = this._counts();
+    if (counts[key] && counts[key] > 0) {
+      counts[key] = Math.max(0, counts[key] - 1);
+    }
+    this._saveCounts(counts);
+
+    return counts[key] || 0;
+  },
+
   /** 渲染点赞按钮 HTML */
   buttonHTML(type, id, liked) {
     const count = this.getCount(type, id);
     return `<button class="like-btn ${liked ? 'like-btn-liked' : ''}"
                     data-like-type="${type}" data-like-id="${id}"
-                    title="${liked ? '已点赞' : '点赞'}" aria-label="点赞">
+                    title="${liked ? '取消点赞' : '点赞'}" aria-label="${liked ? '取消点赞' : '点赞'}">
               <span class="like-btn-icon">${liked ? '❤️' : '🤍'}</span>
               <span class="like-btn-count">${count > 0 ? count : ''}</span>
             </button>`;
   },
 
-  /** 初始化：全局事件委托 */
+  /** 初始化：全局事件委托，支持点赞/取消切换 */
   init() {
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('.like-btn');
@@ -79,22 +97,32 @@ const Likes = {
       e.preventDefault();
       e.stopPropagation();
 
-      // 已点赞则不取消
-      if (btn.classList.contains('like-btn-liked')) return;
-
       const icon = btn.querySelector('.like-btn-icon');
       const countEl = btn.querySelector('.like-btn-count');
+      const isLiked = btn.classList.contains('like-btn-liked');
 
       // 动画
       btn.style.transform = 'scale(1.3)';
       setTimeout(() => { btn.style.transform = ''; }, 200);
 
-      // 乐观更新
-      const newCount = this.like(type, id);
-      if (newCount !== null) {
-        btn.classList.add('like-btn-liked');
-        if (icon) icon.textContent = '❤️';
-        if (countEl) countEl.textContent = newCount;
+      if (isLiked) {
+        // 取消点赞
+        const newCount = this._doUnlike(type, id);
+        btn.classList.remove('like-btn-liked');
+        btn.setAttribute('title', '点赞');
+        btn.setAttribute('aria-label', '点赞');
+        if (icon) icon.textContent = '🤍';
+        if (countEl) countEl.textContent = newCount > 0 ? newCount : '';
+      } else {
+        // 点赞
+        const newCount = this._doLike(type, id);
+        if (newCount !== null) {
+          btn.classList.add('like-btn-liked');
+          btn.setAttribute('title', '取消点赞');
+          btn.setAttribute('aria-label', '取消点赞');
+          if (icon) icon.textContent = '❤️';
+          if (countEl) countEl.textContent = newCount;
+        }
       }
     });
   }
