@@ -11,6 +11,7 @@
  */
 const Giscus = {
   _currentTerm: null,
+  _observer: null,
 
   /** 配置信息 */
   _config: {
@@ -32,13 +33,16 @@ const Giscus = {
     const container = this._getContainer();
     if (!container) return;
 
-    // 清空旧内容（iframe + script）
-    container.innerHTML = '';
+    // 断开之前的 MutationObserver
+    if (this._observer) {
+      this._observer.disconnect();
+      this._observer = null;
+    }
 
-    // 插入加载占位
+    // 清空旧内容并显示加载占位
     container.innerHTML = '<p class="giscus-loading">💬 加载评论中…</p>';
 
-    // 创建 script 标签
+    // 创建 Giscus script 标签
     const script = document.createElement('script');
     script.src = 'https://giscus.app/client.js';
     script.setAttribute('data-repo', this._config.repo);
@@ -55,21 +59,56 @@ const Giscus = {
     script.setAttribute('data-lang', 'zh-CN');
     script.crossOrigin = 'anonymous';
 
-    // 加载完成后移除占位文字
-    script.addEventListener('load', () => {
-      const loading = container.querySelector('.giscus-loading');
-      if (loading) loading.remove();
+    // 使用 MutationObserver 等待 Giscus 渲染完成后再添加管理链接
+    // Giscus 异步加载（先拉 GitHub API 再渲染 iframe），
+    // script.onload 触发时 iframe 尚未出现，直接 appendChild 的链接会被清除
+    this._observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node.tagName === 'IFRAME' || (node.querySelector && node.querySelector('iframe'))) {
+            // Giscus iframe 已插入，移除加载占位文字
+            const loading = container.querySelector('.giscus-loading');
+            if (loading) loading.remove();
 
-      // 添加管理链接
-      this._addAdminLink(container);
+            // 添加管理链接
+            this._addAdminLink(container);
+
+            // 完成，断开观察器
+            this._observer.disconnect();
+            this._observer = null;
+            return;
+          }
+        }
+      }
     });
+    this._observer.observe(container, { childList: true, subtree: true });
 
-    // 加载失败
+    // 加载失败处理
     script.addEventListener('error', () => {
+      if (this._observer) {
+        this._observer.disconnect();
+        this._observer = null;
+      }
       container.innerHTML = '<p class="giscus-error">⚠️ 评论加载失败，请刷新页面重试</p>';
     });
 
     container.appendChild(script);
+  },
+
+  /**
+   * 同步 Giscus 主题（亮色 ↔ 暗色切换时调用）
+   * @param {'light' | 'dark'} theme
+   */
+  updateTheme(theme) {
+    // Giscus iframe 标准 class 为 .giscus-frame，回退任意 iframe
+    const iframe = document.querySelector('.giscus-frame')
+      || document.querySelector('.giscus iframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme } } },
+        'https://giscus.app'
+      );
+    }
   },
 
   /**
@@ -90,25 +129,21 @@ const Giscus = {
   },
 
   /**
-   * 获取或创建 giscus 容器
+   * 获取 giscus 容器
    */
   _getContainer() {
-    let container = document.querySelector('.giscus');
-    if (!container) {
-      // 如果页面上没有 .giscus 容器，尝试在当前挂载内容中查找
-      const app = document.getElementById('app');
-      if (app) {
-        container = app.querySelector('.giscus');
-      }
-    }
-    return container;
+    return document.querySelector('.giscus');
   },
 
   /**
-   * 移除当前 Giscus（页面切换时调用）
+   * 移除当前 Giscus（页面切换时由 Render.mount() 调用）
    */
   unload() {
     this._currentTerm = null;
+    if (this._observer) {
+      this._observer.disconnect();
+      this._observer = null;
+    }
     const container = this._getContainer();
     if (container) {
       container.innerHTML = '';

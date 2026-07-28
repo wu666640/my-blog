@@ -14,6 +14,10 @@ const Theme = {
   set(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem(this.KEY, theme);
+    // 同步 Giscus 评论区主题
+    if (typeof Giscus !== 'undefined') {
+      Giscus.updateTheme(theme);
+    }
   },
 
   /** 切换主题 */
