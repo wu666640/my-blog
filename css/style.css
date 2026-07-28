@@ -3509,9 +3509,26 @@ body {
 }
 
 /* ===== Giscus 评论区 ===== */
+.giscus-hint {
+  margin: 2.5rem 0 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-align: center;
+  user-select: none;
+}
+.giscus-hint kbd {
+  display: inline-block;
+  padding: 0.15em 0.45em;
+  font-size: 0.9em;
+  font-family: inherit;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  line-height: 1.5;
+}
 .giscus {
-  margin-top: 2.5rem;
-  padding-top: 2rem;
+  margin-top: 0.75rem;
+  padding-top: 1.5rem;
   border-top: 1px solid var(--border);
   min-height: 200px;
 }

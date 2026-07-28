@@ -218,6 +218,7 @@ const Render = {
           <div class="post-detail-tags">${tagsHTML}</div>
         </header>
         <div class="post-detail-body">${post.content}</div>
+        <p class="giscus-hint">💡 按 <kbd>Ctrl+Enter</kbd> 提交，<kbd>Enter</kbd> 换行</p>
         <div class="giscus"></div>
         <nav class="post-nav">
           <span>${prevPost ? `<a href="#/post/${prevPost.id}">← ${prevPost.title}</a>` : ''}</span>
@@ -362,6 +363,7 @@ const Render = {
           </div>
           <div class="gallery-detail-desc">${item.description}</div>
         </article>
+        <p class="giscus-hint">💡 按 <kbd>Ctrl+Enter</kbd> 提交，<kbd>Enter</kbd> 换行</p>
         <div class="giscus"></div>
       </div>`;
   },
@@ -511,6 +513,7 @@ const Render = {
           <div class="video-detail-actions">${externalLink}</div>
           <div class="video-detail-desc">${item.description}</div>
         </article>
+        <p class="giscus-hint">💡 按 <kbd>Ctrl+Enter</kbd> 提交，<kbd>Enter</kbd> 换行</p>
         <div class="giscus"></div>
       </div>`;
   },
@@ -809,6 +812,7 @@ const Render = {
           </div>
           ${lyricsHTML}
         </article>
+        <p class="giscus-hint">💡 按 <kbd>Ctrl+Enter</kbd> 提交，<kbd>Enter</kbd> 换行</p>
         <div class="giscus"></div>
       </div>`;
   },
@@ -1112,6 +1116,7 @@ const Render = {
           ${prevHTML}
           ${nextHTML}
         </div>
+        <p class="giscus-hint">💡 按 <kbd>Ctrl+Enter</kbd> 提交，<kbd>Enter</kbd> 换行</p>
         <div class="giscus"></div>
       </div>
 
