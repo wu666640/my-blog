@@ -12,7 +12,7 @@
       "chapterDir": "data/novels/chapters",
       "volumes": [
         { "title": "第一卷", "range": [1, 22] },
-        { "title": "第二卷", "range": [23, 25] }
+        { "title": "第二卷", "range": [23, 60] }
       ]
     }
   ]
