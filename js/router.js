@@ -140,6 +140,12 @@ const Router = {
       return this.current;
     }
 
+    // #/posts（文章专页）
+    if (hash === '/posts') {
+      this.current = { page: 'posts', params: {} };
+      return this.current;
+    }
+
     // #/ (home)
     if (hash === '/' || hash === '') {
       this.current = { page: 'home', params: {} };

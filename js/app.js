@@ -19,8 +19,11 @@
   // ===== 注册路由处理 =====
   Router
     .on('home', () => {
+      Render.mount(Render.home(null, null));
+    })
+    .on('posts', () => {
       const posts = getAllPosts();
-      Render.mount(Render.home(posts, null));
+      Render.mount(Render.home(posts, null, null, 'post'));
     })
     .on('tag', (params) => {
       const posts = getPostsByTag(params.tag);

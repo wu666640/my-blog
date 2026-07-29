@@ -203,22 +203,40 @@ const Render = {
     input.addEventListener("keydown", e => { if (e.key === "Enter") doVerify(); });
   },
 
-  /* ========== 首页（混合时间线 or 标签/搜索筛选）========== */
-  home(posts, activeTag, titleOverride) {
+  /* ========== 首页（混合时间线 / 标签 / 搜索 / 类型筛选）========== */
+  home(posts, activeTag, titleOverride, typeFilter) {
     const tags = getAllPostTags();
-    const isFiltered = activeTag || titleOverride;
+    const isFiltered = activeTag || titleOverride || typeFilter;
 
-    // 筛选模式（标签/搜索）：只显示文章
-    // 首页：混合时间线
+    // 筛选标签栏（首页和文章专页显示）
+    const filterTabs = (!activeTag && !titleOverride) ? `
+      <div class="home-filter-bar">
+        <a href="#/"       class="home-filter-tab ${!typeFilter ? 'active' : ''}">全部</a>
+        <a href="#/posts"  class="home-filter-tab ${typeFilter === 'post' ? 'active' : ''}">📝 文章</a>
+        <a href="#/gallery" class="home-filter-tab ${typeFilter === 'gallery' ? 'active' : ''}">🖼️ 画廊</a>
+        <a href="#/music"  class="home-filter-tab ${typeFilter === 'music' ? 'active' : ''}">🎵 音乐</a>
+        <a href="#/video"  class="home-filter-tab ${typeFilter === 'video' ? 'active' : ''}">🎬 视频</a>
+      </div>` : '';
+
     let itemsHTML;
     let title;
 
-    if (isFiltered) {
+    if (activeTag || titleOverride) {
+      // 标签/搜索筛选：只显示文章大卡片
       title = titleOverride || `标签：${activeTag}（${posts.length} 篇）`;
       itemsHTML = posts.length === 0
         ? `<div class="empty-state"><div class="empty-icon">📭</div><p>暂无文章</p></div>`
         : posts.map(p => this._postCard(p)).join('');
+    } else if (typeFilter) {
+      // 类型筛选：只显示某一类
+      const typeNames = { post: '文章', gallery: '画廊', music: '音乐', video: '视频' };
+      title = typeNames[typeFilter] || '内容';
+      const mixed = getLatestMixedItems(50).filter(item => item.type === typeFilter);
+      itemsHTML = mixed.length === 0
+        ? `<div class="empty-state"><div class="empty-icon">📭</div><p>暂无${typeNames[typeFilter]}</p></div>`
+        : mixed.map(item => this._mixedCard(item)).join('');
     } else {
+      // 首页：混合时间线
       title = '最新动态';
       const mixed = getLatestMixedItems(20);
       itemsHTML = mixed.length === 0
@@ -229,6 +247,7 @@ const Render = {
     return `
       <div class="home-layout">
         <section class="posts-section">
+          ${filterTabs}
           <h2 class="section-title">${title}</h2>
           <div class="posts-list">${itemsHTML}</div>
         </section>
