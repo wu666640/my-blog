@@ -188,6 +188,36 @@ body:has(#app .novel-chapter-page) #app {
   text-shadow: 0 0 4px rgba(200, 220, 255, 0.6);
 }
 
+/* 新年主题：🏮 红灯笼发光 */
+[data-page-theme="newyear"] .page-theme-particle {
+  filter: drop-shadow(0 0 6px rgba(255, 60, 30, 0.7));
+  animation: particle-fall var(--duration, 12s) var(--delay, 0s) ease-in-out infinite,
+             lantern-sway 2s ease-in-out infinite;
+}
+@keyframes lantern-sway {
+  0%, 100% { transform: translateY(var(--ty, 0)) rotate(calc(var(--rotation, 0deg) - 8deg)); }
+  50%      { transform: translateY(var(--ty, 0)) rotate(calc(var(--rotation, 0deg) + 8deg)); }
+}
+
+/* 樱花主题：🌸 粉色柔光 */
+[data-page-theme="sakura"] .page-theme-particle {
+  filter: blur(0.3px);
+  text-shadow: 0 0 5px rgba(255, 180, 200, 0.5);
+}
+
+/* 落叶主题：🍂 暖色光晕 */
+[data-page-theme="autumn"] .page-theme-particle {
+  filter: blur(0.3px);
+  text-shadow: 0 0 5px rgba(230, 160, 70, 0.4);
+}
+
+/* 线条小狗/八条：🐾 小爪印 */
+[data-page-theme="linedog"] .page-theme-particle,
+[data-page-theme="batiao"] .page-theme-particle {
+  opacity: 0.4;
+  filter: blur(0.5px);
+}
+
 /* ============================================
    主题切换 Toast 提示
    ============================================ */
@@ -243,7 +273,7 @@ body[data-page-theme="batiao"] #app {
 }
 
 [data-theme="dark"] body[data-page-theme="batiao"] #app {
-  background-image: url("data:image/svg+xml,...") !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cg stroke='%237a6a5c' fill='none' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.18'%3E%3Ccircle cx='65' cy='42' r='16'/%3E%3Cpolygon points='52,30 46,16 58,24'/%3E%3Cpolygon points='50,28 47,20 55,25' fill='%237a6a5c' opacity='0.5'/%3E%3Cpolygon points='78,30 84,16 72,24'/%3E%3Cpolygon points='80,28 83,20 75,25' fill='%237a6a5c' opacity='0.5'/%3E%3Cellipse cx='60' cy='40' rx='2.5' ry='3' fill='%237a6a5c'/%3E%3Cellipse cx='70' cy='40' rx='2.5' ry='3' fill='%237a6a5c'/%3E%3Cpolygon points='63,47 65,44 67,47' fill='%237a6a5c'/%3E%3Cpath d='M59 49 Q63 52 65 49 Q67 52 71 49'/%3E%3Cline x1='42' y1='44' x2='55' y2='46'/%3E%3Cline x1='40' y1='48' x2='54' y2='49'/%3E%3Cline x1='88' y1='44' x2='75' y2='46'/%3E%3Cline x1='90' y1='48' x2='76' y2='49'/%3E%3Crect x='52' y='58' width='26' height='30' rx='10'/%3E%3Cline x1='54' y1='66' x2='76' y2='66'/%3E%3Cline x1='54' y1='72' x2='76' y2='72'/%3E%3Cline x1='54' y1='78' x2='76' y2='78'/%3E%3Cline x1='56' y1='87' x2='53' y2='108'/%3E%3Cline x1='74' y1='87' x2='77' y2='108'/%3E%3Cpath d='M78 68 Q100 58 98 82 Q96 98 85 94'/%3E%3Cline x1='90' y1='72' x2='94' y2='70'/%3E%3Cline x1='93' y1='78' x2='97' y2='76'/%3E%3Cline x1='90' y1='84' x2='94' y2='82'/%3E%3C/g%3E%3C/svg%3E") !important;
 }
 
 /* ============================================

@@ -12,15 +12,31 @@ const PageTheme = {
   /** 所有可用主题 */
   themes: {
     default:  { name: '默认',   icon: '🎨', particles: false, decors: false },
-    snow:     { name: '雪花',   icon: '❄️', particles: true,  decors: false,
+
+    /* ---- 季节动画主题 ---- */
+    snow:     { name: '雪花❄️', icon: '❄️', particles: true, decors: false,
                 count: 35,  emoji: '❄️', sizeMin: 8,  sizeMax: 22,  durMin: 8,  durMax: 16, color: '#d0e8ff' },
-    newyear:  { name: '新年',   icon: '🧧', particles: true,  decors: false,
-                count: 25,  emoji: '✨', sizeMin: 10, sizeMax: 24,  durMin: 6,  durMax: 12, color: '#ffd700' },
-    sakura:   { name: '樱花',   icon: '🌸', particles: true,  decors: false,
+
+    newyear:  { name: '新春🧧', icon: '🧧', particles: true, decors: true,
+                count: 18,  emoji: '🏮', sizeMin: 14, sizeMax: 30,  durMin: 10, durMax: 20, color: '#ff4444',
+                items: [
+                  { side: 'left',  top: 10, emoji: '🏮', size: 55, delay: 0 },
+                  { side: 'right', top: 18, emoji: '🧧', size: 65, delay: 0.4 },
+                  { side: 'left',  top: 40, emoji: '🏮', size: 60, delay: 0.8 },
+                  { side: 'right', top: 50, emoji: '🧧', size: 55, delay: 0.3 },
+                  { side: 'left',  top: 68, emoji: '🧨', size: 50, delay: 1.0 },
+                  { side: 'right', top: 78, emoji: '🏮', size: 58, delay: 0.6 },
+                ]},
+
+    sakura:   { name: '樱花🌸', icon: '🌸', particles: true, decors: false,
                 count: 25,  emoji: '🌸', sizeMin: 10, sizeMax: 22,  durMin: 10, durMax: 20, color: '#ffb7c5' },
-    autumn:   { name: '落叶',   icon: '🍂', particles: true,  decors: false,
+
+    autumn:   { name: '落叶🍂', icon: '🍂', particles: true, decors: false,
                 count: 20,  emoji: '🍂', sizeMin: 12, sizeMax: 26,  durMin: 8,  durMax: 18, color: '#e8a850' },
-    linedog:  { name: '线条小狗', icon: '🐕', particles: false, decors: true,
+
+    /* ---- 角色贴纸主题（静态贴纸 + 轻量粒子）---- */
+    linedog:  { name: '线条小狗🐕', icon: '🐕', particles: true, decors: true,
+                count: 12,  emoji: '🐾', sizeMin: 10, sizeMax: 20,  durMin: 10, durMax: 18, color: '#c4a882',
                 items: [
                   { side: 'left',  top: 8,  img: 'assets/themes/dog-sit.svg',   size: 85, delay: 0 },
                   { side: 'right', top: 20, img: 'assets/themes/dog-walk.svg',  size: 90, delay: 0.4 },
@@ -29,7 +45,9 @@ const PageTheme = {
                   { side: 'left',  top: 65, img: 'assets/themes/dog-walk.svg',  size: 82, delay: 1.0 },
                   { side: 'right', top: 78, img: 'assets/themes/dog-sit.svg',   size: 78, delay: 0.6 },
                 ]},
-    batiao:   { name: '八条',   icon: '🐱', particles: false, decors: true,
+
+    batiao:   { name: '八条🐱', icon: '🐱', particles: true, decors: true,
+                count: 12,  emoji: '🐾', sizeMin: 10, sizeMax: 20,  durMin: 10, durMax: 18, color: '#a89880',
                 items: [
                   { side: 'left',  top: 10, img: 'assets/themes/cat-sit.svg',    size: 85, delay: 0 },
                   { side: 'right', top: 25, img: 'assets/themes/cat-stretch.svg', size: 95, delay: 0.5 },

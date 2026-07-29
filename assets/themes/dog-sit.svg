@@ -1,33 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <!-- 坐着的线条小狗 -->
-  <g fill="none" stroke="#8B7355" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-    <!-- 身体 -->
-    <ellipse cx="100" cy="130" rx="30" ry="25"/>
-    <!-- 前腿 -->
-    <line x1="78" y1="140" x2="73" y2="170"/>
-    <line x1="122" y1="140" x2="127" y2="170"/>
-    <!-- 后脚 -->
-    <ellipse cx="72" cy="172" rx="8" ry="4"/>
-    <ellipse cx="128" cy="172" rx="8" ry="4"/>
-    <!-- 尾巴（翘起） -->
-    <path d="M125 115 Q145 95 140 75 Q138 68 135 70"/>
-    <!-- 头部 -->
-    <circle cx="100" cy="85" r="32"/>
-    <!-- 耳朵（垂耳） -->
-    <ellipse cx="72" cy="65" rx="10" ry="18" transform="rotate(-15 72 65)"/>
-    <ellipse cx="128" cy="65" rx="10" ry="18" transform="rotate(15 128 65)"/>
-    <!-- 眼睛 -->
-    <circle cx="88" cy="80" r="4" fill="#8B7355"/>
-    <circle cx="112" cy="80" r="4" fill="#8B7355"/>
-    <!-- 眼睛高光 -->
-    <circle cx="89" cy="78.5" r="1.2" fill="white" stroke="none"/>
-    <circle cx="113" cy="78.5" r="1.2" fill="white" stroke="none"/>
-    <!-- 鼻子 -->
-    <ellipse cx="100" cy="92" rx="5" ry="4" fill="#5C4033" stroke="none"/>
-    <!-- 嘴巴 -->
-    <path d="M94 97 Q100 104 106 97"/>
-    <!-- 脸颊红晕 -->
-    <circle cx="78" cy="90" r="5" fill="#F0C8C0" stroke="none" opacity="0.6"/>
-    <circle cx="122" cy="90" r="5" fill="#F0C8C0" stroke="none" opacity="0.6"/>
-  </g>
+  <!-- 线条小狗 — 坐姿（马尔济斯犬 LINE sticker 风格）-->
+  <defs>
+    <radialGradient id="blush" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFB3B3" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FFB3B3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- 身体（白色填充 + 细线轮廓） -->
+  <ellipse cx="100" cy="130" rx="35" ry="28" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8"/>
+  <!-- 前腿 -->
+  <line x1="75" y1="145" x2="72" y2="175" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <line x1="125" y1="145" x2="128" y2="175" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="71" cy="177" rx="9" ry="4.5" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <ellipse cx="129" cy="177" rx="9" ry="4.5" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <!-- 尾巴（翘起小尾巴） -->
+  <path d="M130 118 Q148 105 145 88 Q144 82 140 84" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- 头部（大圆头 — 线条小狗标志性比例） -->
+  <circle cx="100" cy="82" r="36" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8"/>
+  <!-- 垂耳（马尔济斯标志性长垂耳） -->
+  <ellipse cx="68" cy="62" rx="11" ry="22" transform="rotate(-12 68 62)" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <ellipse cx="132" cy="62" rx="11" ry="22" transform="rotate(12 132 62)" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <!-- 头顶小卷毛 -->
+  <path d="M90 50 Q95 44 100 50 Q105 44 110 50" fill="none" stroke="#C4A882" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- 眼睛（极简圆点） -->
+  <circle cx="86" cy="78" r="3.5" fill="#5C4033"/>
+  <circle cx="114" cy="78" r="3.5" fill="#5C4033"/>
+  <circle cx="87.2" cy="76.5" r="1.2" fill="white"/>
+  <circle cx="115.2" cy="76.5" r="1.2" fill="white"/>
+  <!-- 鼻子（小三角） -->
+  <ellipse cx="100" cy="90" rx="4.5" ry="3.5" fill="#5C4033"/>
+  <!-- 嘴巴（W形微笑） -->
+  <path d="M94 95 Q97 101 100 95 Q103 101 106 95" fill="none" stroke="#C4A882" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- 脸颊红晕 -->
+  <circle cx="74" cy="88" r="8" fill="url(#blush)"/>
+  <circle cx="126" cy="88" r="8" fill="url(#blush)"/>
 </svg>

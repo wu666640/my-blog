@@ -1,49 +1,53 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <!-- 伸懒腰的八条猫 -->
-  <g fill="none" stroke="#6B5B4F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-    <!-- 身体（弓起） -->
-    <path d="M65 130 Q80 105 100 108 Q120 105 135 130"/>
-    <!-- 身体条纹 -->
-    <path d="M82 108 Q86 105 90 108" stroke-width="2"/>
-    <path d="M100 107 Q104 104 108 107" stroke-width="2"/>
-    <path d="M110 111 Q114 109 118 112" stroke-width="2"/>
-    <!-- 前腿（前伸） -->
-    <line x1="70" y1="128" x2="55" y2="150"/>
-    <line x1="78" y1="125" x2="68" y2="150"/>
-    <!-- 后腿（后蹬） -->
-    <line x1="122" y1="128" x2="135" y2="155"/>
-    <line x1="130" y1="125" x2="145" y2="148"/>
-    <!-- 脚掌 -->
-    <ellipse cx="54" cy="152" rx="6" ry="3.5"/>
-    <ellipse cx="67" cy="152" rx="6" ry="3.5"/>
-    <ellipse cx="136" cy="157" rx="6" ry="3.5"/>
-    <ellipse cx="146" cy="150" rx="6" ry="3.5"/>
-    <!-- 尾巴（高高翘起） -->
-    <path d="M135 125 Q155 118 158 95 Q159 80 152 78"/>
-    <line x1="154" y1="105" x2="148" y2="100" stroke-width="1.8"/>
-    <line x1="156" y1="93" x2="150" y2="88" stroke-width="1.8"/>
-    <line x1="154" y1="83" x2="149" y2="80" stroke-width="1.8"/>
-    <!-- 头部 -->
-    <circle cx="68" cy="90" r="26"/>
-    <!-- 耳朵 -->
-    <polygon points="46,72 40,48 62,66" fill="#E8DDD5"/>
-    <polygon points="90,66 96,42 80,62" fill="#E8DDD5"/>
-    <!-- 内耳 -->
-    <polygon points="48,68 44,52 60,65" fill="#F0C8C0" stroke="none" opacity="0.6"/>
-    <polygon points="88,64 92,48 80,62" fill="#F0C8C0" stroke="none" opacity="0.6"/>
-    <!-- 眼睛（大圆眼） -->
-    <circle cx="60" cy="86" r="5" fill="#6B5B4F"/>
-    <circle cx="80" cy="84" r="5" fill="#6B5B4F"/>
-    <circle cx="61.5" cy="84" r="1.8" fill="white" stroke="none"/>
-    <circle cx="81.5" cy="82" r="1.8" fill="white" stroke="none"/>
-    <!-- 鼻子 -->
-    <polygon points="67,96 70,93 73,96" fill="#E08070" stroke="none"/>
-    <!-- 嘴（打哈欠状） -->
-    <ellipse cx="70" cy="100" rx="5" ry="3" fill="#F0C8C0" stroke="none" opacity="0.5"/>
-    <!-- 胡须 -->
-    <line x1="38" y1="90" x2="56" y2="93" stroke-width="1.5"/>
-    <line x1="36" y1="96" x2="55" y2="96" stroke-width="1.5"/>
-    <line x1="88" y1="86" x2="78" y2="90" stroke-width="1.5"/>
-    <line x1="92" y1="92" x2="80" y2="93" stroke-width="1.5"/>
+  <!-- 八条 — 伸懒腰 -->
+  <defs>
+    <radialGradient id="cb3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFB3B3" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FFB3B3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- 身体（弓起） -->
+  <path d="M62 132 Q80 105 100 108 Q120 105 138 132" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- 身体条纹 -->
+  <path d="M82 108 Q86 105 90 108" fill="none" stroke="#B0A090" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M100 108 Q104 105 108 108" fill="none" stroke="#B0A090" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M112 111 Q116 109 120 112" fill="none" stroke="#B0A090" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 前腿 -->
+  <line x1="68" y1="130" x2="52" y2="153" stroke="#A09080" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="78" y1="126" x2="66" y2="153" stroke="#A09080" stroke-width="2.2" stroke-linecap="round"/>
+  <ellipse cx="51" cy="155" rx="7" ry="4" fill="#FFFCF8" stroke="#A09080" stroke-width="1.5"/>
+  <ellipse cx="65" cy="155" rx="7" ry="4" fill="#FFFCF8" stroke="#A09080" stroke-width="1.5"/>
+  <!-- 后腿 -->
+  <line x1="122" y1="130" x2="136" y2="157" stroke="#A09080" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="132" y1="126" x2="148" y2="150" stroke="#A09080" stroke-width="2.2" stroke-linecap="round"/>
+  <ellipse cx="137" cy="159" rx="7" ry="4" fill="#FFFCF8" stroke="#A09080" stroke-width="1.5"/>
+  <ellipse cx="149" cy="152" rx="7" ry="4" fill="#FFFCF8" stroke="#A09080" stroke-width="1.5"/>
+  <!-- 尾巴（高高翘起） -->
+  <path d="M134 126 Q156 118 158 95 Q159 80 152 78" fill="none" stroke="#A09080" stroke-width="2" stroke-linecap="round"/>
+  <line x1="155" y1="106" x2="149" y2="100" stroke="#B0A090" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="157" y1="93" x2="150" y2="88" stroke="#B0A090" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 头部 -->
+  <circle cx="66" cy="90" r="28" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8"/>
+  <!-- 耳朵 -->
+  <polygon points="44,72 37,46 62,64" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8" stroke-linejoin="round"/>
+  <polygon points="90,62 96,36 78,58" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8" stroke-linejoin="round"/>
+  <polygon points="46,68 41,51 60,64" fill="#FFD0C8" stroke="none"/>
+  <polygon points="88,60 92,42 78,58" fill="#FFD0C8" stroke="none"/>
+  <!-- 眼睛（大圆眼） -->
+  <circle cx="58" cy="86" r="5" fill="#A09080"/>
+  <circle cx="78" cy="84" r="5" fill="#A09080"/>
+  <circle cx="59.5" cy="84" r="1.8" fill="white"/>
+  <circle cx="79.5" cy="82" r="1.8" fill="white"/>
+  <!-- 鼻子 -->
+  <polygon points="65,96 68,93 71,96" fill="#E0A090"/>
+  <!-- 嘴巴（打哈欠） -->
+  <ellipse cx="68" cy="101" rx="6" ry="3.5" fill="#F0D0C8" stroke="none" opacity="0.5"/>
+  <!-- 胡须 -->
+  <g stroke="#B0A090" stroke-width="1.2" stroke-linecap="round">
+    <line x1="34" y1="90" x2="52" y2="93"/>
+    <line x1="32" y1="96" x2="51" y2="96"/>
+    <line x1="86" y1="86" x2="76" y2="90"/>
+    <line x1="90" y1="92" x2="78" y2="93"/>
   </g>
+  <circle cx="46" cy="96" r="6" fill="url(#cb3)"/>
 </svg>

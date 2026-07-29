@@ -1,35 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <!-- 小狗与骨头 -->
-  <g fill="none" stroke="#8B7355" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-    <!-- 身体（趴着） -->
-    <ellipse cx="90" cy="130" rx="32" ry="20"/>
-    <!-- 前腿（抱着骨头） -->
-    <path d="M68 125 Q60 110 65 100"/>
-    <path d="M78 125 Q75 108 78 100"/>
-    <!-- 后腿 -->
-    <path d="M108 135 Q115 155 118 160"/>
-    <path d="M118 132 Q128 150 130 158"/>
-    <ellipse cx="119" cy="162" rx="7" ry="3.5"/>
-    <ellipse cx="131" cy="160" rx="7" ry="3.5"/>
-    <!-- 尾巴 -->
-    <path d="M118 120 Q140 118 142 110"/>
-    <!-- 骨头 -->
-    <g stroke="#C4A97D" stroke-width="2.5" fill="#F5EDE0">
-      <path d="M62 104 Q55 95 58 90 Q62 86 66 88 L78 95"/>
-      <path d="M78 95 L90 88 Q94 86 98 90 Q101 95 94 104 L82 111"/>
-      <path d="M82 111 L70 118 Q66 120 62 118 Q58 114 62 104"/>
-    </g>
-    <!-- 头部 -->
-    <circle cx="88" cy="95" r="26"/>
-    <!-- 耳朵 -->
-    <ellipse cx="66" cy="76" rx="8" ry="14" transform="rotate(-18 66 76)"/>
-    <ellipse cx="110" cy="76" rx="8" ry="14" transform="rotate(18 110 76)"/>
-    <!-- 眼睛（开心眯眼） -->
-    <path d="M78 91 Q82 87 86 91" stroke-width="2.5"/>
-    <path d="M92 91 Q96 87 100 91" stroke-width="2.5"/>
-    <!-- 鼻子 -->
-    <ellipse cx="89" cy="100" rx="4" ry="3.2" fill="#5C4033" stroke="none"/>
-    <!-- 嘴 -->
-    <path d="M83 105 Q89 110 95 105"/>
+  <!-- 线条小狗 — 趴着抱骨头 -->
+  <defs>
+    <radialGradient id="blush3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFB3B3" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FFB3B3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- 身体（趴着） -->
+  <ellipse cx="92" cy="135" rx="35" ry="22" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8"/>
+  <!-- 后腿（趴着伸后面） -->
+  <path d="M118 130 Q128 148 130 158" fill="#FFFEF9" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="131" cy="160" rx="8" ry="4" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <path d="M108 133 Q115 150 118 160" fill="#FFFEF9" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="119" cy="162" rx="8" ry="4" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <!-- 前腿（趴着抱骨头） -->
+  <path d="M65 125 Q58 112 62 105" fill="#FFFEF9" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <path d="M75 128 Q72 114 76 106" fill="#FFFEF9" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <!-- 尾巴 -->
+  <path d="M122 120 Q140 118 138 108" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- 骨头 -->
+  <g fill="#F5EDE0" stroke="#D4C4A8" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M55 108 Q50 98 55 94 Q60 91 62 94 L76 102"/>
+    <path d="M76 102 L90 94 Q92 91 97 94 Q102 98 97 108 L83 116"/>
+    <path d="M83 116 L69 124 Q64 126 60 123 Q55 118 55 108"/>
   </g>
+  <!-- 头部 -->
+  <circle cx="88" cy="88" r="32" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8"/>
+  <!-- 垂耳 -->
+  <ellipse cx="62" cy="68" rx="10" ry="20" transform="rotate(-15 62 68)" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <ellipse cx="114" cy="68" rx="10" ry="20" transform="rotate(15 114 68)" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <!-- 眼睛（圆眼） -->
+  <circle cx="78" cy="84" r="3.5" fill="#5C4033"/>
+  <circle cx="100" cy="84" r="3.5" fill="#5C4033"/>
+  <circle cx="79.2" cy="82.5" r="1.2" fill="white"/>
+  <circle cx="101.2" cy="82.5" r="1.2" fill="white"/>
+  <!-- 鼻子 -->
+  <ellipse cx="89" cy="96" rx="4" ry="3" fill="#5C4033"/>
+  <!-- 嘴巴 -->
+  <path d="M83 101 Q89 107 95 101" fill="none" stroke="#C4A882" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- 红晕 -->
+  <circle cx="66" cy="94" r="7" fill="url(#blush3)"/>
+  <circle cx="112" cy="94" r="7" fill="url(#blush3)"/>
 </svg>
