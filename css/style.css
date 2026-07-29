@@ -48,6 +48,292 @@
   --code-bg: #2a221c;
 }
 
+/* ============================================
+   页面装饰背景图案（静态，每页不同）
+   使用 :has() 根据页面包装类切换
+   每个 SVG 图块包含 1 个居中图标，通过 repeat 形成网格
+   ============================================ */
+
+/* 给 #app 添加背景层 */
+#app {
+  background-color: var(--bg);
+  background-repeat: repeat;
+  transition: background-image 0.4s ease;
+}
+
+/* --- 首页：羽毛笔 + 墨点（120x120 图块）--- */
+body:has(#app .home-layout) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.28' stroke='%23a89888' fill='none' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M60 110 L57 90 L63 90 Z'/%3E%3Cline x1='60' y1='90' x2='60' y2='45'/%3E%3Cpath d='M60 45 Q54 51 52 63 Q56 59 60 56 Q64 59 68 63 Q66 51 60 45 Z'/%3E%3Ccircle cx='55' cy='114' r='1.8' fill='%23a89888'/%3E%3Ccircle cx='63' cy='117' r='1.2' fill='%23a89888'/%3E%3Ccircle cx='59' cy='120' r='0.8' fill='%23a89888'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+/* --- 文章详情：简约圆点 --- */
+body:has(#app .post-detail) #app {
+  background-image: radial-gradient(circle, var(--text-muted) 0.5px, transparent 0.5px);
+  background-size: 28px 28px;
+}
+
+/* --- 画廊：取景框 + 镜头（130x130 图块）--- */
+body:has(#app .gallery-page) #app,
+body:has(#app .gallery-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130 130'%3E%3Cg opacity='0.25' stroke='%23a89888' fill='none' stroke-width='1.6' stroke-linecap='round'%3E%3Crect x='35' y='38' width='60' height='48' rx='5'/%3E%3Ccircle cx='65' cy='62' r='13'/%3E%3Ccircle cx='65' cy='62' r='4.5'/%3E%3Crect x='45' y='29' width='40' height='10' rx='3'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 130px 130px;
+}
+
+/* --- 音乐：双八分音符（120x120 图块）--- */
+body:has(#app .music-page) #app,
+body:has(#app .music-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.25' stroke='%23a89888' fill='none' stroke-width='1.4' stroke-linecap='round'%3E%3Cellipse cx='35' cy='100' rx='8' ry='5.5' transform='rotate(-15 35 100)'/%3E%3Cline x1='42' y1='98' x2='42' y2='40'/%3E%3Cpath d='M42 40 Q55 46 52 55'/%3E%3Cellipse cx='85' cy='80' rx='7' ry='5' transform='rotate(-15 85 80)'/%3E%3Cline x1='91' y1='78' x2='91' y2='25'/%3E%3Cpath d='M91 25 Q102 30 100 38'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+/* --- 视频：播放按钮 + 胶片齿孔（140x140 图块）--- */
+body:has(#app .video-page) #app,
+body:has(#app .video-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Cg opacity='0.22' stroke='%23a89888' fill='none' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='50,35 50,100 95,67.5'/%3E%3Crect x='25' y='25' width='7' height='10' rx='1.5'/%3E%3Crect x='25' y='52' width='7' height='10' rx='1.5'/%3E%3Crect x='25' y='79' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='25' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='52' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='79' width='7' height='10' rx='1.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
+/* --- 关于：人物剪影（140x140 图块）--- */
+body:has(#app .about-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Cg opacity='0.22' stroke='%23a89888' fill='none' stroke-width='1.6' stroke-linecap='round'%3E%3Ccircle cx='70' cy='42' r='18'/%3E%3Cpath d='M15 135 Q15 70 70 70 Q125 70 125 135'/%3E%3Ccircle cx='20' cy='30' r='2.5'/%3E%3Ccircle cx='120' cy='25' r='2'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
+/* --- 小说：打开的书本（120x120 图块）--- */
+body:has(#app .novel-page) #app,
+body:has(#app .novel-detail-page) #app,
+body:has(#app .novel-chapter-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.22' stroke='%23a89888' fill='none' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M25 30 L25 110 L58 97 L90 110 L90 30 L58 43 Z'/%3E%3Cline x1='58' y1='43' x2='58' y2='97'/%3E%3Cline x1='35' y1='55' x2='52' y2='49' stroke-width='0.7'/%3E%3Cline x1='35' y1='65' x2='52' y2='59' stroke-width='0.7'/%3E%3Cline x1='64' y1='49' x2='80' y2='55' stroke-width='0.7'/%3E%3Cline x1='64' y1='59' x2='80' y2='65' stroke-width='0.7'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+/* --- 暗色模式：图案使用更暗的笔画色 --- */
+[data-theme="dark"] body:has(#app .home-layout) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.18' stroke='%237a6a5c' fill='none' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M60 110 L57 90 L63 90 Z'/%3E%3Cline x1='60' y1='90' x2='60' y2='45'/%3E%3Cpath d='M60 45 Q54 51 52 63 Q56 59 60 56 Q64 59 68 63 Q66 51 60 45 Z'/%3E%3Ccircle cx='55' cy='114' r='1.8' fill='%237a6a5c'/%3E%3Ccircle cx='63' cy='117' r='1.2' fill='%237a6a5c'/%3E%3Ccircle cx='59' cy='120' r='0.8' fill='%237a6a5c'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .gallery-page) #app,
+[data-theme="dark"] body:has(#app .gallery-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130 130'%3E%3Cg opacity='0.16' stroke='%237a6a5c' fill='none' stroke-width='1.6' stroke-linecap='round'%3E%3Crect x='35' y='38' width='60' height='48' rx='5'/%3E%3Ccircle cx='65' cy='62' r='13'/%3E%3Ccircle cx='65' cy='62' r='4.5'/%3E%3Crect x='45' y='29' width='40' height='10' rx='3'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .music-page) #app,
+[data-theme="dark"] body:has(#app .music-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.16' stroke='%237a6a5c' fill='none' stroke-width='1.4' stroke-linecap='round'%3E%3Cellipse cx='35' cy='100' rx='8' ry='5.5' transform='rotate(-15 35 100)'/%3E%3Cline x1='42' y1='98' x2='42' y2='40'/%3E%3Cpath d='M42 40 Q55 46 52 55'/%3E%3Cellipse cx='85' cy='80' rx='7' ry='5' transform='rotate(-15 85 80)'/%3E%3Cline x1='91' y1='78' x2='91' y2='25'/%3E%3Cpath d='M91 25 Q102 30 100 38'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .video-page) #app,
+[data-theme="dark"] body:has(#app .video-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Cg opacity='0.14' stroke='%237a6a5c' fill='none' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='50,35 50,100 95,67.5'/%3E%3Crect x='25' y='25' width='7' height='10' rx='1.5'/%3E%3Crect x='25' y='52' width='7' height='10' rx='1.5'/%3E%3Crect x='25' y='79' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='25' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='52' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='79' width='7' height='10' rx='1.5'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .about-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Cg opacity='0.14' stroke='%237a6a5c' fill='none' stroke-width='1.6' stroke-linecap='round'%3E%3Ccircle cx='70' cy='42' r='18'/%3E%3Cpath d='M15 135 Q15 70 70 70 Q125 70 125 135'/%3E%3Ccircle cx='20' cy='30' r='2.5'/%3E%3Ccircle cx='120' cy='25' r='2'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .novel-page) #app,
+[data-theme="dark"] body:has(#app .novel-detail-page) #app,
+[data-theme="dark"] body:has(#app .novel-chapter-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.14' stroke='%237a6a5c' fill='none' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M25 30 L25 110 L58 97 L90 110 L90 30 L58 43 Z'/%3E%3Cline x1='58' y1='43' x2='58' y2='97'/%3E%3Cline x1='35' y1='55' x2='52' y2='49' stroke-width='0.7'/%3E%3Cline x1='35' y1='65' x2='52' y2='59' stroke-width='0.7'/%3E%3Cline x1='64' y1='49' x2='80' y2='55' stroke-width='0.7'/%3E%3Cline x1='64' y1='59' x2='80' y2='65' stroke-width='0.7'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .post-detail) #app {
+  background-image: radial-gradient(circle, var(--text-muted) 0.5px, transparent 0.5px);
+  background-size: 36px 36px;
+}
+
+/* ============================================
+   页面主题粒子动画（雪花、樱花、落叶等）
+   ============================================ */
+
+/* 粒子容器 */
+.page-theme-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* 单个粒子 */
+.page-theme-particle {
+  position: absolute;
+  top: -40px;
+  left: var(--x, 50%);
+  font-size: var(--size, 14px);
+  opacity: var(--opacity, 0.5);
+  animation: particle-fall var(--duration, 10s) var(--delay, 0s) linear infinite;
+  will-change: transform;
+  /* 初始旋转 */
+  transform: rotate(var(--rotation, 0deg));
+}
+
+/* 通用下落动画：从上到下 + 水平漂移 */
+@keyframes particle-fall {
+  0% {
+    transform: translateY(-5vh) translateX(0) rotate(var(--rotation, 0deg));
+  }
+  25% {
+    transform: translateY(25vh) translateX(var(--drift, 30px)) rotate(calc(var(--rotation, 0deg) + 90deg));
+  }
+  50% {
+    transform: translateY(50vh) translateX(calc(var(--drift, 30px) * -0.5)) rotate(calc(var(--rotation, 0deg) + 180deg));
+  }
+  75% {
+    transform: translateY(75vh) translateX(var(--drift, 30px)) rotate(calc(var(--rotation, 0deg) + 270deg));
+  }
+  100% {
+    transform: translateY(105vh) translateX(0) rotate(calc(var(--rotation, 0deg) + 360deg));
+  }
+}
+
+/* 雪花主题：白色发光 */
+[data-page-theme="snow"] .page-theme-particle {
+  filter: blur(0.5px);
+  text-shadow: 0 0 4px rgba(200, 220, 255, 0.6);
+}
+
+/* ============================================
+   主题切换 Toast 提示
+   ============================================ */
+
+.page-theme-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  box-shadow: var(--shadow);
+  pointer-events: none;
+}
+
+.page-theme-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================
+   角色主题背景图案（线条小狗、八条等）
+   使用 !important 覆盖页面默认背景
+   ============================================ */
+
+/* --- 线条小狗：线稿风格小狗 --- */
+body[data-page-theme="linedog"] #app {
+  background-color: var(--bg) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cg stroke='%23a89888' fill='none' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.28'%3E%3C!-- 头部 --%3E%3Ccircle cx='65' cy='42' r='16'/%3E%3C!-- 左耳 --%3E%3Cellipse cx='50' cy='32' rx='7' ry='10' transform='rotate(-20 50 32)'/%3E%3C!-- 右耳 --%3E%3Cellipse cx='80' cy='32' rx='7' ry='10' transform='rotate(20 80 32)'/%3E%3C!-- 眼睛 --%3E%3Ccircle cx='60' cy='38' r='2' fill='%23a89888'/%3E%3Ccircle cx='70' cy='38' r='2' fill='%23a89888'/%3E%3C!-- 鼻子 --%3E%3Cellipse cx='65' cy='46' rx='2.5' ry='1.8' fill='%23a89888'/%3E%3C!-- 嘴巴 --%3E%3Cpath d='M60 49 Q65 54 70 49'/%3E%3C!-- 身体 --%3E%3Crect x='52' y='58' width='26' height='28' rx='10'/%3E%3C!-- 前腿 --%3E%3Cline x1='55' y1='85' x2='52' y2='105'/%3E%3Cline x1='75' y1='85' x2='78' y2='105'/%3E%3C!-- 尾巴 --%3E%3Cpath d='M78 65 Q100 55 95 80 Q92 90 85 88'/%3E%3C/g%3E%3C/svg%3E") !important;
+  background-repeat: repeat !important;
+  background-size: 140px 140px;
+}
+
+/* --- 八条：线稿风格条纹猫 --- */
+body[data-page-theme="batiao"] #app {
+  background-color: var(--bg) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cg stroke='%23a89888' fill='none' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.28'%3E%3C!-- 头部 --%3E%3Ccircle cx='65' cy='42' r='16'/%3E%3C!-- 左耳 --%3E%3Cpolygon points='52,30 46,16 58,24'/%3E%3Cpolygon points='50,28 47,20 55,25' fill='%23a89888' opacity='0.5'/%3E%3C!-- 右耳 --%3E%3Cpolygon points='78,30 84,16 72,24'/%3E%3Cpolygon points='80,28 83,20 75,25' fill='%23a89888' opacity='0.5'/%3E%3C!-- 眼睛 --%3E%3Cellipse cx='60' cy='40' rx='2.5' ry='3' fill='%23a89888'/%3E%3Cellipse cx='70' cy='40' rx='2.5' ry='3' fill='%23a89888'/%3E%3C!-- 鼻子 --%3E%3Cpolygon points='63,47 65,44 67,47' fill='%23a89888'/%3E%3C!-- 嘴巴 --%3E%3Cpath d='M59 49 Q63 52 65 49 Q67 52 71 49'/%3E%3C!-- 胡须 --%3E%3Cline x1='42' y1='44' x2='55' y2='46'/%3E%3Cline x1='40' y1='48' x2='54' y2='49'/%3E%3Cline x1='88' y1='44' x2='75' y2='46'/%3E%3Cline x1='90' y1='48' x2='76' y2='49'/%3E%3C!-- 身体 --%3E%3Crect x='52' y='58' width='26' height='30' rx='10'/%3E%3C!-- 身体条纹 --%3E%3Cline x1='54' y1='66' x2='76' y2='66'/%3E%3Cline x1='54' y1='72' x2='76' y2='72'/%3E%3Cline x1='54' y1='78' x2='76' y2='78'/%3E%3C!-- 前腿 --%3E%3Cline x1='56' y1='87' x2='53' y2='108'/%3E%3Cline x1='74' y1='87' x2='77' y2='108'/%3E%3C!-- 尾巴 --%3E%3Cpath d='M78 68 Q100 58 98 82 Q96 98 85 94'/%3E%3Cline x1='90' y1='72' x2='94' y2='70'/%3E%3Cline x1='93' y1='78' x2='97' y2='76'/%3E%3Cline x1='90' y1='84' x2='94' y2='82'/%3E%3C/g%3E%3C/svg%3E") !important;
+  background-repeat: repeat !important;
+  background-size: 140px 140px;
+}
+
+/* === 暗色模式角色主题 === */
+[data-theme="dark"] body[data-page-theme="linedog"] #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cg stroke='%237a6a5c' fill='none' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.2'%3E%3Ccircle cx='65' cy='42' r='16'/%3E%3Cellipse cx='50' cy='32' rx='7' ry='10' transform='rotate(-20 50 32)'/%3E%3Cellipse cx='80' cy='32' rx='7' ry='10' transform='rotate(20 80 32)'/%3E%3Ccircle cx='60' cy='38' r='2' fill='%237a6a5c'/%3E%3Ccircle cx='70' cy='38' r='2' fill='%237a6a5c'/%3E%3Cellipse cx='65' cy='46' rx='2.5' ry='1.8' fill='%237a6a5c'/%3E%3Cpath d='M60 49 Q65 54 70 49'/%3E%3Crect x='52' y='58' width='26' height='28' rx='10'/%3E%3Cline x1='55' y1='85' x2='52' y2='105'/%3E%3Cline x1='75' y1='85' x2='78' y2='105'/%3E%3Cpath d='M78 65 Q100 55 95 80 Q92 90 85 88'/%3E%3C/g%3E%3C/svg%3E") !important;
+}
+
+[data-theme="dark"] body[data-page-theme="batiao"] #app {
+  background-image: url("data:image/svg+xml,...") !important;
+}
+
+/* ============================================
+   侧边空白区域贴纸装饰
+   宽屏时在内容区两侧空白处放置角色贴纸
+   ============================================ */
+
+.page-decor-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  /* 默认隐藏，宽屏显示 */
+  display: none;
+}
+
+.page-decor-container.visible {
+  opacity: 1;
+}
+
+/* 仅在宽屏（>=1300px）显示侧边贴纸 */
+@media (min-width: 1300px) {
+  .page-decor-container {
+    display: block;
+  }
+}
+
+/* 侧边贴纸项 */
+.page-decor-item {
+  position: absolute;
+  top: var(--top, 30%);
+  font-size: var(--size, 60px);
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(10px) scale(0.8);
+  animation: decor-enter 0.6s ease forwards;
+  animation-delay: var(--delay, 0s);
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+  transition: filter 0.3s;
+}
+
+[data-theme="dark"] .page-decor-item {
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
+}
+
+/* 左侧贴纸 */
+.page-decor-left {
+  left: calc((100vw - 1050px) / 2 - var(--size, 60px));
+  right: auto;
+}
+
+/* 右侧贴纸 */
+.page-decor-right {
+  left: auto;
+  right: calc((100vw - 1050px) / 2 - var(--size, 60px));
+}
+
+/* 贴纸内图片样式 */
+.page-decor-item img {
+  width: var(--size, 60px);
+  height: auto;
+  display: block;
+}
+
+/* 入场动画 */
+@keyframes decor-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.7);
+  }
+  100% {
+    opacity: 0.65;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 悬停微微上浮（仅做参考，实际 pointer-events: none 不响应） */
+
+/* 当屏幕不够宽时收紧左侧间距 */
+@media (min-width: 1300px) and (max-width: 1500px) {
+  .page-decor-left {
+    left: 8px;
+  }
+  .page-decor-right {
+    right: 8px;
+  }
+}
+
 /* ===== 点赞按钮 ===== */
 .like-btn {
   display: inline-flex;

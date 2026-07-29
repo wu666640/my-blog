@@ -8,6 +8,9 @@
   // ===== 初始化主题 =====
   Theme.init();
 
+  // ===== 初始化页面主题（季节装饰）=====
+  PageTheme.init();
+
   // ===== 主题切换按钮 =====
   document.getElementById('theme-toggle').addEventListener('click', () => {
     Theme.toggle();

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 跳跃的小狗 -->
+  <g fill="none" stroke="#8B7355" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 身体（跳跃姿态） -->
+    <ellipse cx="95" cy="100" rx="35" ry="20" transform="rotate(-15 95 100)"/>
+    <!-- 前腿（前伸） -->
+    <path d="M70 110 Q50 105 45 95"/>
+    <path d="M72 105 Q55 95 52 82"/>
+    <!-- 后腿（后蹬） -->
+    <path d="M118 90 Q135 85 140 75"/>
+    <path d="M120 95 Q140 95 145 90"/>
+    <!-- 脚掌 -->
+    <ellipse cx="44" cy="94" rx="6" ry="3"/>
+    <ellipse cx="51" cy="81" rx="6" ry="3"/>
+    <ellipse cx="141" cy="74" rx="6" ry="3"/>
+    <ellipse cx="146" cy="90" rx="6" ry="3"/>
+    <!-- 尾巴 -->
+    <path d="M125 85 Q148 68 152 50"/>
+    <circle cx="152" cy="48" r="4" fill="#8B7355"/>
+    <!-- 头部 -->
+    <circle cx="78" cy="75" r="28"/>
+    <!-- 耳朵（飞起） -->
+    <ellipse cx="56" cy="50" rx="8" ry="14" transform="rotate(-30 56 50)"/>
+    <ellipse cx="100" cy="50" rx="8" ry="14" transform="rotate(30 100 50)"/>
+    <!-- 眼睛（大圆眼） -->
+    <circle cx="70" cy="72" r="5" fill="#8B7355"/>
+    <circle cx="88" cy="72" r="5" fill="#8B7355"/>
+    <circle cx="71.5" cy="70" r="1.8" fill="white" stroke="none"/>
+    <circle cx="89.5" cy="70" r="1.8" fill="white" stroke="none"/>
+    <!-- 鼻子 -->
+    <ellipse cx="79" cy="84" rx="4.5" ry="3.5" fill="#5C4033" stroke="none"/>
+    <!-- 嘴 -->
+    <path d="M73 89 Q79 95 85 89"/>
+    <!-- 舌头（飘出） -->
+    <ellipse cx="75" cy="96" rx="3" ry="6" fill="#F08080" stroke="none" opacity="0.7" transform="rotate(10 75 96)"/>
+  </g>
+</svg>

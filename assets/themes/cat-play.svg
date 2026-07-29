@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 玩毛线球的猫 -->
+  <g fill="none" stroke="#6B5B4F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 毛线球 -->
+    <circle cx="115" cy="155" r="20" fill="#F5EDE0" stroke="#C4A97D" stroke-width="2.5"/>
+    <path d="M105 145 Q115 135 125 145" stroke="#E8C8A0" stroke-width="1.5"/>
+    <path d="M108 155 Q118 148 128 155" stroke="#E8C8A0" stroke-width="1.5"/>
+    <path d="M110 165 Q120 158 130 165" stroke="#E8C8A0" stroke-width="1.5"/>
+    <!-- 散开的毛线 -->
+    <path d="M130 162 Q145 170 148 180 Q150 188 145 190" stroke="#C4A97D" stroke-width="1.8"/>
+    <!-- 身体（趴着玩） -->
+    <ellipse cx="90" cy="140" rx="28" ry="20"/>
+    <!-- 前腿（拍球） -->
+    <path d="M76 145 Q85 148 105 150"/>
+    <path d="M80 150 Q90 155 108 152"/>
+    <!-- 后腿 -->
+    <path d="M108 135 Q118 150 120 158"/>
+    <ellipse cx="120" cy="160" rx="7" ry="3.5"/>
+    <!-- 尾巴（兴奋地摆动） -->
+    <path d="M118 130 Q138 120 142 108 Q143 102 138 105"/>
+    <line x1="138" y1="115" x2="133" y2="112" stroke-width="1.8"/>
+    <line x1="141" y1="108" x2="135" y2="107" stroke-width="1.8"/>
+    <!-- 头部 -->
+    <circle cx="80" cy="100" r="26"/>
+    <!-- 耳朵 -->
+    <polygon points="58,80 54,56 74,74" fill="#E8DDD5"/>
+    <polygon points="102,74 108,50 90,70" fill="#E8DDD5"/>
+    <!-- 内耳 -->
+    <polygon points="60,76 57,61 72,73" fill="#F0C8C0" stroke="none" opacity="0.6"/>
+    <polygon points="100,72 104,56 90,70" fill="#F0C8C0" stroke="none" opacity="0.6"/>
+    <!-- 眼睛（盯着球） -->
+    <circle cx="74" cy="96" r="4.5" fill="#6B5B4F"/>
+    <circle cx="92" cy="94" r="4.5" fill="#6B5B4F"/>
+    <circle cx="75" cy="94" r="1.5" fill="white" stroke="none"/>
+    <circle cx="93" cy="92" r="1.5" fill="white" stroke="none"/>
+    <!-- 鼻子 -->
+    <polygon points="80,104 83,101 86,104" fill="#E08070" stroke="none"/>
+    <!-- 嘴 -->
+    <path d="M76 108 Q83 113 90 108"/>
+    <!-- 胡须 -->
+    <line x1="54" y1="98" x2="70" y2="102" stroke-width="1.5"/>
+    <line x1="52" y1="104" x2="69" y2="104" stroke-width="1.5"/>
+    <line x1="98" y1="96" x2="88" y2="100" stroke-width="1.5"/>
+    <line x1="100" y1="102" x2="89" y2="103" stroke-width="1.5"/>
+  </g>
+</svg>

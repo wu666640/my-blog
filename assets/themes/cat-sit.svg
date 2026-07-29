@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 坐着的八条猫 -->
+  <g fill="none" stroke="#6B5B4F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 身体 -->
+    <ellipse cx="100" cy="135" rx="28" ry="26"/>
+    <!-- 身体条纹 -->
+    <line x1="78" y1="125" x2="88" y2="122" stroke-width="2"/>
+    <line x1="78" y1="135" x2="88" y2="132" stroke-width="2"/>
+    <line x1="112" y1="122" x2="122" y2="125" stroke-width="2"/>
+    <line x1="112" y1="132" x2="122" y2="135" stroke-width="2"/>
+    <!-- 前腿 -->
+    <line x1="80" y1="150" x2="78" y2="175"/>
+    <line x1="120" y1="150" x2="122" y2="175"/>
+    <!-- 脚掌 -->
+    <ellipse cx="78" cy="177" rx="7" ry="4"/>
+    <ellipse cx="122" cy="177" rx="7" ry="4"/>
+    <!-- 尾巴（缠绕身体） -->
+    <path d="M125 140 Q145 145 148 130 Q150 115 135 118 Q125 120 120 130"/>
+    <!-- 尾巴条纹 -->
+    <line x1="145" y1="132" x2="138" y2="122" stroke-width="1.8"/>
+    <line x1="140" y1="120" x2="132" y2="112" stroke-width="1.8"/>
+    <!-- 头部 -->
+    <circle cx="100" cy="88" r="30"/>
+    <!-- 耳朵（尖耳） -->
+    <polygon points="74,65 70,35 90,60" fill="#E8DDD5" stroke="#6B5B4F"/>
+    <polygon points="126,65 130,35 110,60" fill="#E8DDD5" stroke="#6B5B4F"/>
+    <!-- 内耳 -->
+    <polygon points="76,60 73,42 86,59" fill="#F0C8C0" stroke="none" opacity="0.6"/>
+    <polygon points="124,60 127,42 114,59" fill="#F0C8C0" stroke="none" opacity="0.6"/>
+    <!-- 眼睛（竖瞳） -->
+    <ellipse cx="88" cy="84" rx="4.5" ry="5.5" fill="#6B5B4F"/>
+    <ellipse cx="112" cy="84" rx="4.5" ry="5.5" fill="#6B5B4F"/>
+    <ellipse cx="88" cy="84" rx="1.5" ry="5" fill="#D4E8C0" stroke="none"/>
+    <ellipse cx="112" cy="84" rx="1.5" ry="5" fill="#D4E8C0" stroke="none"/>
+    <!-- 鼻子 -->
+    <polygon points="97,94 100,91 103,94" fill="#E08070" stroke="none"/>
+    <!-- 嘴巴 -->
+    <path d="M93 97 Q97 100 100 97 Q103 100 107 97"/>
+    <!-- 胡须 -->
+    <line x1="60" y1="88" x2="78" y2="92" stroke-width="1.5"/>
+    <line x1="58" y1="94" x2="77" y2="95" stroke-width="1.5"/>
+    <line x1="60" y1="100" x2="78" y2="98" stroke-width="1.5"/>
+    <line x1="140" y1="88" x2="122" y2="92" stroke-width="1.5"/>
+    <line x1="142" y1="94" x2="123" y2="95" stroke-width="1.5"/>
+    <line x1="140" y1="100" x2="122" y2="98" stroke-width="1.5"/>
+    <!-- 前爪肉垫 -->
+    <circle cx="92" cy="172" r="5" fill="#F0C8C0" stroke="none" opacity="0.4"/>
+    <circle cx="108" cy="172" r="5" fill="#F0C8C0" stroke="none" opacity="0.4"/>
+  </g>
+</svg>

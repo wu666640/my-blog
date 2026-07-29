@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 走路的小狗 -->
+  <g fill="none" stroke="#8B7355" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 身体 -->
+    <ellipse cx="95" cy="120" rx="38" ry="22"/>
+    <!-- 前腿（走路姿态） -->
+    <line x1="70" y1="132" x2="55" y2="165"/>
+    <line x1="85" y1="135" x2="80" y2="170"/>
+    <!-- 后腿 -->
+    <line x1="108" y1="132" x2="115" y2="165"/>
+    <line x1="122" y1="130" x2="135" y2="160"/>
+    <!-- 脚掌 -->
+    <ellipse cx="54" cy="167" rx="7" ry="3.5"/>
+    <ellipse cx="80" cy="172" rx="7" ry="3.5"/>
+    <ellipse cx="116" cy="167" rx="7" ry="3.5"/>
+    <ellipse cx="136" cy="162" rx="7" ry="3.5"/>
+    <!-- 尾巴（摇摆） -->
+    <path d="M128 108 Q150 90 155 70"/>
+    <circle cx="155" cy="68" r="4" fill="#8B7355"/>
+    <!-- 头部 -->
+    <circle cx="80" cy="82" r="30"/>
+    <!-- 垂耳 -->
+    <ellipse cx="54" cy="62" rx="9" ry="16" transform="rotate(-20 54 62)"/>
+    <ellipse cx="106" cy="62" rx="9" ry="16" transform="rotate(20 106 62)"/>
+    <!-- 眼睛 -->
+    <circle cx="70" cy="78" r="3.8" fill="#8B7355"/>
+    <circle cx="92" cy="78" r="3.8" fill="#8B7355"/>
+    <circle cx="71" cy="76.5" r="1.2" fill="white" stroke="none"/>
+    <circle cx="93" cy="76.5" r="1.2" fill="white" stroke="none"/>
+    <!-- 鼻子 -->
+    <ellipse cx="81" cy="90" rx="5" ry="3.5" fill="#5C4033" stroke="none"/>
+    <!-- 嘴巴（开心） -->
+    <path d="M75 95 Q81 102 87 95"/>
+    <!-- 舌头 -->
+    <ellipse cx="81" cy="100" rx="3" ry="5" fill="#F08080" stroke="none" opacity="0.7"/>
+  </g>
+</svg>
