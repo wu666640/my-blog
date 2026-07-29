@@ -65,10 +65,29 @@ posts.sort((a, b) => {
   return new Date(b.date) - new Date(a.date);
 });
 
+// 格式化日期，保留到秒：YYYY-MM-DD HH:MM:SS
+// 支持 Date 对象、ISO 字符串、日期字符串
 function formatDate(d) {
-  if (typeof d === 'string') return d;
-  if (d instanceof Date) return d.toISOString().slice(0, 10);
-  return String(d).slice(0, 10);
+  if (d instanceof Date) {
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+  if (typeof d === 'string') {
+    const trimmed = d.trim();
+    // 已经是完整 datetime 格式
+    if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(trimmed)) return trimmed;
+    // ISO 格式 2026-07-27T14:30:25
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(trimmed)) {
+      return trimmed.replace('T', ' ').slice(0, 19);
+    }
+    // 只有日期，补上时间 00:00:00
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed + ' 00:00:00';
+    // 其他格式尝试解析
+    const parsed = new Date(trimmed);
+    if (!isNaN(parsed)) return formatDate(parsed);
+    return trimmed;
+  }
+  return String(d);
 }
 
 // 生成 js/posts.js
@@ -178,7 +197,7 @@ if (galleryItems.length > 0) {
       : '',
     image: item.image || '',
     category: item.category || '未分类',
-    date: item.date || '',
+    date: item.date ? formatDate(item.date) : '',
   })).sort((a, b) => {
     if (!a.date) return 1;
     if (!b.date) return -1;
@@ -268,7 +287,7 @@ if (musicItems.length > 0) {
     neteaseId: item.neteaseId || '',
     neteaseUrl: item.neteaseUrl || '',
     lyrics: item.lyrics || '',
-    date: item.date || '',
+    date: item.date ? formatDate(item.date) : '',
     tags: (() => {
       const presetTags = (item.tags || []).map(t => typeof t === 'string' ? t : (t.name || t.tag || ''));
       let overrideTags = [];
@@ -414,7 +433,7 @@ if (videoItems.length > 0) {
       ? marked.parse(item.description).trim()
       : '',
     category: item.category || '未分类',
-    date: item.date || '',
+    date: item.date ? formatDate(item.date) : '',
   })).sort((a, b) => {
     if (!a.date) return 1;
     if (!b.date) return -1;

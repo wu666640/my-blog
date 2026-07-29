@@ -1,7 +1,7 @@
 /**
  * 视频推荐数据 — 由 build.js 自动生成
  * 请勿手动修改此文件，在 /admin 后台管理视频
- * 生成时间：2026-07-29T08:11:00.041Z
+ * 生成时间：2026-07-29T08:30:49.504Z
  */
 const VIDEOS = [
   {
@@ -13,7 +13,7 @@ const VIDEOS = [
     "cover": "images/qq20260727-205130.png",
     "description": "<p>安装claude code,注意cc-switch是终端运行</p>",
     "category": "教程",
-    "date": "2026-07-27"
+    "date": "2026-07-27 00:00:00"
   },
   {
     "id": 2,
@@ -24,7 +24,7 @@ const VIDEOS = [
     "cover": "images/qq20260727-222055.png",
     "description": "<p>数据结构**++**</p>",
     "category": "数据结构",
-    "date": "2026-07-27"
+    "date": "2026-07-27 00:00:00"
   },
   {
     "id": 3,
@@ -35,7 +35,7 @@ const VIDEOS = [
     "cover": "",
     "description": "<p>这是一个示例视频推荐。</p>\n<p>可以在这里写推荐语，支持 Markdown。</p>",
     "category": "教程",
-    "date": "2026-07-27"
+    "date": "2026-07-27 00:00:00"
   }
 ];
 

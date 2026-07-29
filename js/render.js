@@ -75,6 +75,79 @@ function syncLyricsDisplay(scrollEl, currentTime) {
   }
 }
 
+/**
+ * 合并所有类型内容并按时间排序
+ * @param {number} limit - 返回条数
+ * @returns {Array} 混合内容数组，每项含 type/date/title/cover/desc/id
+ */
+function getLatestMixedItems(limit) {
+  const items = [];
+
+  // 文章
+  try {
+    const posts = getAllPosts ? getAllPosts() : (typeof POSTS !== 'undefined' ? POSTS : []);
+    posts.forEach(p => items.push({
+      type: 'post', date: p.date, title: p.title, cover: p.cover,
+      desc: p.excerpt || '', id: p.id, tags: p.tags,
+    }));
+  } catch (e) { /* ignore */ }
+
+  // 画廊
+  try {
+    const gallery = typeof GALLERY_ITEMS !== 'undefined' ? GALLERY_ITEMS : [];
+    gallery.forEach(g => items.push({
+      type: 'gallery', date: g.date, title: g.title, cover: g.image,
+      desc: g.description ? g.description.replace(/<[^>]+>/g, '').slice(0, 80) : '',
+      id: g.id, category: g.category,
+    }));
+  } catch (e) { /* ignore */ }
+
+  // 音乐
+  try {
+    const music = typeof MUSIC_TRACKS !== 'undefined' ? MUSIC_TRACKS : [];
+    music.forEach(m => items.push({
+      type: 'music', date: m.date, title: `${m.title} - ${m.artist}`,
+      cover: m.cover, desc: m.description ? m.description.replace(/<[^>]+>/g, '').slice(0, 80) : '',
+      id: m.id, category: m.category,
+    }));
+  } catch (e) { /* ignore */ }
+
+  // 视频
+  try {
+    const videos = typeof VIDEOS !== 'undefined' ? VIDEOS : [];
+    videos.forEach(v => items.push({
+      type: 'video', date: v.date, title: v.title, cover: v.cover,
+      desc: v.description ? v.description.replace(/<[^>]+>/g, '').slice(0, 80) : '',
+      id: v.id, category: v.category,
+    }));
+  } catch (e) { /* ignore */ }
+
+  // 按时间降序
+  items.sort((a, b) => {
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  return items.slice(0, limit);
+}
+
+/**
+ * 格式化相对时间：「刚刚」「N分钟前」「N小时前」「N天前」或日期
+ */
+function formatTimeAgo(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d)) return dateStr.slice(0, 10);
+  const now = new Date();
+  const diff = Math.floor((now - d) / 1000); // 秒
+  if (diff < 60) return '刚刚';
+  if (diff < 3600) return Math.floor(diff / 60) + ' 分钟前';
+  if (diff < 86400) return Math.floor(diff / 3600) + ' 小时前';
+  if (diff < 604800) return Math.floor(diff / 86400) + ' 天前';
+  return dateStr.slice(0, 10);
+}
+
 const Render = {
   app: null,
 
@@ -130,33 +203,42 @@ const Render = {
     input.addEventListener("keydown", e => { if (e.key === "Enter") doVerify(); });
   },
 
-  /* ========== 首页 ========== */
+  /* ========== 首页（混合时间线 or 标签/搜索筛选）========== */
   home(posts, activeTag, titleOverride) {
     const tags = getAllPostTags();
+    const isFiltered = activeTag || titleOverride;
 
-    const postsHTML = posts.length === 0
-      ? `<div class="empty-state">
-           <div class="empty-icon">📭</div>
-           <p>暂无文章</p>
-         </div>`
-      : posts.map(p => this._postCard(p)).join('');
+    // 筛选模式（标签/搜索）：只显示文章
+    // 首页：混合时间线
+    let itemsHTML;
+    let title;
 
-    const title = titleOverride
-      || (activeTag ? `标签：${activeTag}（${posts.length} 篇）` : '最新文章');
+    if (isFiltered) {
+      title = titleOverride || `标签：${activeTag}（${posts.length} 篇）`;
+      itemsHTML = posts.length === 0
+        ? `<div class="empty-state"><div class="empty-icon">📭</div><p>暂无文章</p></div>`
+        : posts.map(p => this._postCard(p)).join('');
+    } else {
+      title = '最新动态';
+      const mixed = getLatestMixedItems(20);
+      itemsHTML = mixed.length === 0
+        ? `<div class="empty-state"><div class="empty-icon">📭</div><p>暂无内容</p></div>`
+        : mixed.map(item => this._mixedCard(item)).join('');
+    }
 
     return `
       <div class="home-layout">
         <section class="posts-section">
           <h2 class="section-title">${title}</h2>
-          <div class="posts-list">${postsHTML}</div>
+          <div class="posts-list">${itemsHTML}</div>
         </section>
         <aside class="sidebar">
           <div class="sidebar-widget">
             <h3>🔍 搜索</h3>
-            <input type="text" class="search-box" id="search-input" placeholder="搜索文章..." autocomplete="off">
+            <input type="text" class="search-box" id="search-input" placeholder="搜索..." autocomplete="off">
           </div>
           <div class="sidebar-widget">
-            <h3>🏷️ 标签</h3>
+            <h3>🏷️ 分类</h3>
             <div class="tag-cloud">
               <a href="#/" class="tag ${!activeTag ? 'active' : ''}">全部</a>
               ${tags.map(t => `<a href="#/tag/${encodeURIComponent(t.name)}" class="tag ${activeTag === t.name ? 'active' : ''}">${t.name} (${t.count})</a>`).join('')}
@@ -164,6 +246,36 @@ const Render = {
           </div>
         </aside>
       </div>`;
+  },
+
+  /** 混合内容卡片（文章/画廊/音乐/视频） */
+  _mixedCard(item) {
+    const typeConfig = {
+      post:    { badge: '📝 文章', color: '#c17a4e', link: `#/post/${item.id}` },
+      gallery: { badge: '🖼️ 画廊', color: '#7a9a6e', link: `#/gallery/${item.id}` },
+      music:   { badge: '🎵 音乐', color: '#8b6fa0', link: `#/music/${item.id}` },
+      video:   { badge: '🎬 视频', color: '#5a8fbf', link: `#/video/${item.id}` },
+    };
+    const cfg = typeConfig[item.type] || typeConfig.post;
+
+    const coverHTML = item.cover
+      ? `<div class="mixed-card-cover"><img src="${item.cover}" alt="" loading="lazy"></div>`
+      : `<div class="mixed-card-cover mixed-card-cover-placeholder">${cfg.badge.charAt(0)}</div>`;
+
+    const timeStr = formatTimeAgo(item.date);
+
+    return `
+      <article class="mixed-card" onclick="Router.navigate('${cfg.link}')">
+        ${coverHTML}
+        <div class="mixed-card-body">
+          <div class="mixed-card-meta">
+            <span class="mixed-card-badge" style="background:${cfg.color}15;color:${cfg.color}">${cfg.badge}</span>
+            <span class="mixed-card-time">${timeStr}</span>
+          </div>
+          <h3 class="mixed-card-title">${item.title}</h3>
+          <p class="mixed-card-desc">${item.desc || ''}</p>
+        </div>
+      </article>`;
   },
 
   /** 文章卡片 HTML */
