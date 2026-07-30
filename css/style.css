@@ -354,6 +354,24 @@ body[data-page-theme="batiao"] #app {
 
 /* 悬停微微上浮（仅做参考，实际 pointer-events: none 不响应） */
 
+/* 🐾 爪印蔓延动画（逐个浮现 + 持续脉动） */
+.paw-creep {
+  animation: paw-spread 0.8s ease-out forwards, paw-breathe 3s ease-in-out infinite !important;
+  animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.8s) !important;
+  opacity: 0;
+}
+
+@keyframes paw-spread {
+  0%   { opacity: 0; transform: scale(0.2) rotate(-30deg); filter: blur(4px); }
+  60%  { opacity: 0.55; transform: scale(1.15) rotate(5deg); filter: blur(0px); }
+  100% { opacity: 0.45; transform: scale(1) rotate(0deg); filter: blur(0px); }
+}
+
+@keyframes paw-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.45; }
+  50%      { transform: scale(1.08); opacity: 0.55; }
+}
+
 /* 当屏幕不够宽时收紧左侧间距 */
 @media (min-width: 1300px) and (max-width: 1500px) {
   .page-decor-left {

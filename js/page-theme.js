@@ -34,16 +34,24 @@ const PageTheme = {
     autumn:   { name: '落叶🍂', icon: '🍂', particles: true, decors: false,
                 count: 20,  emoji: '🍂', sizeMin: 12, sizeMax: 26,  durMin: 8,  durMax: 18, color: '#e8a850' },
 
-    /* ---- 角色贴纸主题（静态贴纸 + 轻量粒子）---- */
-    linedog:  { name: '线条小狗🐕', icon: '🐕', particles: true, decors: true,
-                count: 12,  emoji: '🐾', sizeMin: 10, sizeMax: 20,  durMin: 10, durMax: 18, color: '#c4a882',
+    /* ---- 角色贴纸主题 ---- */
+    linedog:  { name: '线条小狗🐕', icon: '🐕', particles: false, decors: true,
                 items: [
-                  { side: 'left',  top: 8,  img: 'assets/themes/dog-sit.svg',   size: 85, delay: 0 },
-                  { side: 'right', top: 20, img: 'assets/themes/dog-walk.svg',  size: 90, delay: 0.4 },
-                  { side: 'left',  top: 38, img: 'assets/themes/dog-bone.svg',  size: 80, delay: 0.8 },
-                  { side: 'right', top: 52, img: 'assets/themes/dog-jump.svg',  size: 88, delay: 0.3 },
-                  { side: 'left',  top: 65, img: 'assets/themes/dog-walk.svg',  size: 82, delay: 1.0 },
-                  { side: 'right', top: 78, img: 'assets/themes/dog-sit.svg',   size: 78, delay: 0.6 },
+                  // 小狗贴纸（侧边）
+                  { side: 'left',  top: 6,  img: 'assets/themes/dog-sit.svg',        size: 85, delay: 0 },
+                  { side: 'right', top: 16, img: 'assets/themes/linedog-original.jpg', size: 72, delay: 0.3 },
+                  { side: 'left',  top: 30, img: 'assets/themes/dog-run.svg',         size: 95, delay: 0.6 },
+                  { side: 'right', top: 42, img: 'assets/themes/dog-jump.svg',        size: 88, delay: 0.4 },
+                  { side: 'left',  top: 55, img: 'assets/themes/linedog-original.jpg', size: 78, delay: 0.8 },
+                  { side: 'right', top: 66, img: 'assets/themes/dog-sleep.svg',       size: 90, delay: 0.5 },
+                  { side: 'left',  top: 78, img: 'assets/themes/dog-bone.svg',        size: 82, delay: 0.9 },
+                  // 🐾 蔓延爪印（大号，爬满页面）
+                  { side: 'left',  top: 22, emoji: '🐾', size: 55, delay: 1.2, class: 'paw-creep' },
+                  { side: 'right', top: 34, emoji: '🐾', size: 48, delay: 1.5, class: 'paw-creep' },
+                  { side: 'left',  top: 45, emoji: '🐾', size: 60, delay: 1.8, class: 'paw-creep' },
+                  { side: 'right', top: 56, emoji: '🐾', size: 50, delay: 2.1, class: 'paw-creep' },
+                  { side: 'left',  top: 68, emoji: '🐾', size: 55, delay: 2.4, class: 'paw-creep' },
+                  { side: 'right', top: 80, emoji: '🐾', size: 45, delay: 2.7, class: 'paw-creep' },
                 ]},
 
     batiao:   { name: '八条🐱', icon: '🐱', particles: true, decors: true,
@@ -213,7 +221,8 @@ const PageTheme = {
     const frag = document.createDocumentFragment();
     config.items.forEach((item) => {
       const decor = document.createElement('div');
-      decor.className = 'page-decor-item page-decor-' + item.side;
+      const extraClass = item.class ? ' ' + item.class : '';
+      decor.className = 'page-decor-item page-decor-' + item.side + extraClass;
       decor.style.setProperty('--top', item.top + '%');
       decor.style.setProperty('--size', item.size + 'px');
       decor.style.setProperty('--delay', item.delay + 's');
