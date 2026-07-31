@@ -12,7 +12,7 @@ backend:
 local_backend: true
 
 # 线上站点地址，用于预览面板中媒体资源的路径解析
-site_url: https://my-blog-a9ja.vercel.app
+site_url: https://blog-d4g0rvrjaa17c65a9-1460996767.tcloudbaseapp.com
 
 # 媒体文件存储位置
 media_folder: "images"
