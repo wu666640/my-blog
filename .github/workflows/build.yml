@@ -46,10 +46,17 @@ jobs:
 
       - name: 部署到 CloudBase（国内镜像）
         run: |
-          npm install -g @cloudbase/cli
-          tcb login --apiKeyId ${{ secrets.TCB_SECRET_ID }} --apiKey ${{ secrets.TCB_SECRET_KEY }}
-          tcb hosting deploy index.html -e blog-d4g0rvrjaa17c65a9
+          echo "::group::安装并登录"
+          npm install @cloudbase/cli
+          npx tcb login --apiKeyId "${{ secrets.TCB_SECRET_ID }}" --apiKey "${{ secrets.TCB_SECRET_KEY }}" 2>&1
+          echo "::endgroup::"
+
+          echo "::group::上传文件"
+          npx tcb hosting deploy index.html -e blog-d4g0rvrjaa17c65a9 2>&1
           for d in css js admin images posts data assets; do
-            tcb hosting deploy "$d" "$d" -e blog-d4g0rvrjaa17c65a9
+            echo "📤 $d"
+            npx tcb hosting deploy "$d" "$d" -e blog-d4g0rvrjaa17c65a9 2>&1
           done
+          echo "::endgroup::"
+
           echo "✅ 已部署到 CloudBase"
