@@ -43,3 +43,10 @@ jobs:
           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push -f origin gh-pages
           echo "✅ 已部署到 gh-pages"
+
+      - name: 部署到 CloudBase（国内镜像）
+        run: |
+          npm install -g @cloudbase/cli
+          tcb login --apiKeyId ${{ secrets.TCB_SECRET_ID }} --apiKey ${{ secrets.TCB_SECRET_KEY }}
+          tcb hosting deploy . -e blog-d4g0rvrjaa17c65a9
+          echo "✅ 已部署到 CloudBase"
