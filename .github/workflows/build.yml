@@ -48,5 +48,8 @@ jobs:
         run: |
           npm install -g @cloudbase/cli
           tcb login --apiKeyId ${{ secrets.TCB_SECRET_ID }} --apiKey ${{ secrets.TCB_SECRET_KEY }}
-          tcb hosting deploy . -e blog-d4g0rvrjaa17c65a9
+          tcb hosting deploy index.html -e blog-d4g0rvrjaa17c65a9
+          for d in css js admin images posts data assets; do
+            tcb hosting deploy "$d" "$d" -e blog-d4g0rvrjaa17c65a9
+          done
           echo "✅ 已部署到 CloudBase"
