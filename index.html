@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="一间安静写字的地方">
+  <title>璨泯小记</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+</head>
+<body>
+  <!-- ===== 导航栏 ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#/" class="site-logo">📖 璨泯小记</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="菜单" aria-expanded="false">☰</button>
+      <nav class="site-nav" id="site-nav">
+        <a href="#/" class="nav-link">首页</a>
+        <a href="#/gallery" class="nav-link">画廊</a>
+        <a href="#/music" class="nav-link">音乐</a>
+        <a href="#/video" class="nav-link">视频</a>
+        <a href="#/novel" class="nav-link">小说</a>
+        <a href="#/about" class="nav-link">关于</a>
+        <button id="search-nav-btn" class="nav-search-btn" title="搜索 (/) " aria-label="搜索">🔍</button>
+        <button id="theme-toggle" class="theme-btn" title="切换主题" aria-label="切换暗色模式">
+          <span class="icon-sun">☀️</span>
+          <span class="icon-moon">🌙</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== 主内容区 ===== -->
+  <main id="app" class="app-main">
+    <!-- 页面内容由 JS 渲染 -->
+  </main>
+
+  <!-- ===== 右侧歌词面板（桌面端利用右边空白） ===== -->
+  <aside id="lyrics-sidebar" class="lyrics-sidebar gmp-hidden" aria-label="歌词面板">
+    <div class="lyrics-sidebar-header">
+      <span class="lyrics-sidebar-title">📜 歌词</span>
+      <button class="lyrics-sidebar-close" title="隐藏歌词" aria-label="隐藏歌词">✕</button>
+    </div>
+    <div class="lyrics-sidebar-track">
+      <span class="lyrics-sidebar-song"></span>
+      <span class="lyrics-sidebar-artist"></span>
+    </div>
+    <div class="lyrics-sidebar-scroll" id="lyrics-sidebar-scroll">
+      <div class="lyrics-sidebar-lines" id="lyrics-sidebar-lines"></div>
+      <div class="lyrics-sidebar-empty">选择一首有歌词的歌曲开始播放</div>
+    </div>
+  </aside>
+
+  <!-- ===== 页脚 ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>© 2026 璨泯小记 — 用文字记录生活的温度</p>
+      <div class="footer-stats">
+        <span id="busuanzi_container_site_pv" style="display:none">
+          👁️ <span id="busuanzi_value_site_pv"></span> 次访问
+        </span>
+        <span class="footer-stats-divider">·</span>
+        <span id="busuanzi_container_site_uv" style="display:none">
+          🧑 <span id="busuanzi_value_site_uv"></span> 位访客
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== 全局音乐播放器：浮动按钮 ===== -->
+  <button id="gmp-fab" class="gmp-fab" title="音乐播放器" aria-label="打开音乐播放器">
+    <span class="gmp-fab-icon">🎵</span>
+  </button>
+
+  <!-- ===== 全局音乐播放器：底部播放栏 ===== -->
+  <div id="gmp-bar" class="gmp-bar gmp-hidden">
+    <div class="gmp-bar-inner">
+      <button class="gmp-bar-btn gmp-bar-play" title="播放 / 暂停" aria-label="播放 / 暂停">▶️</button>
+      <div class="gmp-bar-info">
+        <span class="gmp-bar-title">选一首歌听听吧</span>
+        <span class="gmp-bar-artist"></span>
+      </div>
+      <div class="gmp-bar-progress-track">
+        <div class="gmp-bar-progress-fill"></div>
+      </div>
+      <span class="gmp-bar-time">0:00</span>
+      <button class="gmp-bar-btn gmp-bar-list" title="播放列表" aria-label="播放列表">📋</button>
+      <div class="gmp-volume-control">
+        <button class="gmp-bar-btn gmp-volume-btn" title="静音 / 取消静音" aria-label="静音切换">🔊</button>
+        <input type="range" class="gmp-volume-slider" min="0" max="100" value="80" title="音量" aria-label="音量">
+      </div>
+      <button class="gmp-bar-btn gmp-shuffle-btn" id="gmp-shuffle-btn" title="随机播放" aria-label="随机播放">🔀</button>
+      <button class="gmp-bar-btn gmp-loop-btn" id="gmp-loop-btn" title="顺序播放" aria-label="循环模式">🔁</button>
+      <button class="gmp-bar-btn gmp-bar-close" title="关闭播放器" aria-label="关闭">✕</button>
+    </div>
+  </div>
+
+  <!-- ===== 全局音乐播放器：播放列表面板 ===== -->
+  <div id="gmp-panel" class="gmp-panel gmp-hidden">
+    <div class="gmp-panel-header">
+      <div class="gmp-panel-tabs">
+        <button class="gmp-tab gmp-tab-active" data-gmp-tab="list">📋 列表</button>
+        <button class="gmp-tab" data-gmp-tab="lyrics">📜 歌词</button>
+      </div>
+      <button class="gmp-panel-close" title="关闭" aria-label="关闭播放列表">✕</button>
+    </div>
+    <div class="gmp-panel-list" id="gmp-playlist"></div>
+    <div class="gmp-panel-lyrics gmp-hidden" id="gmp-lyrics">
+      <div class="gmp-lyrics-scroll" id="gmp-lyrics-scroll"></div>
+      <div class="gmp-lyrics-empty">选择一首有歌词的歌曲开始播放</div>
+    </div>
+  </div>
+
+  <audio id="gmp-audio" preload="metadata"></audio>
+
+  <!-- ===== 返回顶部按钮 ===== -->
+  <button id="back-to-top" class="back-to-top" title="回到顶部" aria-label="回到顶部">↑</button>
+
+  <!-- ===== 全局搜索覆盖层 ===== -->
+  <div id="search-overlay" class="search-overlay" style="display:none">
+    <div class="search-overlay-backdrop"></div>
+    <div class="search-overlay-dialog">
+      <div class="search-overlay-header">
+        <span class="search-overlay-icon">🔍</span>
+        <input type="text" id="search-overlay-input" class="search-overlay-input"
+               placeholder="搜索文章、音乐、视频..." autocomplete="off" autofocus>
+        <kbd class="search-overlay-kbd">ESC</kbd>
+      </div>
+      <div class="search-overlay-results" id="search-overlay-results">
+        <div class="search-overlay-placeholder">输入关键词开始搜索…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS 模块 -->
+  <script src="js/posts.js"></script>
+  <script src="js/about.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/video.js"></script>
+  <script src="js/novel.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/page-theme.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/likes.js"></script>
+  <script src="js/giscus.js"></script>
+  <script src="js/app.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

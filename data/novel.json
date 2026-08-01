@@ -1,0 +1,19 @@
+{
+  "novels": [
+    {
+      "id": 1,
+      "title": "封印破裂，我体内住着灭世者",
+      "author": "璨泯",
+      "cover": "https://p1-tt.byteimg.com/origin/novel-static/5cb03bd354145bc7815a5e09d4b15cfc",
+      "description": "三千年后，无界山下封印破裂。五个原本无关的人——落第十三次的书生、被家族抛弃的碎灵根剑客、不记得名字的少年、只剩六条命的猫妖、锻造兵器会活过来的铁匠——因封印破裂聚到一起。他们发现少年体内住着灭世者被分离出的人性。封印三个月后全开，一切归零。",
+      "status": "连载中",
+      "genre": "传统玄幻 / 悬疑",
+      "fanqieUrl": "https://fanqienovel.com/page/7667102653431680024",
+      "chapterDir": "data/novels/chapters",
+      "volumes": [
+        { "title": "第一卷", "range": [1, 22] },
+        { "title": "第二卷", "range": [23, 60] }
+      ]
+    }
+  ]
+}

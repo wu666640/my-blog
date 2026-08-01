@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 八条 — 玩毛线球 -->
+  <defs>
+    <radialGradient id="cb4" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFB3B3" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FFB3B3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- 毛线球 -->
+  <circle cx="120" cy="158" r="22" fill="#F5EDE0" stroke="#C4A97D" stroke-width="2"/>
+  <path d="M105 148 Q118 136 132 148" fill="none" stroke="#D8C0A0" stroke-width="1.5"/>
+  <path d="M108 158 Q120 148 135 158" fill="none" stroke="#D8C0A0" stroke-width="1.5"/>
+  <path d="M110 168 Q122 160 136 168" fill="none" stroke="#D8C0A0" stroke-width="1.5"/>
+  <!-- 散开毛线 -->
+  <path d="M135 165 Q150 175 152 185 Q154 192 148 194" fill="none" stroke="#C4A97D" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- 身体（趴着玩） -->
+  <ellipse cx="88" cy="140" rx="30" ry="21" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8"/>
+  <path d="M70 132 Q74 129 80 132" fill="none" stroke="#B0A090" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 前腿（拍球） -->
+  <path d="M72 145 Q85 150 108 152" fill="none" stroke="#A09080" stroke-width="2" stroke-linecap="round"/>
+  <path d="M76 150 Q90 156 110 153" fill="none" stroke="#A09080" stroke-width="2" stroke-linecap="round"/>
+  <!-- 后腿 -->
+  <path d="M110 135 Q120 152 122 160" fill="#FFFCF8" stroke="#A09080" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="123" cy="162" rx="8" ry="4" fill="#FFFCF8" stroke="#A09080" stroke-width="1.5"/>
+  <!-- 尾巴（兴奋摆动） -->
+  <path d="M116 128 Q138 118 142 105 Q143 98 138 102" fill="none" stroke="#A09080" stroke-width="2" stroke-linecap="round"/>
+  <line x1="138" y1="113" x2="133" y2="110" stroke="#B0A090" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 头部 -->
+  <circle cx="78" cy="98" r="28" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8"/>
+  <!-- 耳朵 -->
+  <polygon points="56,78 50,52 74,70" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8" stroke-linejoin="round"/>
+  <polygon points="102,70 108,46 90,66" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8" stroke-linejoin="round"/>
+  <polygon points="58,74 53,58 72,70" fill="#FFD0C8" stroke="none"/>
+  <polygon points="100,68 104,52 90,66" fill="#FFD0C8" stroke="none"/>
+  <!-- 眼睛（专注盯球，大圆眼） -->
+  <circle cx="72" cy="94" r="5" fill="#A09080"/>
+  <circle cx="90" cy="93" r="5" fill="#A09080"/>
+  <circle cx="73.5" cy="92" r="1.8" fill="white"/>
+  <circle cx="91.5" cy="91" r="1.8" fill="white"/>
+  <!-- 鼻子 -->
+  <polygon points="78,103 81,100 84,103" fill="#E0A090"/>
+  <!-- 嘴巴 -->
+  <path d="M74 107 Q81 113 88 107" fill="none" stroke="#A09080" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- 胡须 -->
+  <g stroke="#B0A090" stroke-width="1.2" stroke-linecap="round">
+    <line x1="52" y1="96" x2="68" y2="100"/>
+    <line x1="50" y1="102" x2="67" y2="102"/>
+    <line x1="96" y1="94" x2="86" y2="98"/>
+    <line x1="98" y1="100" x2="87" y2="101"/>
+  </g>
+  <circle cx="60" cy="102" r="6" fill="url(#cb4)"/>
+</svg>

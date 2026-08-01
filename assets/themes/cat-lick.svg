@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 八条 — 舔爪子 -->
+  <defs>
+    <radialGradient id="cb2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFB3B3" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FFB3B3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- 身体（侧卧） -->
+  <ellipse cx="100" cy="132" rx="34" ry="23" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8"/>
+  <path d="M78 122 Q82 119 88 122" fill="none" stroke="#B0A090" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M112 122 Q116 119 122 122" fill="none" stroke="#B0A090" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 后腿 -->
+  <path d="M122 137 Q130 155 126 166" fill="#FFFCF8" stroke="#A09080" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="126" cy="168" rx="8" ry="4.5" fill="#FFFCF8" stroke="#A09080" stroke-width="1.5"/>
+  <!-- 前腿（举起舔） -->
+  <path d="M72 126 Q60 108 68 88" fill="#FFFCF8" stroke="#A09080" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="68" cy="86" rx="7" ry="4" fill="#FFFCF8" stroke="#A09080" stroke-width="1.5"/>
+  <!-- 尾巴 -->
+  <path d="M130 118 Q152 102 154 86 Q155 78 150 82" fill="none" stroke="#A09080" stroke-width="2" stroke-linecap="round"/>
+  <line x1="150" y1="98" x2="145" y2="92" stroke="#B0A090" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="153" y1="88" x2="148" y2="84" stroke="#B0A090" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 头部（低头） -->
+  <circle cx="80" cy="82" r="30" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8"/>
+  <!-- 耳朵 -->
+  <polygon points="56,63 48,36 72,56" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8" stroke-linejoin="round"/>
+  <polygon points="104,58 112,32 90,52" fill="#FFFCF8" stroke="#A09080" stroke-width="1.8" stroke-linejoin="round"/>
+  <polygon points="58,59 52,42 70,56" fill="#FFD0C8" stroke="none"/>
+  <polygon points="102,56 108,38 90,53" fill="#FFD0C8" stroke="none"/>
+  <!-- 眼睛（享受眯眼） -->
+  <path d="M70 78 Q74 75 78 78" fill="none" stroke="#A09080" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M84 76 Q88 73 92 76" fill="none" stroke="#A09080" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- 鼻子 -->
+  <polygon points="78,88 80,85 82,88" fill="#E0A090"/>
+  <!-- 嘴 + 舌头 -->
+  <path d="M76 91 Q80 94 84 91" fill="none" stroke="#A09080" stroke-width="1.2" stroke-linecap="round"/>
+  <ellipse cx="71" cy="87" rx="2.5" ry="4" fill="#F0A0A0" opacity="0.6" transform="rotate(15 71 87)"/>
+  <!-- 胡须 -->
+  <g stroke="#B0A090" stroke-width="1.2" stroke-linecap="round">
+    <line x1="48" y1="82" x2="64" y2="85"/>
+    <line x1="46" y1="88" x2="63" y2="88"/>
+    <line x1="98" y1="78" x2="86" y2="83"/>
+    <line x1="100" y1="84" x2="87" y2="86"/>
+  </g>
+  <circle cx="60" cy="90" r="6" fill="url(#cb2)"/>
+</svg>

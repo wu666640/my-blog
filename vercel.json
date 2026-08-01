@@ -1,0 +1,10 @@
+{
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "installCommand": "",
+  "framework": null,
+  "rewrites": [
+    { "source": "/auth", "destination": "/api/oauth" },
+    { "source": "/callback", "destination": "/api/oauth" }
+  ]
+}
