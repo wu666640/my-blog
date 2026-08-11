@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 线条小狗 — 坐姿（马尔济斯犬 LINE sticker 风格）-->
+  <defs>
+    <radialGradient id="blush" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFB3B3" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FFB3B3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- 身体（白色填充 + 细线轮廓） -->
+  <ellipse cx="100" cy="130" rx="35" ry="28" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8"/>
+  <!-- 前腿 -->
+  <line x1="75" y1="145" x2="72" y2="175" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <line x1="125" y1="145" x2="128" y2="175" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="71" cy="177" rx="9" ry="4.5" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <ellipse cx="129" cy="177" rx="9" ry="4.5" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <!-- 尾巴（翘起小尾巴） -->
+  <path d="M130 118 Q148 105 145 88 Q144 82 140 84" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- 头部（大圆头 — 线条小狗标志性比例） -->
+  <circle cx="100" cy="82" r="36" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8"/>
+  <!-- 垂耳（马尔济斯标志性长垂耳） -->
+  <ellipse cx="68" cy="62" rx="11" ry="22" transform="rotate(-12 68 62)" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <ellipse cx="132" cy="62" rx="11" ry="22" transform="rotate(12 132 62)" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <!-- 头顶小卷毛 -->
+  <path d="M90 50 Q95 44 100 50 Q105 44 110 50" fill="none" stroke="#C4A882" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- 眼睛（极简圆点） -->
+  <circle cx="86" cy="78" r="3.5" fill="#5C4033"/>
+  <circle cx="114" cy="78" r="3.5" fill="#5C4033"/>
+  <circle cx="87.2" cy="76.5" r="1.2" fill="white"/>
+  <circle cx="115.2" cy="76.5" r="1.2" fill="white"/>
+  <!-- 鼻子（小三角） -->
+  <ellipse cx="100" cy="90" rx="4.5" ry="3.5" fill="#5C4033"/>
+  <!-- 嘴巴（W形微笑） -->
+  <path d="M94 95 Q97 101 100 95 Q103 101 106 95" fill="none" stroke="#C4A882" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- 脸颊红晕 -->
+  <circle cx="74" cy="88" r="8" fill="url(#blush)"/>
+  <circle cx="126" cy="88" r="8" fill="url(#blush)"/>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 线条小狗 — 走路（马尔济斯犬） -->
+  <defs>
+    <radialGradient id="blush2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFB3B3" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FFB3B3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- 身体 -->
+  <ellipse cx="95" cy="122" rx="40" ry="24" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8"/>
+  <!-- 前腿（走路姿态一前一后） -->
+  <line x1="70" y1="135" x2="55" y2="168" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <line x1="85" y1="138" x2="80" y2="172" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <!-- 后腿 -->
+  <line x1="108" y1="135" x2="115" y2="168" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <line x1="120" y1="132" x2="132" y2="163" stroke="#C4A882" stroke-width="2" stroke-linecap="round"/>
+  <!-- 脚掌 -->
+  <ellipse cx="54" cy="170" rx="8" ry="4" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <ellipse cx="80" cy="174" rx="8" ry="4" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <ellipse cx="116" cy="170" rx="8" ry="4" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <ellipse cx="133" cy="165" rx="8" ry="4" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <!-- 尾巴 -->
+  <path d="M130 110 Q152 100 150 80 Q149 73 145 76" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- 头部 -->
+  <circle cx="78" cy="80" r="33" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.8"/>
+  <!-- 垂耳 -->
+  <ellipse cx="50" cy="60" rx="10" ry="20" transform="rotate(-15 50 60)" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <ellipse cx="106" cy="60" rx="10" ry="20" transform="rotate(15 106 60)" fill="#FFFEF9" stroke="#C4A882" stroke-width="1.5"/>
+  <!-- 眼睛（开心眯眼） -->
+  <path d="M68 76 Q71 72 74 76" fill="none" stroke="#5C4033" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M84 76 Q87 72 90 76" fill="none" stroke="#5C4033" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- 鼻子 -->
+  <ellipse cx="79" cy="88" rx="4" ry="3" fill="#5C4033"/>
+  <!-- 嘴巴（开心张嘴 + 小舌头） -->
+  <path d="M73 93 Q79 100 85 93" fill="none" stroke="#C4A882" stroke-width="1.2" stroke-linecap="round"/>
+  <ellipse cx="79" cy="98" rx="2.5" ry="4" fill="#F08080" opacity="0.6"/>
+  <!-- 红晕 -->
+  <circle cx="58" cy="86" r="7" fill="url(#blush2)"/>
+  <circle cx="100" cy="86" r="7" fill="url(#blush2)"/>
+</svg>

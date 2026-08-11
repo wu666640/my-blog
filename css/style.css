@@ -1,0 +1,4363 @@
+/* ============================================
+   璨泯小记 — 温暖文艺风博客样式
+   ============================================ */
+
+/* ----- CSS 变量：亮色主题 ----- */
+:root {
+  --bg: #f7f5ef;
+  --bg-secondary: #edf1ea;
+  --bg-hover: #e4ebe4;
+  --bg-card: #fffefb;
+  --text: #2f3a34;
+  --text-secondary: #66716a;
+  --text-muted: #919a92;
+  --accent: #3f7d63;
+  --accent-hover: #2f6350;
+  --accent-light: #dfece5;
+  --accent-2: #c66f4f;
+  --accent-2-light: #f3e1d6;
+  --border: #e2e0d5;
+  --shadow: 0 2px 12px rgba(47, 58, 52, 0.07);
+  --shadow-hover: 0 6px 24px rgba(47, 58, 52, 0.13);
+  --tag-bg: #e8ede7;
+  --tag-text: #607169;
+  --tag-active-bg: #3f7d63;
+  --tag-active-text: #fff;
+  --divider: #e2e0d5;
+  --header-bg: rgba(247, 245, 239, 0.9);
+  --code-bg: #eef2ec;
+}
+
+/* ----- CSS 变量：暗色主题 ----- */
+[data-theme="dark"] {
+  --bg: #151b18;
+  --bg-secondary: #1e2722;
+  --bg-hover: #27342e;
+  --bg-card: #202a25;
+  --text: #e4e9e3;
+  --text-secondary: #b3bdb5;
+  --text-muted: #7e8981;
+  --accent: #7fbc9d;
+  --accent-hover: #97cdb2;
+  --accent-light: #23372f;
+  --accent-2: #d18a6a;
+  --accent-2-light: #3a2b23;
+  --border: #34413b;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+  --shadow-hover: 0 6px 24px rgba(0, 0, 0, 0.4);
+  --tag-bg: #2b3932;
+  --tag-text: #a7b5ab;
+  --tag-active-bg: #7fbc9d;
+  --tag-active-text: #151b18;
+  --divider: #34413b;
+  --header-bg: rgba(21, 27, 24, 0.9);
+  --code-bg: #202a25;
+}
+
+/* ============================================
+   页面装饰背景图案（静态，每页不同）
+   使用 :has() 根据页面包装类切换
+   每个 SVG 图块包含 1 个居中图标，通过 repeat 形成网格
+   ============================================ */
+
+/* 给 #app 添加背景层 */
+#app {
+  background-color: var(--bg);
+  background-repeat: repeat;
+  transition: background-image 0.4s ease;
+}
+
+/* --- 首页：羽毛笔 + 墨点（120x120 图块）--- */
+body:has(#app .home-layout) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.28' stroke='%23a89888' fill='none' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M60 110 L57 90 L63 90 Z'/%3E%3Cline x1='60' y1='90' x2='60' y2='45'/%3E%3Cpath d='M60 45 Q54 51 52 63 Q56 59 60 56 Q64 59 68 63 Q66 51 60 45 Z'/%3E%3Ccircle cx='55' cy='114' r='1.8' fill='%23a89888'/%3E%3Ccircle cx='63' cy='117' r='1.2' fill='%23a89888'/%3E%3Ccircle cx='59' cy='120' r='0.8' fill='%23a89888'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+/* --- 文章详情：简约圆点 --- */
+body:has(#app .post-detail) #app {
+  background-image: radial-gradient(circle, var(--text-muted) 0.5px, transparent 0.5px);
+  background-size: 28px 28px;
+}
+
+/* --- 画廊：取景框 + 镜头（130x130 图块）--- */
+body:has(#app .gallery-page) #app,
+body:has(#app .gallery-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130 130'%3E%3Cg opacity='0.25' stroke='%23a89888' fill='none' stroke-width='1.6' stroke-linecap='round'%3E%3Crect x='35' y='38' width='60' height='48' rx='5'/%3E%3Ccircle cx='65' cy='62' r='13'/%3E%3Ccircle cx='65' cy='62' r='4.5'/%3E%3Crect x='45' y='29' width='40' height='10' rx='3'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 130px 130px;
+}
+
+/* --- 音乐：双八分音符（120x120 图块）--- */
+body:has(#app .music-page) #app,
+body:has(#app .music-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.25' stroke='%23a89888' fill='none' stroke-width='1.4' stroke-linecap='round'%3E%3Cellipse cx='35' cy='100' rx='8' ry='5.5' transform='rotate(-15 35 100)'/%3E%3Cline x1='42' y1='98' x2='42' y2='40'/%3E%3Cpath d='M42 40 Q55 46 52 55'/%3E%3Cellipse cx='85' cy='80' rx='7' ry='5' transform='rotate(-15 85 80)'/%3E%3Cline x1='91' y1='78' x2='91' y2='25'/%3E%3Cpath d='M91 25 Q102 30 100 38'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+/* --- 视频：播放按钮 + 胶片齿孔（140x140 图块）--- */
+body:has(#app .video-page) #app,
+body:has(#app .video-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Cg opacity='0.22' stroke='%23a89888' fill='none' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='50,35 50,100 95,67.5'/%3E%3Crect x='25' y='25' width='7' height='10' rx='1.5'/%3E%3Crect x='25' y='52' width='7' height='10' rx='1.5'/%3E%3Crect x='25' y='79' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='25' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='52' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='79' width='7' height='10' rx='1.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
+/* --- 关于：人物剪影（140x140 图块）--- */
+body:has(#app .about-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Cg opacity='0.22' stroke='%23a89888' fill='none' stroke-width='1.6' stroke-linecap='round'%3E%3Ccircle cx='70' cy='42' r='18'/%3E%3Cpath d='M15 135 Q15 70 70 70 Q125 70 125 135'/%3E%3Ccircle cx='20' cy='30' r='2.5'/%3E%3Ccircle cx='120' cy='25' r='2'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
+/* --- 小说：打开的书本（120x120 图块）--- */
+body:has(#app .novel-page) #app,
+body:has(#app .novel-detail-page) #app,
+body:has(#app .novel-chapter-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.22' stroke='%23a89888' fill='none' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M25 30 L25 110 L58 97 L90 110 L90 30 L58 43 Z'/%3E%3Cline x1='58' y1='43' x2='58' y2='97'/%3E%3Cline x1='35' y1='55' x2='52' y2='49' stroke-width='0.7'/%3E%3Cline x1='35' y1='65' x2='52' y2='59' stroke-width='0.7'/%3E%3Cline x1='64' y1='49' x2='80' y2='55' stroke-width='0.7'/%3E%3Cline x1='64' y1='59' x2='80' y2='65' stroke-width='0.7'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+/* --- 暗色模式：图案使用更暗的笔画色 --- */
+[data-theme="dark"] body:has(#app .home-layout) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.18' stroke='%237a6a5c' fill='none' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M60 110 L57 90 L63 90 Z'/%3E%3Cline x1='60' y1='90' x2='60' y2='45'/%3E%3Cpath d='M60 45 Q54 51 52 63 Q56 59 60 56 Q64 59 68 63 Q66 51 60 45 Z'/%3E%3Ccircle cx='55' cy='114' r='1.8' fill='%237a6a5c'/%3E%3Ccircle cx='63' cy='117' r='1.2' fill='%237a6a5c'/%3E%3Ccircle cx='59' cy='120' r='0.8' fill='%237a6a5c'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .gallery-page) #app,
+[data-theme="dark"] body:has(#app .gallery-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130 130'%3E%3Cg opacity='0.16' stroke='%237a6a5c' fill='none' stroke-width='1.6' stroke-linecap='round'%3E%3Crect x='35' y='38' width='60' height='48' rx='5'/%3E%3Ccircle cx='65' cy='62' r='13'/%3E%3Ccircle cx='65' cy='62' r='4.5'/%3E%3Crect x='45' y='29' width='40' height='10' rx='3'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .music-page) #app,
+[data-theme="dark"] body:has(#app .music-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.16' stroke='%237a6a5c' fill='none' stroke-width='1.4' stroke-linecap='round'%3E%3Cellipse cx='35' cy='100' rx='8' ry='5.5' transform='rotate(-15 35 100)'/%3E%3Cline x1='42' y1='98' x2='42' y2='40'/%3E%3Cpath d='M42 40 Q55 46 52 55'/%3E%3Cellipse cx='85' cy='80' rx='7' ry='5' transform='rotate(-15 85 80)'/%3E%3Cline x1='91' y1='78' x2='91' y2='25'/%3E%3Cpath d='M91 25 Q102 30 100 38'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .video-page) #app,
+[data-theme="dark"] body:has(#app .video-detail-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Cg opacity='0.14' stroke='%237a6a5c' fill='none' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='50,35 50,100 95,67.5'/%3E%3Crect x='25' y='25' width='7' height='10' rx='1.5'/%3E%3Crect x='25' y='52' width='7' height='10' rx='1.5'/%3E%3Crect x='25' y='79' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='25' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='52' width='7' height='10' rx='1.5'/%3E%3Crect x='108' y='79' width='7' height='10' rx='1.5'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .about-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Cg opacity='0.14' stroke='%237a6a5c' fill='none' stroke-width='1.6' stroke-linecap='round'%3E%3Ccircle cx='70' cy='42' r='18'/%3E%3Cpath d='M15 135 Q15 70 70 70 Q125 70 125 135'/%3E%3Ccircle cx='20' cy='30' r='2.5'/%3E%3Ccircle cx='120' cy='25' r='2'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .novel-page) #app,
+[data-theme="dark"] body:has(#app .novel-detail-page) #app,
+[data-theme="dark"] body:has(#app .novel-chapter-page) #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg opacity='0.14' stroke='%237a6a5c' fill='none' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M25 30 L25 110 L58 97 L90 110 L90 30 L58 43 Z'/%3E%3Cline x1='58' y1='43' x2='58' y2='97'/%3E%3Cline x1='35' y1='55' x2='52' y2='49' stroke-width='0.7'/%3E%3Cline x1='35' y1='65' x2='52' y2='59' stroke-width='0.7'/%3E%3Cline x1='64' y1='49' x2='80' y2='55' stroke-width='0.7'/%3E%3Cline x1='64' y1='59' x2='80' y2='65' stroke-width='0.7'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="dark"] body:has(#app .post-detail) #app {
+  background-image: radial-gradient(circle, var(--text-muted) 0.5px, transparent 0.5px);
+  background-size: 36px 36px;
+}
+
+/* ============================================
+   页面主题粒子动画（雪花、樱花、落叶等）
+   ============================================ */
+
+/* 粒子容器 */
+.page-theme-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* 单个粒子 */
+.page-theme-particle {
+  position: absolute;
+  top: -40px;
+  left: var(--x, 50%);
+  font-size: var(--size, 14px);
+  opacity: var(--opacity, 0.5);
+  animation: particle-fall var(--duration, 10s) var(--delay, 0s) linear infinite;
+  will-change: transform;
+  /* 初始旋转 */
+  transform: rotate(var(--rotation, 0deg));
+}
+
+/* 通用下落动画：从上到下 + 水平漂移 */
+@keyframes particle-fall {
+  0% {
+    transform: translateY(-5vh) translateX(0) rotate(var(--rotation, 0deg));
+  }
+  25% {
+    transform: translateY(25vh) translateX(var(--drift, 30px)) rotate(calc(var(--rotation, 0deg) + 90deg));
+  }
+  50% {
+    transform: translateY(50vh) translateX(calc(var(--drift, 30px) * -0.5)) rotate(calc(var(--rotation, 0deg) + 180deg));
+  }
+  75% {
+    transform: translateY(75vh) translateX(var(--drift, 30px)) rotate(calc(var(--rotation, 0deg) + 270deg));
+  }
+  100% {
+    transform: translateY(105vh) translateX(0) rotate(calc(var(--rotation, 0deg) + 360deg));
+  }
+}
+
+/* 雪花主题：白色发光 */
+[data-page-theme="snow"] .page-theme-particle {
+  filter: blur(0.5px);
+  text-shadow: 0 0 4px rgba(200, 220, 255, 0.6);
+}
+
+/* 新年主题：🏮 红灯笼发光 */
+[data-page-theme="newyear"] .page-theme-particle {
+  filter: drop-shadow(0 0 6px rgba(255, 60, 30, 0.7));
+  animation: particle-fall var(--duration, 12s) var(--delay, 0s) ease-in-out infinite,
+             lantern-sway 2s ease-in-out infinite;
+}
+@keyframes lantern-sway {
+  0%, 100% { transform: translateY(var(--ty, 0)) rotate(calc(var(--rotation, 0deg) - 8deg)); }
+  50%      { transform: translateY(var(--ty, 0)) rotate(calc(var(--rotation, 0deg) + 8deg)); }
+}
+
+/* 樱花主题：🌸 粉色柔光 */
+[data-page-theme="sakura"] .page-theme-particle {
+  filter: blur(0.3px);
+  text-shadow: 0 0 5px rgba(255, 180, 200, 0.5);
+}
+
+/* 落叶主题：🍂 暖色光晕 */
+[data-page-theme="autumn"] .page-theme-particle {
+  filter: blur(0.3px);
+  text-shadow: 0 0 5px rgba(230, 160, 70, 0.4);
+}
+
+/* 线条小狗/八条：🐾 小爪印 */
+[data-page-theme="linedog"] .page-theme-particle,
+[data-page-theme="batiao"] .page-theme-particle {
+  opacity: 0.4;
+  filter: blur(0.5px);
+}
+
+/* ============================================
+   主题切换 Toast 提示
+   ============================================ */
+
+.page-theme-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  box-shadow: var(--shadow);
+  pointer-events: none;
+}
+
+.page-theme-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================
+   角色主题背景图案（线条小狗、八条等）
+   使用 !important 覆盖页面默认背景
+   ============================================ */
+
+/* --- 线条小狗：线稿风格小狗 --- */
+body[data-page-theme="linedog"] #app {
+  background-color: var(--bg) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cg stroke='%23a89888' fill='none' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.28'%3E%3C!-- 头部 --%3E%3Ccircle cx='65' cy='42' r='16'/%3E%3C!-- 左耳 --%3E%3Cellipse cx='50' cy='32' rx='7' ry='10' transform='rotate(-20 50 32)'/%3E%3C!-- 右耳 --%3E%3Cellipse cx='80' cy='32' rx='7' ry='10' transform='rotate(20 80 32)'/%3E%3C!-- 眼睛 --%3E%3Ccircle cx='60' cy='38' r='2' fill='%23a89888'/%3E%3Ccircle cx='70' cy='38' r='2' fill='%23a89888'/%3E%3C!-- 鼻子 --%3E%3Cellipse cx='65' cy='46' rx='2.5' ry='1.8' fill='%23a89888'/%3E%3C!-- 嘴巴 --%3E%3Cpath d='M60 49 Q65 54 70 49'/%3E%3C!-- 身体 --%3E%3Crect x='52' y='58' width='26' height='28' rx='10'/%3E%3C!-- 前腿 --%3E%3Cline x1='55' y1='85' x2='52' y2='105'/%3E%3Cline x1='75' y1='85' x2='78' y2='105'/%3E%3C!-- 尾巴 --%3E%3Cpath d='M78 65 Q100 55 95 80 Q92 90 85 88'/%3E%3C/g%3E%3C/svg%3E") !important;
+  background-repeat: repeat !important;
+  background-size: 140px 140px;
+}
+
+/* --- 八条：线稿风格条纹猫 --- */
+body[data-page-theme="batiao"] #app {
+  background-color: var(--bg) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cg stroke='%23a89888' fill='none' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.28'%3E%3C!-- 头部 --%3E%3Ccircle cx='65' cy='42' r='16'/%3E%3C!-- 左耳 --%3E%3Cpolygon points='52,30 46,16 58,24'/%3E%3Cpolygon points='50,28 47,20 55,25' fill='%23a89888' opacity='0.5'/%3E%3C!-- 右耳 --%3E%3Cpolygon points='78,30 84,16 72,24'/%3E%3Cpolygon points='80,28 83,20 75,25' fill='%23a89888' opacity='0.5'/%3E%3C!-- 眼睛 --%3E%3Cellipse cx='60' cy='40' rx='2.5' ry='3' fill='%23a89888'/%3E%3Cellipse cx='70' cy='40' rx='2.5' ry='3' fill='%23a89888'/%3E%3C!-- 鼻子 --%3E%3Cpolygon points='63,47 65,44 67,47' fill='%23a89888'/%3E%3C!-- 嘴巴 --%3E%3Cpath d='M59 49 Q63 52 65 49 Q67 52 71 49'/%3E%3C!-- 胡须 --%3E%3Cline x1='42' y1='44' x2='55' y2='46'/%3E%3Cline x1='40' y1='48' x2='54' y2='49'/%3E%3Cline x1='88' y1='44' x2='75' y2='46'/%3E%3Cline x1='90' y1='48' x2='76' y2='49'/%3E%3C!-- 身体 --%3E%3Crect x='52' y='58' width='26' height='30' rx='10'/%3E%3C!-- 身体条纹 --%3E%3Cline x1='54' y1='66' x2='76' y2='66'/%3E%3Cline x1='54' y1='72' x2='76' y2='72'/%3E%3Cline x1='54' y1='78' x2='76' y2='78'/%3E%3C!-- 前腿 --%3E%3Cline x1='56' y1='87' x2='53' y2='108'/%3E%3Cline x1='74' y1='87' x2='77' y2='108'/%3E%3C!-- 尾巴 --%3E%3Cpath d='M78 68 Q100 58 98 82 Q96 98 85 94'/%3E%3Cline x1='90' y1='72' x2='94' y2='70'/%3E%3Cline x1='93' y1='78' x2='97' y2='76'/%3E%3Cline x1='90' y1='84' x2='94' y2='82'/%3E%3C/g%3E%3C/svg%3E") !important;
+  background-repeat: repeat !important;
+  background-size: 140px 140px;
+}
+
+/* === 暗色模式角色主题 === */
+[data-theme="dark"] body[data-page-theme="linedog"] #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cg stroke='%237a6a5c' fill='none' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.2'%3E%3Ccircle cx='65' cy='42' r='16'/%3E%3Cellipse cx='50' cy='32' rx='7' ry='10' transform='rotate(-20 50 32)'/%3E%3Cellipse cx='80' cy='32' rx='7' ry='10' transform='rotate(20 80 32)'/%3E%3Ccircle cx='60' cy='38' r='2' fill='%237a6a5c'/%3E%3Ccircle cx='70' cy='38' r='2' fill='%237a6a5c'/%3E%3Cellipse cx='65' cy='46' rx='2.5' ry='1.8' fill='%237a6a5c'/%3E%3Cpath d='M60 49 Q65 54 70 49'/%3E%3Crect x='52' y='58' width='26' height='28' rx='10'/%3E%3Cline x1='55' y1='85' x2='52' y2='105'/%3E%3Cline x1='75' y1='85' x2='78' y2='105'/%3E%3Cpath d='M78 65 Q100 55 95 80 Q92 90 85 88'/%3E%3C/g%3E%3C/svg%3E") !important;
+}
+
+[data-theme="dark"] body[data-page-theme="batiao"] #app {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cg stroke='%237a6a5c' fill='none' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.18'%3E%3Ccircle cx='65' cy='42' r='16'/%3E%3Cpolygon points='52,30 46,16 58,24'/%3E%3Cpolygon points='50,28 47,20 55,25' fill='%237a6a5c' opacity='0.5'/%3E%3Cpolygon points='78,30 84,16 72,24'/%3E%3Cpolygon points='80,28 83,20 75,25' fill='%237a6a5c' opacity='0.5'/%3E%3Cellipse cx='60' cy='40' rx='2.5' ry='3' fill='%237a6a5c'/%3E%3Cellipse cx='70' cy='40' rx='2.5' ry='3' fill='%237a6a5c'/%3E%3Cpolygon points='63,47 65,44 67,47' fill='%237a6a5c'/%3E%3Cpath d='M59 49 Q63 52 65 49 Q67 52 71 49'/%3E%3Cline x1='42' y1='44' x2='55' y2='46'/%3E%3Cline x1='40' y1='48' x2='54' y2='49'/%3E%3Cline x1='88' y1='44' x2='75' y2='46'/%3E%3Cline x1='90' y1='48' x2='76' y2='49'/%3E%3Crect x='52' y='58' width='26' height='30' rx='10'/%3E%3Cline x1='54' y1='66' x2='76' y2='66'/%3E%3Cline x1='54' y1='72' x2='76' y2='72'/%3E%3Cline x1='54' y1='78' x2='76' y2='78'/%3E%3Cline x1='56' y1='87' x2='53' y2='108'/%3E%3Cline x1='74' y1='87' x2='77' y2='108'/%3E%3Cpath d='M78 68 Q100 58 98 82 Q96 98 85 94'/%3E%3Cline x1='90' y1='72' x2='94' y2='70'/%3E%3Cline x1='93' y1='78' x2='97' y2='76'/%3E%3Cline x1='90' y1='84' x2='94' y2='82'/%3E%3C/g%3E%3C/svg%3E") !important;
+}
+
+/* ============================================
+   侧边空白区域贴纸装饰
+   宽屏时在内容区两侧空白处放置角色贴纸
+   ============================================ */
+
+.page-decor-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  /* 默认隐藏，宽屏显示 */
+  display: none;
+}
+
+.page-decor-container.visible {
+  opacity: 1;
+}
+
+/* 仅在宽屏（>=1300px）显示侧边贴纸 */
+@media (min-width: 1300px) {
+  .page-decor-container {
+    display: block;
+  }
+}
+
+/* 侧边贴纸项 */
+.page-decor-item {
+  position: absolute;
+  top: var(--top, 30%);
+  font-size: var(--size, 60px);
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(10px) scale(0.8);
+  animation: decor-enter 0.6s ease forwards;
+  animation-delay: var(--delay, 0s);
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+  transition: filter 0.3s;
+}
+
+[data-theme="dark"] .page-decor-item {
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
+}
+
+/* 左侧贴纸 */
+.page-decor-left {
+  left: calc((100vw - 1050px) / 2 - var(--size, 60px));
+  right: auto;
+}
+
+/* 右侧贴纸 */
+.page-decor-right {
+  left: auto;
+  right: calc((100vw - 1050px) / 2 - var(--size, 60px));
+}
+
+/* 贴纸内图片样式 */
+.page-decor-item img {
+  width: var(--size, 60px);
+  height: auto;
+  display: block;
+}
+
+/* 入场动画 */
+@keyframes decor-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.7);
+  }
+  100% {
+    opacity: 0.65;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 悬停微微上浮（仅做参考，实际 pointer-events: none 不响应） */
+
+/* 🐾 爪印蔓延动画（逐个浮现 + 持续脉动） */
+.paw-creep {
+  animation: paw-spread 0.8s ease-out forwards, paw-breathe 3s ease-in-out infinite !important;
+  animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.8s) !important;
+  opacity: 0;
+}
+
+@keyframes paw-spread {
+  0%   { opacity: 0; transform: scale(0.2) rotate(-30deg); filter: blur(4px); }
+  60%  { opacity: 0.55; transform: scale(1.15) rotate(5deg); filter: blur(0px); }
+  100% { opacity: 0.45; transform: scale(1) rotate(0deg); filter: blur(0px); }
+}
+
+@keyframes paw-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.45; }
+  50%      { transform: scale(1.08); opacity: 0.55; }
+}
+
+/* 当屏幕不够宽时收紧左侧间距 */
+@media (min-width: 1300px) and (max-width: 1500px) {
+  .page-decor-left {
+    left: 8px;
+  }
+  .page-decor-right {
+    right: 8px;
+  }
+}
+
+/* ===== 点赞按钮 ===== */
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-secondary);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: transform 0.2s, border-color 0.2s, background 0.2s;
+  user-select: none;
+}
+
+.like-btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.like-btn-liked {
+  border-color: #e0858b;
+  background: #fdf0f1;
+}
+
+[data-theme="dark"] .like-btn-liked {
+  border-color: #b0505a;
+  background: #3d2025;
+}
+
+.like-btn-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.like-btn-count {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", monospace;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  min-width: 1em;
+}
+
+/* 卡片内的点赞按钮区域 */
+.post-card-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gallery-card-actions {
+  margin-top: 0.5rem;
+}
+
+.video-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.music-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+/* 阅读时长标签 */
+.post-card-reading {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* 页脚统计 */
+.footer-stats {
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.footer-stats-divider {
+  margin: 0 0.5rem;
+  color: var(--border);
+}
+
+/* ----- 基础重置 ----- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Georgia, "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.85;
+  font-size: 16px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent-light);
+  color: var(--accent-hover);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* 正文与内容描述中的链接 */
+.post-detail-body a,
+.novel-chapter-body a,
+.gallery-detail-desc a,
+.video-detail-desc a,
+.music-detail-desc a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-light);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.post-detail-body a:hover,
+.novel-chapter-body a:hover,
+.gallery-detail-desc a:hover,
+.video-detail-desc a:hover,
+.music-detail-desc a:hover {
+  color: var(--accent-hover);
+  border-color: var(--accent);
+}
+
+/* ----- 导航栏 ----- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--header-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 12px rgba(47, 58, 52, 0.05);
+  padding: 0 1.5rem;
+}
+
+.header-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.site-logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.2s;
+}
+
+.site-logo:hover {
+  color: var(--accent);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--accent);
+}
+
+.nav-link.active {
+  border-bottom-color: var(--accent-2);
+}
+
+/* 导航栏搜索按钮 */
+.nav-search-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: background 0.2s, transform 0.2s;
+  color: var(--text-secondary);
+}
+
+.nav-search-btn:hover {
+  background: var(--bg-secondary);
+  border-color: var(--accent);
+  transform: scale(1.1);
+}
+
+/* 汉堡菜单按钮（默认隐藏，移动端显示） */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 1.3rem;
+  cursor: pointer;
+  width: 40px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.nav-toggle:hover {
+  background: var(--bg-secondary);
+  color: var(--accent);
+}
+
+/* 主题切换按钮 */
+.theme-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: background 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-btn:hover {
+  background: var(--bg-secondary);
+  border-color: var(--accent);
+  transform: rotate(15deg);
+}
+
+.icon-sun,
+.icon-moon {
+  position: absolute;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+/* 亮色模式：显示月亮，隐藏太阳 */
+[data-theme="light"] .icon-sun { opacity: 0; transform: scale(0.5); }
+[data-theme="light"] .icon-moon { opacity: 1; transform: scale(1); }
+
+/* 暗色模式：显示太阳，隐藏月亮 */
+[data-theme="dark"] .icon-sun { opacity: 1; transform: scale(1); }
+[data-theme="dark"] .icon-moon { opacity: 0; transform: scale(0.5); }
+
+/* ----- 主内容区 ----- */
+.app-main {
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+/* ----- 首页布局（两栏）----- */
+.home-layout {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* ----- 文章列表 ----- */
+.posts-section {
+  min-width: 0;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--accent-light);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 文章卡片 */
+.post-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  cursor: pointer;
+  transition: box-shadow 0.25s, transform 0.25s;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* 文章封面图 */
+.post-card-cover {
+  margin: -1.5rem -1.5rem 1rem -1.5rem;
+  height: 180px;
+  overflow: hidden;
+}
+
+.post-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.post-card:hover .post-card-cover img {
+  transform: scale(1.05);
+}
+
+.post-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--accent-2-light);
+}
+
+.post-card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.post-card:hover .post-card-title {
+  color: var(--accent);
+}
+
+.post-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.post-card-date::before {
+  content: "📅 ";
+  font-size: 0.8rem;
+}
+
+.post-card-excerpt {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-card-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+/* ----- 首页筛选标签栏 ----- */
+.home-filter-bar {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--divider);
+}
+
+.home-filter-tab {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s;
+  background: var(--bg-card);
+}
+
+.home-filter-tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.home-filter-tab.active {
+  background: var(--accent);
+  color: var(--tag-active-text);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+/* ----- 混合时间线卡片（首页动态）----- */
+.mixed-card {
+  display: flex;
+  gap: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 0.875rem;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  align-items: center;
+}
+
+.mixed-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--accent-2-light);
+}
+
+.mixed-card-cover {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.mixed-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mixed-card-cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: var(--text-muted);
+}
+
+.mixed-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.mixed-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.25rem;
+}
+
+.mixed-card-badge {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.mixed-card-time {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", monospace;
+  font-size: 0.73rem;
+  color: var(--text-muted);
+}
+
+.mixed-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s;
+}
+
+.mixed-card:hover .mixed-card-title {
+  color: var(--accent);
+}
+
+.mixed-card-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+/* 移动端适配 */
+@media (max-width: 600px) {
+  .mixed-card {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+  .mixed-card-cover {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+  }
+  .mixed-card-title {
+    font-size: 0.88rem;
+  }
+}
+
+/* ----- 标签 ----- */
+.tag {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 20px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  border: none;
+}
+
+.tag:hover {
+  background: var(--accent);
+  color: var(--tag-active-text);
+}
+
+.tag.active {
+  background: var(--tag-active-bg);
+  color: var(--tag-active-text);
+}
+
+/* ----- 侧边栏 ----- */
+.sidebar {
+  position: sticky;
+  top: 80px;
+}
+
+.sidebar-widget {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.sidebar-widget h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.search-box {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-box:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.search-box::placeholder {
+  color: var(--text-muted);
+}
+
+/* ----- 文章详情页 ----- */
+.post-detail {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.post-detail .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+
+.post-detail .back-link:hover {
+  color: var(--accent);
+}
+
+.post-detail-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  position: relative;
+  text-align: center;
+}
+
+.post-detail-header::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 64px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent-2);
+  transform: translateX(-50%);
+}
+
+.post-detail-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.post-detail-meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.post-detail-tags {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.post-detail-body {
+  font-size: 1.05rem;
+  line-height: 2;
+  color: var(--text);
+}
+
+.post-detail-body p {
+  margin-bottom: 1.25rem;
+  text-indent: 2em;
+}
+
+.post-detail-body h2 {
+  font-size: 1.4rem;
+  margin: 2rem 0 1rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--accent);
+}
+
+.post-detail-body h3 {
+  font-size: 1.15rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.post-detail-body blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.post-detail-body ul,
+.post-detail-body ol {
+  margin: 1rem 0 1rem 1.5rem;
+}
+
+.post-detail-body li {
+  margin-bottom: 0.5rem;
+}
+
+.post-detail-body code {
+  background: var(--code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+}
+
+.post-detail-body pre {
+  background: var(--code-bg);
+  padding: 1.25rem;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  line-height: 1.6;
+}
+
+.post-detail-body pre code {
+  background: none;
+  padding: 0;
+}
+
+/* 文章底部导航 */
+.post-nav {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--divider);
+  display: flex;
+  justify-content: space-between;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+}
+
+.post-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.post-nav a:hover {
+  color: var(--accent-hover);
+}
+
+/* ----- 关于页面 ----- */
+.about-page {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.about-page h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-tagline {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.about-bio {
+  text-align: left;
+  font-size: 1rem;
+  line-height: 2;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.about-bio p {
+  margin-bottom: 1rem;
+  text-indent: 2em;
+}
+
+/* 技能条 */
+.skills-section {
+  text-align: left;
+  margin-bottom: 2.5rem;
+}
+
+.skills-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.skill-item {
+  margin-bottom: 0.8rem;
+}
+
+.skill-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  color: var(--text-secondary);
+}
+
+.skill-bar {
+  height: 6px;
+  background: var(--bg-secondary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+/* 社交链接 */
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.social-link:hover {
+  background: var(--accent);
+  color: var(--tag-active-text);
+  border-color: var(--accent);
+}
+
+/* ----- 关于页 QQ密码验证 ----- */
+.about-qq-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  text-align: center;
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.about-qq-icon { font-size: 1.5rem; display: block; margin-bottom: 0.5rem; }
+.about-qq-hint { font-size: 0.9rem; color: var(--text-secondary); display: block; margin-bottom: 0.8rem; }
+.about-qq-input-row { display: flex; gap: 0.5rem; justify-content: center; }
+.about-qq-input {
+  flex: 1; max-width: 200px; padding: 0.5rem 0.8rem;
+  border: 2px solid var(--border); border-radius: 8px;
+  font-size: 0.95rem; background: var(--bg-card); color: var(--text);
+  outline: none; transition: border-color .2s;
+}
+.about-qq-input:focus { border-color: var(--accent); }
+.about-qq-btn {
+  padding: 0.5rem 1.2rem; border: none; border-radius: 8px;
+  background: var(--accent); color: var(--tag-active-text); font-size: 0.95rem;
+  cursor: pointer; transition: opacity .2s;
+}
+.about-qq-btn:hover { opacity: 0.85; }
+.about-qq-error { display: block; color: #e74c3c; font-size: 0.85rem; margin-top: 0.5rem; }
+.about-qq-label { font-size: 0.9rem; color: var(--text-secondary); }
+.about-qq-number { font-size: 1.1rem; font-weight: 600; color: var(--accent); }
+
+/* ----- 画廊页面 ----- */
+.gallery-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.gallery-page .section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
+.gallery-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.gallery-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 画廊卡片 — 水平布局（桌面端图片左、文字右） */
+.gallery-card {
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+
+.gallery-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--accent-2-light);
+}
+
+.gallery-card-image {
+  flex: 0 0 250px;
+  min-height: 200px;
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.gallery-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.gallery-card:hover .gallery-card-image img {
+  transform: scale(1.05);
+}
+
+.gallery-card-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.gallery-card-body {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gallery-card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.gallery-card-meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.gallery-card-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.gallery-card-desc p {
+  margin-bottom: 0.5rem;
+}
+
+/* ----- 音乐页面 ----- */
+.music-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.music-page .section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
+.music-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.music-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 音乐卡片 — 水平布局（桌面端播放器左、文字右） */
+.music-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+
+.music-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--accent-2-light);
+}
+
+.music-card-player {
+  flex: 0 0 auto;
+  min-width: 330px;
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+  padding: 1rem;
+}
+
+.music-card-player iframe {
+  display: block;
+  border-radius: 4px;
+}
+
+/* 本地文件播放 — 自定义播放器 */
+.music-card-player.music-local {
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 280px;
+  padding: 0.75rem 1rem;
+}
+
+/* ===== 自定义音频播放器 ===== */
+.cp-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.cp-btn {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--bg-card);
+  color: var(--accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: background 0.2s, transform 0.15s;
+  padding: 0;
+  line-height: 1;
+}
+
+.cp-btn:hover {
+  background: var(--accent);
+  transform: scale(1.08);
+}
+
+.cp-btn:hover .cp-icon {
+  filter: brightness(0) invert(1);
+}
+
+.cp-btn:active {
+  transform: scale(0.95);
+}
+
+.cp-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+  transition: filter 0.2s;
+}
+
+/* 进度条区域 */
+.cp-track-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.cp-progress-bar {
+  width: 100%;
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.cp-progress-bar:hover {
+  height: 7px;
+}
+
+.cp-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+.cp-time-current {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.cp-time-duration {
+  flex: 0 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  min-width: 32px;
+  text-align: right;
+}
+
+/* 下载按钮 */
+.cp-dl-btn {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  transition: color 0.2s, background 0.2s;
+}
+
+.cp-dl-btn:hover {
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+/* 隐藏原生 audio 元素 */
+.cp-audio-el {
+  display: none;
+}
+
+.music-card-placeholder {
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: var(--text-muted);
+}
+
+/* 网易云完整收听按钮 */
+.music-netease-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.45rem 1rem;
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  border-radius: 18px;
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.music-netease-btn:hover {
+  background: var(--accent);
+  color: var(--tag-active-text);
+}
+
+/* 网易云提示文字 */
+.music-netease-hint {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 0.3rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.music-netease-hint a {
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.music-netease-hint a:hover {
+  text-decoration: underline;
+}
+
+/* 播放模式标签 */
+.music-badge {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.15rem 0.55rem;
+  border-radius: 10px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.music-badge-local {
+  background: #d4edda;
+  color: #2d6a4f;
+}
+
+.music-badge-netease {
+  background: var(--accent-2-light);
+  color: var(--accent-2);
+}
+
+[data-theme="dark"] .music-badge-local {
+  background: #1b3a24;
+  color: #6fcf8f;
+}
+
+[data-theme="dark"] .music-badge-netease {
+  background: var(--accent-2-light);
+  color: var(--accent-2);
+}
+
+/* 标题 + 标签行 */
+.music-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.3rem;
+}
+
+.music-card-title-row .music-card-title {
+  margin-bottom: 0;
+}
+
+/* 歌词区域 */
+.music-lyrics {
+  border-top: 1px solid var(--border);
+  background: var(--bg-secondary);
+}
+
+.music-lyrics-header {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 0.6rem 1.5rem;
+  letter-spacing: 0.05em;
+}
+
+.music-lyrics-scroll {
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 0.5rem 1.5rem 1.2rem;
+  scroll-behavior: smooth;
+}
+
+.music-lyrics-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.music-lyrics-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.lyric-line {
+  font-family: Georgia, "Noto Serif SC", "STSong", serif;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 2.2;
+  padding: 0.15rem 0.5rem 0.15rem 0.8rem;
+  margin: 0;
+  border-radius: 4px;
+  border-left: 2px solid transparent;
+  transition: color 0.35s, background 0.35s, font-size 0.3s,
+              padding-left 0.35s, border-color 0.35s, transform 0.3s;
+  cursor: default;
+}
+
+.lyric-line.active {
+  color: var(--accent);
+  background: var(--accent-light);
+  font-size: 1rem;
+  font-weight: 600;
+  border-left-color: var(--accent);
+  padding-left: 1.1rem;
+  transform: translateX(2px);
+}
+
+[data-theme="dark"] .lyric-line.active {
+  background: rgba(212, 149, 106, 0.18);
+}
+
+/* 操作按钮区 */
+.music-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.music-card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+
+.music-card-artist {
+  font-size: 0.95rem;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.music-card-meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.music-card-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+}
+
+.music-card-desc p {
+  margin-bottom: 0.5rem;
+}
+
+.music-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.music-card-link:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* ----- 音乐筛选栏（标签 + 歌手 + 排序）----- */
+.music-filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.music-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.music-tag {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.76rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 15px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.music-tag:hover {
+  background: var(--accent);
+  color: var(--tag-active-text);
+}
+
+.music-tag.active {
+  background: var(--tag-active-bg);
+  color: var(--tag-active-text);
+  font-weight: 600;
+}
+
+.music-tag-count {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  margin-left: 0.15rem;
+}
+
+.music-artists {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.music-artist-link {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.music-artist-link:hover,
+.music-artist-link.active {
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+.music-artist-count {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* 排序按钮 */
+.music-sort {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.music-sort-btn {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.music-sort-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.music-sort-btn.active {
+  background: var(--accent);
+  color: var(--tag-active-text);
+  border-color: var(--accent);
+}
+
+/* 卡片内标签 */
+.music-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.music-card-tag {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 10px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.music-card-tag:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+/* 卡片内艺术家链接 */
+.music-card-artist-link-inline {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.music-card-artist-link-inline:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* 播放次数 */
+.music-play-count {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-left: 0.25rem;
+}
+
+/* 视频推荐卡片 */
+.video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.video-card {
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.25s, transform 0.25s;
+  flex-direction: column;
+}
+
+.video-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--accent-2-light);
+}
+
+.video-card-cover-area {
+  cursor: pointer;
+  position: relative;
+}
+
+.video-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 本地视频播放器 */
+.video-local-player {
+  width: 100%;
+  background: #000;
+}
+
+.video-local-el {
+  display: block;
+  width: 100%;
+  max-height: 480px;
+  background: #000;
+}
+
+.video-badge-local {
+  background: #d4edda;
+  color: #2d6a4f;
+}
+
+[data-theme="dark"] .video-badge-local {
+  background: #1b4332;
+  color: #95d5b2;
+}
+
+/* 嵌入式视频播放器 */
+.video-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* 外部链接按钮 */
+.video-card-actions {
+  margin-top: 0.6rem;
+}
+
+.video-external-link {
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.video-external-link:hover {
+  opacity: 0.75;
+}
+
+.video-card-cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.video-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-card-cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-hover, #eee));
+}
+
+.video-play-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  background: rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.video-card:hover .video-play-icon {
+  opacity: 1;
+}
+
+.video-card-body {
+  padding: 1.2rem;
+}
+
+.video-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.3rem;
+}
+
+.video-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.video-badge {
+  font-size: 0.72rem;
+  background: var(--accent-light);
+  color: var(--accent);
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.video-card-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.video-card-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.video-card-desc p {
+  margin: 0;
+}
+
+/* ============================================
+   小说页面
+   ============================================ */
+
+/* ----- 小说列表页 ----- */
+.novel-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.novel-page .section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
+.novel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.novel-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.novel-card {
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.25s, transform 0.25s;
+  cursor: pointer;
+}
+
+.novel-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--accent-2-light);
+}
+
+.novel-card-cover {
+  flex: 0 0 200px;
+  min-height: 260px;
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.novel-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.novel-card:hover .novel-card-cover img {
+  transform: scale(1.05);
+}
+
+.novel-card-cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  background: var(--bg-secondary);
+}
+
+.novel-card-body {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.novel-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.novel-card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.novel-card-meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.novel-card-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* 状态标签 */
+.novel-badge {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.novel-badge-ongoing {
+  background: #d4edda;
+  color: #2d6a4f;
+}
+
+[data-theme="dark"] .novel-badge-ongoing {
+  background: #1b4332;
+  color: #95d5b2;
+}
+
+.novel-badge-done {
+  background: var(--tag-bg);
+  color: var(--tag-text);
+}
+
+/* ----- 小说详情页 ----- */
+.novel-detail-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.novel-detail {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.novel-detail-cover {
+  flex: 0 0 240px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: var(--bg-secondary);
+}
+
+.novel-detail-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.novel-detail-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.novel-detail-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.novel-detail-meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.novel-detail-desc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+}
+
+.novel-detail-desc p {
+  margin-bottom: 0.75rem;
+}
+
+.novel-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.novel-fanqie-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--accent);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.novel-fanqie-btn:hover {
+  background: var(--accent);
+  color: var(--tag-active-text);
+}
+
+/* ----- 章节目录 ----- */
+.novel-toc {
+  margin-top: 1.5rem;
+}
+
+.novel-toc-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent);
+}
+
+.novel-volume {
+  margin-bottom: 0.5rem;
+}
+
+.novel-volume-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+
+.novel-volume-header:hover {
+  background: var(--accent-light);
+}
+
+.novel-volume-arrow {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+  width: 1em;
+  text-align: center;
+}
+
+.novel-volume-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.novel-volume-count {
+  margin-left: auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.novel-volume-chapters {
+  display: flex;
+  flex-direction: column;
+}
+
+.novel-volume-collapsed {
+  display: none;
+}
+
+.novel-chapter-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem 0.6rem 2rem;
+  text-decoration: none;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s, background 0.2s;
+  font-size: 0.95rem;
+}
+
+.novel-chapter-link:last-child {
+  border-bottom: none;
+}
+
+.novel-chapter-link:hover {
+  color: var(--accent);
+  background: var(--bg-secondary);
+}
+
+.novel-chapter-link-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.novel-chapter-link-count {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-left: 1rem;
+  white-space: nowrap;
+}
+
+/* ----- 章节阅读页 ----- */
+.novel-chapter-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.novel-chapter-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.novel-chapter-breadcrumb {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.novel-chapter-breadcrumb a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.novel-chapter-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.novel-chapter-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.novel-chapter-meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* 字体调节按钮组 */
+.novel-font-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--bg-secondary);
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.novel-font-btn {
+  width: 32px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.novel-font-btn:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.novel-font-btn-active {
+  background: var(--accent);
+  color: var(--tag-active-text);
+}
+
+.novel-font-btn-active:hover {
+  background: var(--accent-hover);
+}
+
+/* 正文排版 — 复用文章详情页的 typography */
+.novel-chapter-body {
+  font-size: 1.05rem;
+  line-height: 2;
+  color: var(--text);
+}
+
+.novel-chapter-body p {
+  margin-bottom: 1.25rem;
+  text-indent: 2em;
+}
+
+.novel-chapter-body h2 {
+  font-size: 1.4rem;
+  margin: 2rem 0 1rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--accent);
+}
+
+.novel-chapter-body h3 {
+  font-size: 1.15rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.novel-chapter-body blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* 空章节提示 */
+.novel-chapter-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  color: var(--text-muted);
+}
+
+.novel-chapter-empty p {
+  text-indent: 0;
+  margin-bottom: 0.5rem;
+}
+
+.novel-chapter-empty a {
+  color: var(--accent);
+}
+
+/* 上下章导航 */
+.novel-chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.novel-chapter-nav-link {
+  flex: 1;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--accent);
+  text-decoration: none;
+  line-height: 1.5;
+  transition: color 0.2s;
+}
+
+.novel-chapter-nav-link:hover {
+  color: var(--accent-hover);
+}
+
+.novel-chapter-nav-prev {
+  text-align: left;
+}
+
+.novel-chapter-nav-next {
+  text-align: right;
+}
+
+.novel-chapter-nav-disabled {
+  color: var(--text-muted);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* 阅读进度条 */
+.novel-progress {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  height: 3px;
+  background: var(--accent);
+  z-index: 101;
+  transition: width 0.1s linear;
+  width: 0%;
+}
+
+/* 浮动目录按钮 */
+.novel-chapter-toc-btn {
+  position: fixed;
+  right: 2rem;
+  bottom: 6rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.25s, transform 0.25s;
+  color: var(--text);
+}
+
+.novel-chapter-toc-btn:hover {
+  box-shadow: var(--shadow-hover);
+  transform: scale(1.1);
+}
+
+/* 目录抽屉遮罩 */
+.novel-toc-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 200;
+  animation: fadeIn 0.2s ease;
+}
+
+/* 目录抽屉 */
+.novel-toc-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  max-width: 85vw;
+  height: 100vh;
+  background: var(--bg-card);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  animation: slideInRight 0.25s ease;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.novel-toc-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.novel-toc-drawer-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.novel-toc-drawer-close:hover {
+  color: var(--accent);
+}
+
+.novel-toc-drawer-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+
+.novel-toc-drawer-link {
+  display: flex;
+  flex-direction: column;
+  padding: 0.6rem 1.25rem;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.9rem;
+  border-left: 3px solid transparent;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.novel-toc-drawer-link span:last-child {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+.novel-toc-drawer-link:hover {
+  color: var(--accent);
+  background: var(--bg-secondary);
+}
+
+.novel-toc-drawer-link-active,
+.novel-toc-drawer-link-active:hover {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-left-color: var(--accent);
+  font-weight: 700;
+}
+
+/* ============================================
+   小说页面响应式
+   ============================================ */
+@media (max-width: 768px) {
+  .novel-card {
+    flex-direction: column;
+  }
+
+  .novel-card-cover {
+    flex: 0 0 auto;
+    height: 200px;
+  }
+
+  .novel-detail {
+    flex-direction: column;
+  }
+
+  .novel-detail-cover {
+    flex: 0 0 auto;
+    max-width: 240px;
+    margin: 0 auto;
+  }
+
+  .novel-detail-title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .novel-detail-meta {
+    justify-content: center;
+  }
+
+  .novel-detail-actions {
+    justify-content: center;
+  }
+
+  .novel-chapter-title {
+    font-size: 1.4rem;
+  }
+
+  .novel-chapter-body {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .novel-card-cover {
+    height: 160px;
+  }
+
+  .novel-card-body {
+    padding: 1rem;
+  }
+
+  .novel-card-title {
+    font-size: 1.1rem;
+  }
+
+  .novel-chapter-title {
+    font-size: 1.2rem;
+  }
+
+  .novel-chapter-body {
+    font-size: 0.95rem;
+    line-height: 1.85;
+  }
+
+  .novel-chapter-nav {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .novel-chapter-nav-link {
+    text-align: center;
+  }
+
+  .novel-chapter-toc-btn {
+    right: 1rem;
+    bottom: 5rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .novel-toc-drawer {
+    width: 280px;
+  }
+}
+
+/* 音乐卡片封面 */
+.music-card-body {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+
+.music-card-cover {
+  flex: 0 0 auto;
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.music-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.music-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 没有封面时回退为竖向居中布局 */
+.music-card-body:not(:has(.music-card-cover)) {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
+
+/* ----- 搜索高亮 ----- */
+.search-highlight {
+  background: #f5d65e;
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+
+[data-theme="dark"] .search-highlight {
+  background: #8b6914;
+  color: #fff;
+}
+
+/* ----- 空状态 ----- */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--text-muted);
+}
+
+.empty-state .empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  font-size: 1rem;
+}
+
+/* ----- 404 ----- */
+.not-found {
+  text-align: center;
+  padding: 4rem 1.5rem;
+}
+
+.not-found h2 {
+  font-size: 4rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.not-found p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.not-found .back-home {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  background: var(--accent);
+  color: var(--tag-active-text);
+  text-decoration: none;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.not-found .back-home:hover {
+  background: var(--accent-hover);
+}
+
+/* ----- 页脚 ----- */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-secondary);
+  padding: 2rem 1.5rem;
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.footer-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   全局音乐播放器
+   ============================================ */
+
+/* ----- 浮动按钮 (FAB) ----- */
+.gmp-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.gmp-fab:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--accent);
+}
+
+.gmp-fab:active {
+  transform: scale(0.95);
+}
+
+/* 播放中状态 — 微妙脉冲 */
+.gmp-fab.gmp-playing {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.gmp-fab.gmp-playing::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  animation: gmp-pulse 2s ease-out infinite;
+}
+
+@keyframes gmp-pulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* ----- 底部播放栏 ----- */
+.gmp-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 998;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.gmp-bar.gmp-hidden {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gmp-bar-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.gmp-bar-btn {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  padding: 0;
+}
+
+.gmp-bar-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--accent);
+}
+
+/* 歌曲信息 */
+.gmp-bar-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+}
+
+.gmp-bar-title {
+  font-family: Georgia, "Noto Serif SC", serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gmp-bar-artist {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 进度条 */
+.gmp-bar-progress-track {
+  flex: 0 0 80px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.gmp-bar-progress-track:hover {
+  height: 6px;
+}
+
+.gmp-bar-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.15s linear;
+  pointer-events: none;
+}
+
+/* 时间 */
+.gmp-bar-time {
+  flex: 0 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  min-width: 70px;
+  text-align: right;
+}
+
+/* ----- 音量控制 ----- */
+.gmp-volume-control {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+.gmp-volume-btn {
+  width: 28px;
+  height: 28px;
+  font-size: 0.85rem;
+}
+
+.gmp-volume-slider {
+  width: 60px;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.gmp-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s;
+}
+
+.gmp-volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+}
+
+.gmp-volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: none;
+}
+
+/* 随机/循环按钮状态 */
+.gmp-shuffle-btn,
+.gmp-loop-btn {
+  width: 28px;
+  height: 28px;
+  font-size: 0.85rem;
+  transition: color 0.15s, transform 0.15s;
+  position: relative;
+}
+
+.gmp-shuffle-btn.active,
+.gmp-loop-btn.active {
+  color: var(--accent);
+  text-shadow: 0 0 6px var(--accent-light);
+}
+
+.gmp-loop-btn.loop-one::after {
+  content: '1';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: var(--tag-active-text);
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ----- 播放列表面板 ----- */
+.gmp-panel {
+  position: fixed;
+  bottom: 56px;
+  right: 20px;
+  z-index: 997;
+  width: 360px;
+  max-height: 480px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-hover);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.gmp-panel.gmp-hidden {
+  transform: translateY(16px) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gmp-panel-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* 标签切换 */
+.gmp-panel-tabs {
+  display: flex;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.gmp-tab {
+  padding: 0.35rem 0.75rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+.gmp-tab:hover {
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+
+.gmp-tab.gmp-tab-active {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.gmp-panel-close {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.gmp-panel-close:hover {
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+
+.gmp-panel-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+/* 播放列表项 */
+.gmp-track-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.gmp-track-item:hover {
+  background: var(--bg-secondary);
+}
+
+.gmp-track-item.gmp-track-active {
+  background: var(--accent-light);
+}
+
+.gmp-track-status {
+  flex: 0 0 20px;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.gmp-track-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+}
+
+.gmp-track-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gmp-track-artist {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.gmp-track-badge {
+  flex: 0 0 auto;
+  font-size: 0.65rem;
+}
+
+.gmp-badge-local { color: #2d6a4f; }
+.gmp-badge-netease { color: var(--accent-2); }
+[data-theme="dark"] .gmp-badge-local { color: #6fcf8f; }
+[data-theme="dark"] .gmp-badge-netease { color: var(--accent-2); }
+
+.gmp-track-cat {
+  flex: 0 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+/* 全局播放器 — 歌词面板 */
+.gmp-panel-lyrics {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.gmp-panel-lyrics.gmp-hidden {
+  display: none;
+}
+
+.gmp-lyrics-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  scroll-behavior: smooth;
+}
+
+.gmp-lyrics-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.gmp-lyrics-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.gmp-lyric-line {
+  font-family: Georgia, "Noto Serif SC", serif;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 2.4;
+  padding: 0.15rem 0.6rem 0.15rem 0.8rem;
+  margin: 0;
+  border-radius: 4px;
+  border-left: 2px solid transparent;
+  transition: color 0.35s, background 0.35s, font-size 0.3s,
+              padding-left 0.35s, border-color 0.35s;
+  cursor: default;
+}
+
+.gmp-lyric-line.active {
+  color: var(--accent);
+  background: var(--accent-light);
+  font-size: 0.98rem;
+  font-weight: 600;
+  border-left-color: var(--accent);
+  padding-left: 1rem;
+}
+
+[data-theme="dark"] .gmp-lyric-line.active {
+  background: rgba(212, 149, 106, 0.18);
+}
+
+.gmp-lyrics-empty {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+/* ============================================
+   右侧歌词面板 — 利用桌面端页面右侧空白
+   ============================================ */
+.lyrics-sidebar {
+  display: none; /* 默认隐藏 */
+}
+
+/* 仅在大屏幕（主内容右侧有足够空间时）显示 */
+@media (min-width: 1300px) {
+  .lyrics-sidebar {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 100px;
+    /* 定位在主内容右侧 20px 处，但不超出屏幕右边界 12px */
+    left: min(calc(50vw + 480px + 20px), calc(100vw - 220px - 12px));
+    width: 220px;
+    max-height: calc(100vh - 160px);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    z-index: 90;
+    overflow: hidden;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .lyrics-sidebar.gmp-hidden {
+    opacity: 0;
+    transform: translateX(20px);
+    pointer-events: none;
+  }
+
+  .lyrics-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .lyrics-sidebar-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .lyrics-sidebar-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 2px 4px;
+    border-radius: 3px;
+    line-height: 1;
+  }
+  .lyrics-sidebar-close:hover {
+    color: var(--text);
+    background: var(--bg-hover);
+  }
+
+  .lyrics-sidebar-track {
+    padding: 0.5rem 0.9rem 0;
+    flex-shrink: 0;
+  }
+  .lyrics-sidebar-song {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lyrics-sidebar-artist {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .lyrics-sidebar-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.3rem 0.9rem 1rem;
+    scroll-behavior: smooth;
+  }
+  .lyrics-sidebar-scroll::-webkit-scrollbar {
+    width: 3px;
+  }
+  .lyrics-sidebar-scroll::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 2px;
+  }
+
+  .lyrics-sidebar-empty {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 1.5rem 0.5rem;
+  }
+
+  /* 侧栏歌词行 */
+  .lyrics-sb-line {
+    font-family: Georgia, "Noto Serif SC", serif;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 2.2;
+    padding: 0.1rem 0.5rem;
+    margin: 0;
+    border-radius: 4px;
+    border-left: 2px solid transparent;
+    transition: color 0.35s, background 0.35s, font-size 0.3s,
+                padding-left 0.3s, border-color 0.35s;
+    cursor: default;
+  }
+  .lyrics-sb-line.active {
+    color: var(--accent);
+    background: var(--accent-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-left-color: var(--accent);
+    padding-left: 0.7rem;
+  }
+  [data-theme="dark"] .lyrics-sb-line.active {
+    background: rgba(212, 149, 106, 0.18);
+  }
+}
+
+/* ===== 全局搜索覆盖层 ===== */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 15vh;
+}
+
+.search-overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.search-overlay-dialog {
+  position: relative;
+  width: 560px;
+  max-width: 92vw;
+  max-height: 65vh;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-hover);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-overlay-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-overlay-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.search-overlay-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text);
+  outline: none;
+  padding: 0.25rem 0;
+}
+
+.search-overlay-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-overlay-kbd {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  flex-shrink: 0;
+}
+
+.search-overlay-results {
+  overflow-y: auto;
+  max-height: 50vh;
+  padding: 0.5rem 0;
+}
+
+.search-overlay-placeholder {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.search-result-group {
+  padding: 0.5rem 1rem 0;
+}
+
+.search-result-group-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: 0.25rem 0;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.15s;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.search-result-item:hover {
+  background: var(--bg-secondary);
+}
+
+.search-result-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  width: 28px;
+  text-align: center;
+}
+
+.search-result-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-result-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-result-sub {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-overlay-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ============================================
+   响应式设计
+   ============================================ */
+
+/* 平板及以下：改为单栏 */
+@media (max-width: 768px) {
+  /* 移动端导航 */
+  .nav-toggle {
+    display: flex;
+  }
+
+  .site-nav {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    background: var(--header-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+    z-index: 99;
+  }
+
+  .site-nav.nav-open {
+    max-height: 400px;
+    opacity: 1;
+    padding: 0.5rem 0;
+  }
+
+  .nav-link {
+    padding: 0.75rem 1.5rem;
+    border-bottom: none;
+    border-left: 3px solid transparent;
+    font-size: 0.95rem;
+  }
+
+  .nav-link.active {
+    border-bottom: none;
+    border-left-color: var(--accent);
+  }
+
+  .nav-link:hover {
+    background: var(--bg-secondary);
+  }
+
+  .site-nav .theme-btn {
+    margin: 0.5rem 1.5rem;
+    align-self: flex-start;
+  }
+
+  .home-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .sidebar {
+    position: static;
+    order: -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .sidebar-widget {
+    margin-bottom: 0;
+  }
+
+  .post-detail-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .post-detail-body {
+    font-size: 1rem;
+  }
+
+  .about-page h1 {
+    font-size: 1.5rem;
+  }
+
+  .site-logo {
+    font-size: 1.1rem;
+  }
+
+  .social-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gallery-card {
+    flex-direction: column;
+  }
+  .gallery-card-image {
+    flex: 0 0 200px;
+    min-height: 180px;
+  }
+
+  .music-card {
+    flex-direction: column;
+  }
+  .music-card-body {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .music-card-cover {
+    width: 80px;
+    height: 80px;
+    flex: 0 0 80px;
+    align-self: center;
+  }
+  .music-card-player {
+    flex: 0 0 auto;
+    min-height: 80px;
+    padding: 0.5rem;
+  }
+  .music-card-player.music-local {
+    min-width: unset;
+  }
+  .cp-wrapper {
+    gap: 0.4rem;
+  }
+  .cp-time-duration {
+    display: none;
+  }
+
+  /* 全局播放器平板适配 */
+  .gmp-panel {
+    left: 16px;
+    right: 16px;
+    width: auto;
+    max-height: 360px;
+    bottom: 60px;
+  }
+  .gmp-bar-progress-track {
+    flex: 0 0 50px;
+  }
+  .gmp-bar-time {
+    min-width: 55px;
+  }
+
+  /* 音乐筛选栏平板适配 */
+  .music-tags {
+    gap: 0.3rem;
+  }
+  .music-tag {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+  }
+  .music-artists {
+    gap: 0.3rem;
+  }
+}
+
+/* 手机端 */
+@media (max-width: 480px) {
+  .header-inner {
+    height: 48px;
+  }
+
+  .site-nav {
+    gap: 0.75rem;
+  }
+
+  .nav-link {
+    font-size: 0.8rem;
+  }
+
+  .app-main {
+    padding: 1.25rem 1rem 3rem;
+  }
+
+  .sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .post-card {
+    padding: 1.15rem;
+  }
+
+  .post-card-title {
+    font-size: 1.05rem;
+  }
+
+  .post-detail-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .post-nav {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .gallery-card-image {
+    flex: 0 0 160px;
+    min-height: 160px;
+  }
+  .gallery-card-body {
+    padding: 1rem;
+  }
+
+  .music-card-player {
+    min-height: 100px;
+    padding: 0.75rem;
+  }
+  .music-card-player.music-local {
+    min-width: unset;
+    padding: 0.5rem 0.6rem;
+  }
+  .cp-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .cp-dl-btn {
+    width: 26px;
+    height: 26px;
+  }
+  .music-card-body {
+    padding: 1rem;
+  }
+  .music-lyrics-scroll {
+    max-height: 200px;
+    padding: 0.4rem 1rem 1rem;
+  }
+  .lyric-line {
+    font-size: 0.82rem;
+  }
+  .lyric-line.active {
+    font-size: 0.9rem;
+  }
+
+  /* 全局播放器手机适配 */
+  .gmp-fab {
+    bottom: 16px;
+    right: 16px;
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
+  .gmp-bar {
+    padding: 0.4rem 0.6rem;
+  }
+  .gmp-bar-inner {
+    gap: 0.35rem;
+  }
+  .gmp-bar-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+  .gmp-bar-title {
+    font-size: 0.78rem;
+  }
+  .gmp-bar-artist {
+    display: none;
+  }
+  .gmp-bar-progress-track {
+    flex: 0 0 36px;
+  }
+  .gmp-bar-time {
+    font-size: 0.65rem;
+    min-width: 48px;
+  }
+  .gmp-shuffle-btn,
+  .gmp-loop-btn {
+    display: none;
+  }
+  .gmp-volume-slider {
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+  .gmp-panel {
+    left: 8px;
+    right: 8px;
+    bottom: 54px;
+    max-height: 300px;
+    border-radius: 12px;
+  }
+}
+
+/* ===== 返回顶部按钮 ===== */
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 90;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background 0.2s, color 0.2s;
+  box-shadow: var(--shadow);
+}
+
+.back-to-top:hover {
+  background: var(--accent);
+  color: var(--tag-active-text);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* 播放器显示时，返回顶部按钮上移 */
+.gmp-bar:not(.gmp-hidden) ~ .back-to-top {
+  bottom: 80px;
+}
+
+/* ===== 卡片评论链接 ===== */
+.card-comment-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.card-comment-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--bg-hover);
+}
+
+/* ===== Giscus 评论区 ===== */
+.giscus-hint {
+  margin: 2.5rem 0 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-align: center;
+  user-select: none;
+}
+.giscus-hint kbd {
+  display: inline-block;
+  padding: 0.15em 0.45em;
+  font-size: 0.9em;
+  font-family: inherit;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  line-height: 1.5;
+}
+.giscus {
+  margin-top: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  min-height: 200px;
+}
+
+.giscus-loading {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  padding: 2rem 0;
+}
+
+.giscus-error {
+  text-align: center;
+  color: #e74c3c;
+  font-size: 0.95rem;
+  padding: 1.5rem;
+  background: #fef2f2;
+  border-radius: 8px;
+}
+
+.giscus-admin-link {
+  display: block;
+  text-align: right;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-top: 0.5rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.giscus-admin-link:hover {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* 深色模式 giscus 错误 */
+[data-theme="dark"] .giscus-error {
+  background: #3b1111;
+  color: #fca5a5;
+}
+
+/* ===== 画廊详情页 ===== */
+.gallery-detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.gallery-detail-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+.gallery-detail-page .back-link:hover {
+  color: var(--accent);
+}
+
+.gallery-detail-image {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+.gallery-detail-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 70vh;
+  object-fit: contain;
+  background: #111;
+}
+
+.gallery-detail-title {
+  font-size: 1.8rem;
+  margin: 0 0 0.75rem;
+  color: var(--text);
+}
+
+.gallery-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.gallery-detail-desc {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* ===== 视频详情页 ===== */
+.video-detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.video-detail-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+.video-detail-page .back-link:hover {
+  color: var(--accent);
+}
+
+.video-detail-player {
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+}
+
+.video-detail-player video.video-detail-el {
+  width: 100%;
+  display: block;
+  max-height: 60vh;
+}
+
+.video-detail-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+.video-detail-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-detail-title {
+  font-size: 1.8rem;
+  margin: 0 0 0.75rem;
+  color: var(--text);
+}
+
+.video-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.video-detail-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.video-detail-desc {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text);
+  margin-top: 1rem;
+}
+
+/* ===== 音乐详情页 ===== */
+.music-detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.music-detail-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+.music-detail-page .back-link:hover {
+  color: var(--accent);
+}
+
+.music-detail-player {
+  margin-bottom: 1.5rem;
+}
+.music-detail-player audio {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.music-detail-body {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  align-items: flex-start;
+}
+
+.music-detail-cover {
+  flex-shrink: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.music-detail-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.music-detail-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.music-detail-title {
+  font-size: 1.8rem;
+  margin: 0 0 0.5rem;
+  color: var(--text);
+}
+
+.music-detail-artist {
+  margin-bottom: 0.5rem;
+}
+.music-detail-artist a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 1.05rem;
+}
+.music-detail-artist a:hover {
+  text-decoration: underline;
+}
+
+.music-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.music-detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.music-detail-desc {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.music-detail-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .music-detail-body {
+    flex-direction: column;
+    align-items: center;
+  }
+  .music-detail-cover {
+    width: 150px;
+    height: 150px;
+  }
+}

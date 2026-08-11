@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>密码哈希生成器 · 璨泯小记</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .card { background: #fff; border-radius: 12px; padding: 32px; max-width: 420px; width: 90%; box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+    h1 { font-size: 20px; margin-bottom: 8px; }
+    .sub { color: #888; font-size: 14px; margin-bottom: 20px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input { width: 100%; padding: 10px 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 15px; outline: none; transition: border-color .2s; }
+    input:focus { border-color: #4a90d9; }
+    .hash-output { background: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; margin-top: 16px; word-break: break-all; font-family: 'Courier New', monospace; font-size: 13px; color: #333; min-height: 44px; }
+    .hash-label { font-size: 12px; color: #888; margin-top: 12px; margin-bottom: 4px; }
+    .btn { display: inline-block; padding: 8px 16px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; margin-top: 16px; }
+    .btn-copy { background: #4a90d9; color: #fff; }
+    .btn-copy:hover { background: #3a7bc8; }
+    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity .3s; pointer-events: none; }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🔐 密码哈希生成器</h1>
+    <p class="sub">输入你想要的密码，生成 SHA-256 哈希值，然后粘贴到 CMS「关于我」→「QQ验证密码哈希」字段中。</p>
+    <label for="pwd">输入密码</label>
+    <input type="text" id="pwd" placeholder="输入你想要的密码..." autofocus>
+    <div class="hash-label">SHA-256 哈希值（复制到 CMS）</div>
+    <div class="hash-output" id="hash"></div>
+    <button class="btn btn-copy" id="copyBtn">📋 复制哈希</button>
+  </div>
+  <div class="toast" id="toast">已复制！</div>
+
+  <script>
+    const pwdInput = document.getElementById('pwd');
+    const hashDiv = document.getElementById('hash');
+    const copyBtn = document.getElementById('copyBtn');
+    const toast = document.getElementById('toast');
+
+    async function updateHash() {
+      const pwd = pwdInput.value;
+      if (!pwd) { hashDiv.textContent = ''; return; }
+      const data = new TextEncoder().encode(pwd);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      hashDiv.textContent = hashHex;
+    }
+
+    pwdInput.addEventListener('input', updateHash);
+
+    copyBtn.addEventListener('click', () => {
+      if (!hashDiv.textContent) return;
+      navigator.clipboard.writeText(hashDiv.textContent).then(() => {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    });
+  </script>
+</body>
+</html>

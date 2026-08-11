@@ -1,0 +1,335 @@
+# Decap CMS 配置文件
+# 通过 GitHub OAuth 登录，在 Vercel 上运行 OAuth 代理
+
+backend:
+  name: github
+  repo: wu666640/my-blog
+  branch: main
+  base_url: https://my-blog-a9ja.vercel.app
+
+# 开启本地开发模式（仅在 localhost 生效）
+# 本地测试 CMS 时运行：npm run proxy
+local_backend: true
+
+# 线上站点地址，用于预览面板中媒体资源的路径解析
+site_url: https://blog-d4g0rvrjaa17c65a9-1460996767.tcloudbaseapp.com
+
+# 媒体文件存储位置
+media_folder: "images"
+public_folder: "images"
+
+# 网站设置
+locale: "zh_Hans"
+
+# 内容集合
+collections:
+  # ----- 文章 -----
+  - name: "posts"
+    label: "📝 文章"
+    label_singular: "文章"
+    folder: "posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} — {{date}}"
+    editor:
+      preview: false
+    fields:
+      - label: "标题"
+        name: "title"
+        widget: "string"
+        hint: "文章的标题"
+        pattern: [".+", "标题不能为空"]
+      - label: "封面图"
+        name: "cover"
+        widget: "image"
+        required: false
+        hint: "可选，文章列表展示的封面图"
+      - label: "发布日期"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
+      - label: "摘要"
+        name: "excerpt"
+        widget: "text"
+        hint: "显示在文章列表中的简短描述"
+        pattern: [".+", "摘要不能为空"]
+      - label: "标签"
+        name: "tags"
+        widget: "list"
+        hint: "每篇文章可以有多个标签"
+        default: ["生活"]
+      - label: "正文"
+        name: "body"
+        widget: "markdown"
+        hint: "支持 Markdown 语法，可拖入图片"
+
+  # ----- 个人资料 -----
+  - name: "about"
+    label: "👤 个人资料"
+    files:
+      - name: "about"
+        label: "关于我页面"
+        file: "data/about.json"
+        fields:
+          - label: "昵称"
+            name: "name"
+            widget: "string"
+          - label: "头像"
+            name: "avatar"
+            widget: "image"
+            required: false
+            hint: "建议正方形图片，比如 200x200"
+          - label: "一句话介绍"
+            name: "tagline"
+            widget: "string"
+          - label: "个人简介"
+            name: "bio"
+            widget: "markdown"
+            hint: "支持 Markdown"
+          - label: "技能"
+            name: "skills"
+            widget: "list"
+            fields:
+              - { label: "技能名", name: "name", widget: "string" }
+              - { label: "熟练度 (0-100)", name: "level", widget: "number", value_type: "int", min: 0, max: 100 }
+          - label: "社交链接"
+            name: "social"
+            widget: "list"
+            fields:
+              - { label: "名称", name: "label", widget: "string" }
+              - { label: "链接", name: "url", widget: "string" }
+              - { label: "图标 Emoji", name: "icon", widget: "string", hint: "如 🐙 📧 🐦" }
+          - label: "QQ号（需密码验证才能查看）"
+            name: "qq"
+            widget: "string"
+            required: false
+            hint: "填入QQ号后，关于页会显示密码输入框。访客输入正确密码才能看到"
+          - label: "QQ验证密码哈希"
+            name: "qqPassword"
+            widget: "string"
+            required: false
+            hint: "⚠️ 不要直接填密码！打开 /admin/hash.html 生成 SHA-256 哈希后粘贴到这里。留空则不显示验证入口"
+
+  # ----- 画廊 -----
+  - name: "gallery"
+    label: "🖼️ 画廊"
+    label_singular: "图片"
+    folder: "data/gallery"
+    create: true
+    extension: yml
+    format: yml
+    identifier_field: "title"
+    slug: "{{slug}}"
+    summary: "{{title}} — {{category}}"
+    editor:
+      preview: false
+    fields:
+      - label: "标题"
+        name: "title"
+        widget: "string"
+      - label: "描述"
+        name: "description"
+        widget: "markdown"
+        hint: "支持 Markdown，会显示在图片旁边"
+      - label: "图片"
+        name: "image"
+        widget: "image"
+        hint: "上传或选择一张图片"
+      - label: "分类"
+        name: "category"
+        widget: "string"
+        hint: "如：风景、日常、旅行"
+      - label: "日期"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
+
+  # ----- 标签库 -----
+  - name: "music-tags"
+    label: "🏷️ 音乐标签库"
+    files:
+      - name: "music-tags"
+        label: "标签管理"
+        file: "data/music-tags.json"
+        fields:
+          - label: "预设标签"
+            name: "presets"
+            widget: "list"
+            summary: "{{fields.preset}}"
+            hint: "在这里添加标签后，编辑歌曲时就能从下拉列表中选择。删除标签只会从列表中移除，不影响已使用该标签的歌曲。"
+            fields:
+              - { label: "标签名", name: "preset", widget: "string" }
+
+  # ----- 音乐 -----
+  - name: "music"
+    label: "🎵 音乐"
+    label_singular: "歌曲"
+    folder: "data/music"
+    create: true
+    extension: yml
+    format: yml
+    identifier_field: "title"
+    slug: "{{slug}}"
+    summary: "{{title}} — {{artist}}"
+    editor:
+      preview: false
+    fields:
+      - label: "歌曲名"
+        name: "title"
+        widget: "string"
+      - label: "歌手"
+        name: "artist"
+        widget: "string"
+      - label: "封面图"
+        name: "cover"
+        widget: "image"
+        required: false
+        hint: "可选，歌曲/专辑封面，建议 1:1 方形图片"
+      - label: "推荐语"
+        name: "description"
+        widget: "markdown"
+        hint: "支持 Markdown，描述你为什么喜欢这首歌"
+      - label: "分类"
+        name: "category"
+        widget: "select"
+        required: false
+        hint: "从下拉选择预设分类。没有想要的？在下方「自定义分类」手打，手打的优先。"
+        options:
+          - { label: "华语流行", value: "华语流行" }
+          - { label: "粤语/华语", value: "粤语/华语" }
+          - { label: "民谣", value: "民谣" }
+          - { label: "摇滚", value: "摇滚" }
+          - { label: "电子", value: "电子" }
+          - { label: "说唱", value: "说唱" }
+          - { label: "古风", value: "古风" }
+          - { label: "纯音乐", value: "纯音乐" }
+          - { label: "日语", value: "日语" }
+          - { label: "英语", value: "英语" }
+          - { label: "韩语", value: "韩语" }
+          - { label: "轻音乐", value: "轻音乐" }
+          - { label: "R&B", value: "R&B" }
+          - { label: "爵士", value: "爵士" }
+          - { label: "古典", value: "古典" }
+          - { label: "影视原声", value: "影视原声" }
+      - label: "✏️ 自定义分类（手打，覆盖上面）"
+        name: "category_override"
+        widget: "string"
+        required: false
+      - label: "标签（多选）"
+        name: "tags"
+        widget: "select"
+        multiple: true
+        required: false
+        hint: "勾选预设标签。没有想要的？在下方「自定义标签」手打。"
+        options:
+          - { label: "华语流行", value: "华语流行" }
+          - { label: "粤语", value: "粤语" }
+          - { label: "民谣", value: "民谣" }
+          - { label: "摇滚", value: "摇滚" }
+          - { label: "电子", value: "电子" }
+          - { label: "说唱", value: "说唱" }
+          - { label: "古风", value: "古风" }
+          - { label: "纯音乐", value: "纯音乐" }
+          - { label: "青春", value: "青春" }
+          - { label: "怀旧", value: "怀旧" }
+          - { label: "深夜", value: "深夜" }
+          - { label: "治愈", value: "治愈" }
+          - { label: "暗恋", value: "暗恋" }
+          - { label: "城市", value: "城市" }
+          - { label: "慢生活", value: "慢生活" }
+          - { label: "哲思", value: "哲思" }
+          - { label: "回忆", value: "回忆" }
+          - { label: "旅行", value: "旅行" }
+          - { label: "励志", value: "励志" }
+          - { label: "日语", value: "日语" }
+          - { label: "英语", value: "英语" }
+          - { label: "韩语", value: "韩语" }
+      - label: "✏️ 自定义标签（逗号分隔）"
+        name: "tags_override"
+        widget: "string"
+        required: false
+        hint: "手打标签，多个用逗号分隔。例如：国风, 独立音乐, 老歌"
+      - label: "本地上传 MP3（可选，上传后可直接完整播放）"
+        name: "file"
+        widget: "file"
+        required: false
+        hint: "上传 MP3 文件即可在页面完整播放，无需依赖网易云"
+      - label: "网易云歌曲 ID（可选，用于试听）"
+        name: "neteaseId"
+        widget: "string"
+        required: false
+        hint: "从网易云歌曲链接中获取"
+      - label: "网易云链接"
+        name: "neteaseUrl"
+        widget: "string"
+        required: false
+        hint: "完整的网易云歌曲链接"
+      - label: "LRC 歌词（可选，支持时间轴同步显示）"
+        name: "lyrics"
+        widget: "text"
+        required: false
+        hint: "粘贴 LRC 格式歌词，每行 [mm:ss.xx]歌词内容"
+      - label: "日期"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: true
+        format: "YYYY-MM-DDTHH:mm:ss"
+
+  # ----- 视频 -----
+  - name: "video"
+    label: "🎬 视频"
+    label_singular: "视频"
+    folder: "data/video"
+    create: true
+    extension: yml
+    format: yml
+    identifier_field: "title"
+    slug: "{{slug}}"
+    summary: "{{title}} — {{platform}}"
+    editor:
+      preview: false
+    fields:
+      - label: "标题"
+        name: "title"
+        widget: "string"
+      - label: "视频链接（推荐）"
+        name: "url"
+        widget: "string"
+        required: false
+        hint: "推荐用 B站/YouTube 等外链，不限大小、加载快。如果填了此项，本地上传可留空"
+      - label: "本地上传视频（小文件备用）"
+        name: "file"
+        widget: "file"
+        required: false
+        hint: "⚠️ 仅限 50 MB 以内的小视频。超过请用上方外链。上传 MP4 等格式，上传后优先于链接播放"
+      - label: "平台"
+        name: "platform"
+        widget: "select"
+        options:
+          - { label: "Bilibili", value: "bilibili" }
+          - { label: "YouTube", value: "youtube" }
+          - { label: "其他", value: "other" }
+      - label: "封面图"
+        name: "cover"
+        widget: "image"
+        required: false
+        hint: "可选，视频封面，建议 16:9"
+      - label: "推荐语"
+        name: "description"
+        widget: "markdown"
+        hint: "支持 Markdown"
+      - label: "分类"
+        name: "category"
+        widget: "string"
+        hint: "如：教程、Vlog、音乐MV"
+      - label: "日期"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
