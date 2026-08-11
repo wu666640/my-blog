@@ -270,10 +270,10 @@ const Render = {
   /** 混合内容卡片（文章/画廊/音乐/视频） */
   _mixedCard(item) {
     const typeConfig = {
-      post:    { badge: '📝 文章', color: '#c17a4e', link: `#/post/${item.id}` },
-      gallery: { badge: '🖼️ 画廊', color: '#7a9a6e', link: `#/gallery/${item.id}` },
-      music:   { badge: '🎵 音乐', color: '#8b6fa0', link: `#/music/${item.id}` },
-      video:   { badge: '🎬 视频', color: '#5a8fbf', link: `#/video/${item.id}` },
+      post:    { badge: '📝 文章', color: '#c66f4f', link: `#/post/${item.id}` },
+      gallery: { badge: '🖼️ 画廊', color: '#5f8b70', link: `#/gallery/${item.id}` },
+      music:   { badge: '🎵 音乐', color: '#8a6fa3', link: `#/music/${item.id}` },
+      video:   { badge: '🎬 视频', color: '#4f84b8', link: `#/video/${item.id}` },
     };
     const cfg = typeConfig[item.type] || typeConfig.post;
 
